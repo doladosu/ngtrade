@@ -23,7 +23,7 @@ namespace NgTrade.Controllers
         public ActionResult Index(int? page, string dateFilter, string sector)
         {
             int pageNumber = (page ?? 1);
-            List<Quote> dailyList = new List<Quote>();
+            var dailyList = new List<Quote>();
             var companiesSector = GetCompaniesSectors();
             if (string.IsNullOrWhiteSpace(dateFilter) && string.IsNullOrWhiteSpace(sector))
             {
@@ -33,7 +33,7 @@ namespace NgTrade.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(sector))
                 {
-                    List<QuoteSector> dailyListWithSector = GetDaysListWithSector().ToList();
+                    var dailyListWithSector = GetDaysListWithSector().ToList();
                     var updatedDailyList = (from quoteSector in dailyListWithSector
                                             where quoteSector.Category != null && quoteSector.Category.ToLower() == sector.ToLower()
                                                     select new Quote
@@ -60,15 +60,14 @@ namespace NgTrade.Controllers
 
         private List<string> GetCompaniesSectors()
         {
-            var categories = _quoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct();
-            return categories.ToList();
+            return _quoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct().ToList();
         }
 
-        private List<QuoteSector> GetDaysListWithSector()
+        private IEnumerable<QuoteSector> GetDaysListWithSector()
         {
-           var dailyListWithSector = _quoteRepository.GetDaysListWithSector();
-            return dailyListWithSector;
+            return _quoteRepository.GetDaysListWithSector();
         }
+
         public ActionResult Gainers(int? page)
         {
             int pageNumber = (page ?? 1);
