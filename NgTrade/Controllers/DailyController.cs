@@ -34,7 +34,14 @@ namespace NgTrade.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(sector))
                 {
-                    dailyListWithSector = GetDaysListWithSector().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
+                    dailyListWithSector = GetDaysListWithSector().ToList();
+                    var updatedDailyList = (from quoteSector in dailyListWithSector
+                                            where quoteSector.Category != null && quoteSector.Category.ToLower() == sector.ToLower()
+                                                    select new Quote
+                                                               {
+                                                                   Change1 = quoteSector.Change1, Close = quoteSector.Close, Date = quoteSector.Date, High = quoteSector.High, Low = quoteSector.Low, Open = quoteSector.Open, QuoteId = quoteSector.QuoteId, Symbol = quoteSector.Symbol, Trades = quoteSector.Trades, Volume = quoteSector.Volume
+                                                               }).ToList();
+                    dailyList = updatedDailyList;
                 }
                 if (!string.IsNullOrWhiteSpace(dateFilter))
                 {
@@ -48,7 +55,7 @@ namespace NgTrade.Controllers
                                             TotalItems = dailyList.Count
                                         };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber-1).Take(PAGE_SIZE).ToList() };
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber-1).Take(PAGE_SIZE).ToList(), Sectors = companiesSector};
             return View(dailyViewModel);
         }
 

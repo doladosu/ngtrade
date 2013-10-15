@@ -202,13 +202,13 @@ namespace NgTrade.Controllers
                 "Nigerian Stock Exchange Trading Online NSE Daily Price List - NgTradeOnline NSE Daily Price List";
             report.TextFields.SubTitle = "This is the daily price list for " +
                                          string.Format("{0:ddd, MMM d, yyyy}", dayQuote);
-            report.TextFields.Footer = "Copyright 2011 &copy; NgTradeOnline";
+            report.TextFields.Footer = "Copyright &copy; " + DateTime.Now.Year + " NgTradeOnline";
 
             // Render hints allow you to pass additional hints to the reports as they are being rendered
             report.RenderHints.BooleanCheckboxes = true;
 
             // Customize the data fields
-            report.DataFields["ChangeTracker"].Hidden = true;
+            //report.DataFields["ChangeTracker"].Hidden = true;
             report.DataFields["QuoteId"].Hidden = true;
             report.DataFields["Date"].Hidden = true;
             report.DataFields["Close"].DataFormatString = "{0:N}";
@@ -216,8 +216,8 @@ namespace NgTrade.Controllers
             report.DataFields["Open"].HeaderText = "OPEN";
             report.DataFields["Low"].DataFormatString = "{0:N}";
             report.DataFields["High"].DataFormatString = "{0:N}";
-            report.DataFields["CHANGE1"].DataFormatString = "{0:N}";
-            report.DataFields["CHANGE1"].HeaderText = "CHANGE";
+            report.DataFields["Change1"].DataFormatString = "{0:N}";
+            report.DataFields["Change1"].HeaderText = "CHANGE";
 
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)

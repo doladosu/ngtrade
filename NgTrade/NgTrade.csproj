@@ -340,6 +340,8 @@
     <Content Include="Content\themes\font\fontawesome-webfont.eot" />
     <Content Include="Content\themes\font\fontawesome-webfont.ttf" />
     <Content Include="Content\themes\font\fontawesome-webfont.woff" />
+    <None Include="Properties\PublishProfiles\ngtrade - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ngtrade - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <None Include="Scripts\jquery-2.0.3-vsdoc.js" />
     <Content Include="Images\Banner1.jpg" />

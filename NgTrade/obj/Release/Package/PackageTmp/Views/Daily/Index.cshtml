@@ -1,0 +1,89 @@
+﻿@using NgTrade.Helpers.Paging
+@model NgTrade.Models.ViewModel.DailyViewModel
+@{
+  ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List - NgTradeOnline";
+}
+
+<div class="content">
+  <div class="container">
+    @if (!Model.Quotes.Any())
+    {
+      <div>No users were found.</div>
+    }
+    else
+    {
+      <div class="page-header">
+        <h3>Nigeria stock exchange daily price list for @string.Format("{0:ddd, MMM d, yyyy}", Model.Quotes.FirstOrDefault().Date)</h3>
+      </div>
+      <!-- Split button -->
+      <div class="row-fluid">
+        <ul class="thumbnails">
+          <li class="span4">
+            <div class="btn-group">
+              <button type="button" class="btn btn-success">Filter by industry</button>
+              <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                @foreach (var sector in Model.Sectors)
+                {
+                  if (!string.IsNullOrWhiteSpace(sector))
+                  {
+                    <li><a href="#">@sector</a></li>
+                  }
+                }
+              </ul>
+            </div>
+          </li>
+          <li>
+            @using (Html.BeginForm("Research", "Home", FormMethod.Post, new {@class = "form-search"}))
+            {
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="datefilter">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Filter by date!</button>
+                  </span>
+                </div><!-- /input-group -->
+              </div><!-- /.col-lg-6 -->
+            }
+          </li>
+        </ul>
+      </div>
+      <div class="panel panel-default">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Low</th>
+              <th>Open</th>
+              <th>Price</th>
+              <th>Volume</th>
+              <th>High</th>
+              <th>Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var data in Model.Quotes)
+            {
+              <tr>
+                <td>@data.Symbol</td>
+                <td>@String.Format("{0:0.00}", data.Low)</td>
+                <td>@String.Format("{0:0.00}", data.Open)</td>
+                <td>@String.Format("{0:0.00}", data.Close)</td>
+                <td>@data.Volume</td>
+                <td>@String.Format("{0:0.00}", data.High)</td>
+                <td>@String.Format("{0:0.00}", data.Change1)</td>
+              </tr>
+            }
+          </tbody>
+        </table>   
+      </div>
+      <div class="pagination pagination-centered">
+        <ul>
+          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+        </ul>
+      </div>
+    }
+  </div>
+</div><!-- End: MAIN CONTENT -->

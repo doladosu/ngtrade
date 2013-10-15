@@ -25,9 +25,13 @@
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
+                @foreach (var sector in Model.Sectors)
+                {
+                  if (!string.IsNullOrWhiteSpace(sector))
+                  {
+                    <li><a href="/Daily/Index?sector=@sector">@sector</a></li>
+                  }
+                }
               </ul>
             </div>
           </li>

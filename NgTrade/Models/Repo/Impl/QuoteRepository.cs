@@ -149,27 +149,33 @@ namespace NgTrade.Models.Repo.Impl
             {
                 using (var db = new UsersContext())
                 {
-                    var items = from e in db.Quotes
-                                join a in db.Companyprofiles
-                                on e.Symbol equals a.Symbol
-                                select new QuoteSector()
-                                {
-                                    Category = a.Category,
-                                    Change1 = e.Change1,
-                                    Close = e.Close,
-                                    Date = e.Date,
-                                    High = e.High,
-                                    Low = e.Low,
-                                    Open = e.Open,
-                                    QuoteId = e.QuoteId,
-                                    Symbol = e.Symbol,
-                                    Trades = e.Trades,
-                                    Volume = e.Volume
-                                };
-                    return items.ToList();
+                    var dateTimeQuote = db.Quotes.OrderByDescending(q => q.Date).FirstOrDefault();
+
+                    var items = (from e in db.Quotes.Where(q => q.Date == dateTimeQuote.Date).ToList()
+                                 join a in db.Companyprofiles
+                                     on e.Symbol equals a.Symbol into result
+                                 from a in result.DefaultIfEmpty()
+                                 select new {e, a}).Select(quote => new QuoteSector()
+                                                                        {
+                                                                            Category =
+                                                                                (quote.a != null)
+                                                                                    ? quote.a.Category
+                                                                                    : "",
+                                                                            Change1 = quote.e.Change1,
+                                                                            Close = quote.e.Close,
+                                                                            Date = quote.e.Date,
+                                                                            High = quote.e.High,
+                                                                            Low = quote.e.Low,
+                                                                            Open = quote.e.Open,
+                                                                            QuoteId = quote.e.QuoteId,
+                                                                            Symbol = quote.e.Symbol,
+                                                                            Trades = quote.e.Trades,
+                                                                            Volume = quote.e.Volume
+                                                                        }).ToList();
+                    return items;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
             return null;
