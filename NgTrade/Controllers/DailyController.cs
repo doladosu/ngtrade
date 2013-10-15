@@ -54,7 +54,7 @@ namespace NgTrade.Controllers
                                             TotalItems = dailyList.Count
                                         };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = (dailyList.Count > 10) ? dailyList.Skip(PAGE_SIZE * pageNumber-1).Take(PAGE_SIZE).ToList() : dailyList, Sectors = companiesSector};
+            var dailyViewModel = new DailyViewModel { SectorFilter = sector, PagingInfo = pagingInfo, Quotes = (dailyList.Count > 10) ? dailyList.Skip(PAGE_SIZE * pageNumber-1).Take(PAGE_SIZE).ToList() : dailyList, Sectors = companiesSector};
             return View(dailyViewModel);
         }
 

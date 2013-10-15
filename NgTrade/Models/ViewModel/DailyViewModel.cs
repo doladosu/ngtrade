@@ -9,5 +9,6 @@ namespace NgTrade.Models.ViewModel
         public List<Quote> Quotes { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public List<string> Sectors { get; set; }
+        public string SectorFilter { get; set; }
     }
 }

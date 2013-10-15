@@ -81,7 +81,7 @@
       </div>
       <div class="pagination pagination-centered">
         <ul>
-          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, sector = Model.SectorFilter }))
         </ul>
       </div>
     }
