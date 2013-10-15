@@ -1,20 +1,51 @@
 ﻿@using NgTrade.Helpers.Paging
 @model NgTrade.Models.ViewModel.DailyViewModel
 @{
-    ViewBag.Title = "Index";
+  ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List - NgTradeOnline";
 }
 
 <div class="content">
   <div class="container">
-    <div class="page-header">
-      <h2>Nigeria stock exchange daily price list</h2>
-    </div>
     @if (!Model.Quotes.Any())
     {
       <div>No users were found.</div>
     }
     else
     {
+      <div class="page-header">
+        <h3>Nigeria stock exchange daily price list for @string.Format("{0:ddd, MMM d, yyyy}", Model.Quotes.FirstOrDefault().Date)</h3>
+      </div>
+      <!-- Split button -->
+      <div class="row-fluid">
+        <ul class="thumbnails">
+          <li class="span4">
+            <div class="btn-group">
+              <button type="button" class="btn btn-success">Filter by industry</button>
+              <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            @using (Html.BeginForm("Research", "Home", FormMethod.Post, new {@class = "form-search"}))
+            {
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="datefilter">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Filter by date!</button>
+                  </span>
+                </div><!-- /input-group -->
+              </div><!-- /.col-lg-6 -->
+            }
+          </li>
+        </ul>
+      </div>
       <div class="panel panel-default">
         <table class="table">
           <thead>

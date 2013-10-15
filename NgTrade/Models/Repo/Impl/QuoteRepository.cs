@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NgTrade.Models.Data;
+using NgTrade.Models.Info;
 using NgTrade.Models.Repo.Interface;
 
 namespace NgTrade.Models.Repo.Impl
@@ -108,6 +109,70 @@ namespace NgTrade.Models.Repo.Impl
             {
                 return null;
             }
+        }
+
+        public Companyprofile GetCompany(string symbol)
+        {
+            try
+            {
+                using (var db = new UsersContext())
+                {
+                    var quotes = db.Companyprofiles.Where(q => q.Symbol == symbol);
+                    return quotes.FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Companyprofile> GetCompanies()
+        {
+            try
+            {
+                using (var db = new UsersContext())
+                {
+                    var quotes = db.Companyprofiles;
+                    return quotes.ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<QuoteSector> GetDaysListWithSector()
+        {
+            try
+            {
+                using (var db = new UsersContext())
+                {
+                    var items = from e in db.Quotes
+                                join a in db.Companyprofiles
+                                on e.Symbol equals a.Symbol
+                                select new QuoteSector()
+                                {
+                                    Category = a.Category,
+                                    Change1 = e.Change1,
+                                    Close = e.Close,
+                                    Date = e.Date,
+                                    High = e.High,
+                                    Low = e.Low,
+                                    Open = e.Open,
+                                    QuoteId = e.QuoteId,
+                                    Symbol = e.Symbol,
+                                    Trades = e.Trades,
+                                    Volume = e.Volume
+                                };
+                    return items.ToList();
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return null;
         }
     }
 }

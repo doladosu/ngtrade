@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web.Caching;
 using System.Web.Mvc;
@@ -116,6 +117,46 @@ namespace NgTrade.Controllers
             return View();
         }
 
+        public ActionResult Research(string stockTicker)
+        {
+            if (!string.IsNullOrEmpty(stockTicker))
+            {
+                try
+                {
+                    var companyProfile = _quoteRepository.GetCompany(stockTicker);
+                    var stockData = _quoteRepository.GetQuote(stockTicker);
+                    var stockHist = _quoteRepository.GetQuoteList(stockTicker);
+                    var stockHistory = stockHist.Select(quote => new QuoteModel
+                    {
+                        Date = quote.Date.ToString("MM-dd-yyyy"),
+                        Low = String.Format("{0:0.00}", quote.Low),
+                        Open = String.Format("{0:0.00}", quote.Open),
+                        Volume = quote.Volume,
+                        Close = String.Format("{0:0.00}", quote.Close),
+                        High = String.Format("{0:0.00}", quote.High)
+                    }).ToList();
+                    var filename = stockData.Symbol.ToLower();
+                    var stockDataPath = Server.MapPath(string.Format("~/Helpers/amstock/data{0}.csv", filename));
+                    var csv = ExportCsv(stockHistory);
+                    var outputFile = new StreamWriter(stockDataPath);
+                    outputFile.Write(csv);
+                    outputFile.Close();
+
+                    var researchViewModel = new ResearchViewModel
+                    {
+                        CompanyProfile = companyProfile,
+                        StockHistory = stockHistory,
+                        StockQuote = stockData
+                    };
+                    return View(researchViewModel);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex);
+                }
+            }
+            return View();
+        }
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ReportResult DailyPriceList()
         {

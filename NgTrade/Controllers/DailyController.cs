@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using NgTrade.Helpers.Paging;
+using NgTrade.Models.Data;
+using NgTrade.Models.Info;
 using NgTrade.Models.Repo.Interface;
 using NgTrade.Models.ViewModel;
 
@@ -16,10 +20,27 @@ namespace NgTrade.Controllers
             _quoteRepository = quoteRepository;
         }
 
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string dateFilter, string sector)
         {
             int pageNumber = (page ?? 1);
-            var dailyList = _quoteRepository.GetDayList().ToList();
+            List<Quote> dailyList = new List<Quote>();
+            List<QuoteSector> dailyListWithSector = new List<QuoteSector>();
+            var companiesSector = GetCompaniesSectors();
+            if (string.IsNullOrWhiteSpace(dateFilter) && string.IsNullOrWhiteSpace(sector))
+            {
+                dailyList = _quoteRepository.GetDayList().ToList();
+            }
+            else 
+            {
+                if (!string.IsNullOrWhiteSpace(sector))
+                {
+                    dailyListWithSector = GetDaysListWithSector().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(dateFilter))
+                {
+                    dailyList = _quoteRepository.GetDayList().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
+                }
+            }
             var pagingInfo = new PagingInfo
                                         {
                                             CurrentPage = pageNumber,
@@ -31,18 +52,45 @@ namespace NgTrade.Controllers
             return View(dailyViewModel);
         }
 
-        public ActionResult Gainers()
+        private List<string> GetCompaniesSectors()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            var categories = _quoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct();
+            return categories.ToList();
         }
 
-        public ActionResult Losers()
+        private List<QuoteSector> GetDaysListWithSector()
         {
-            ViewBag.Message = "Your contact page.";
+           var dailyListWithSector = _quoteRepository.GetDaysListWithSector();
+            return dailyListWithSector;
+        }
+        public ActionResult Gainers(int? page)
+        {
+            int pageNumber = (page ?? 1);
+            var dailyList = _quoteRepository.GetDayList().Where(q => q.Close >= q.Open).OrderByDescending(q => q.Change1).ToList();
+            var pagingInfo = new PagingInfo
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PAGE_SIZE,
+                TotalItems = dailyList.Count
+            };
 
-            return View();
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber - 1).Take(PAGE_SIZE).ToList() };
+            return View(dailyViewModel);
+        }
+
+        public ActionResult Losers(int? page)
+        {
+            int pageNumber = (page ?? 1);
+            var dailyList = _quoteRepository.GetDayList().Where(q => q.Close < q.Open).OrderBy(q => q.Change1).ToList();
+            var pagingInfo = new PagingInfo
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PAGE_SIZE,
+                TotalItems = dailyList.Count
+            };
+
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber - 1).Take(PAGE_SIZE).ToList() };
+            return View(dailyViewModel);
         }
     }
 }

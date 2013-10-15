@@ -1,0 +1,55 @@
+﻿@using NgTrade.Helpers.Paging
+@model NgTrade.Models.ViewModel.DailyViewModel
+@{
+  ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List, Gainers - NgTradeOnline";
+}
+
+<div class="content">
+  <div class="container">
+    @if (!Model.Quotes.Any())
+    {
+      <div>No users were found.</div>
+    }
+    else
+    {
+      <div class="page-header">
+        <h3>Nigeria stock exchange daily price list - Gainers for @string.Format("{0:ddd, MMM d, yyyy}", Model.Quotes.FirstOrDefault().Date)</h3>
+      </div>
+      
+      <div class="panel panel-default">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Low</th>
+              <th>Open</th>
+              <th>Price</th>
+              <th>Volume</th>
+              <th>High</th>
+              <th>Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var data in Model.Quotes)
+            {
+              <tr>
+                <td>@data.Symbol</td>
+                <td>@String.Format("{0:0.00}", data.Low)</td>
+                <td>@String.Format("{0:0.00}", data.Open)</td>
+                <td>@String.Format("{0:0.00}", data.Close)</td>
+                <td>@data.Volume</td>
+                <td>@String.Format("{0:0.00}", data.High)</td>
+                <td>@String.Format("{0:0.00}", data.Change1)</td>
+              </tr>
+            }
+          </tbody>
+        </table>   
+      </div>
+      <div class="pagination pagination-centered">
+        <ul>
+          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+        </ul>
+      </div>
+    }
+  </div>
+</div><!-- End: MAIN CONTENT -->

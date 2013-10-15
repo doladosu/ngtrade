@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NgTrade.Models.Data;
+using NgTrade.Models.Info;
 
 namespace NgTrade.Models.Repo.Interface
 {
@@ -12,5 +13,8 @@ namespace NgTrade.Models.Repo.Interface
         List<Quote> GetQuoteList(string symbol);
         DateTime GetCurrentStockDay();
         List<Quote> GetDayList();
+        Companyprofile GetCompany(string symbol);
+        List<Companyprofile> GetCompanies();
+        List<QuoteSector> GetDaysListWithSector();
     }
 }

@@ -101,3 +101,4 @@ C:\Users\damilare.oladosu\Desktop\Projects\NgTrade\NgTrade\bin\DoddleReport.AbcP
 C:\Users\damilare.oladosu\Desktop\Projects\NgTrade\NgTrade\bin\DoddleReport.iTextSharp.pdb
 C:\Users\damilare.oladosu\Desktop\Projects\NgTrade\NgTrade\bin\DoddleReport.Web.pdb
 C:\Users\damilare.oladosu\Desktop\Projects\NgTrade\NgTrade\bin\Microsoft.Web.Helpers.dll
+C:\Users\damilare.oladosu\Desktop\Projects\NgTrade\NgTrade\obj\Debug\NgTrade.csprojResolveAssemblyReference.cache
