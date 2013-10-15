@@ -24,7 +24,6 @@ namespace NgTrade.Controllers
         {
             int pageNumber = (page ?? 1);
             List<Quote> dailyList = new List<Quote>();
-            List<QuoteSector> dailyListWithSector = new List<QuoteSector>();
             var companiesSector = GetCompaniesSectors();
             if (string.IsNullOrWhiteSpace(dateFilter) && string.IsNullOrWhiteSpace(sector))
             {
@@ -34,7 +33,7 @@ namespace NgTrade.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(sector))
                 {
-                    dailyListWithSector = GetDaysListWithSector().ToList();
+                    List<QuoteSector> dailyListWithSector = GetDaysListWithSector().ToList();
                     var updatedDailyList = (from quoteSector in dailyListWithSector
                                             where quoteSector.Category != null && quoteSector.Category.ToLower() == sector.ToLower()
                                                     select new Quote
@@ -55,7 +54,7 @@ namespace NgTrade.Controllers
                                             TotalItems = dailyList.Count
                                         };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber-1).Take(PAGE_SIZE).ToList(), Sectors = companiesSector};
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = (dailyList.Count > 10) ? dailyList.Skip(PAGE_SIZE * pageNumber-1).Take(PAGE_SIZE).ToList() : dailyList, Sectors = companiesSector};
             return View(dailyViewModel);
         }
 
