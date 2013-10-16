@@ -1,36 +1,37 @@
 ﻿@model NgTrade.Models.RegisterModel
 @{
-    ViewBag.Title = "Register";
+  ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List - NgTradeOnline Open Account";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
-</hgroup>
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="span6 offset3">
+        <h4 class="widget-header"><i class="icon-lock"></i> Signup for NgTradeOnline</h4>
+        <div class="widget-body">
+          <div class="center-align">
+            @using (Html.BeginForm("Register", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal form-signin-signup" }))
+            {
+              @Html.AntiForgeryToken()
+              @Html.ValidationSummary()
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
-
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
+              @Html.LabelFor(m => m.UserName)
+              @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User name", @required = "true" })
+              @Html.LabelFor(m => m.Password)
+              @Html.TextBoxFor(m => m.Password, new { @class = "Password", @required = "true"})
                 @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-        </ol>
-        <input type="submit" value="Register" />
-    </fieldset>
-}
+              @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "Password", @required = "true"})
+              <input type="submit" value="Register" class="btn btn-success btn-large">
+            }
+            <h4><i class="icon-thumbs-up"></i> Sign up with:</h4>
+            @Html.Action("ExternalLoginsList", new { ViewBag.ReturnUrl })
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

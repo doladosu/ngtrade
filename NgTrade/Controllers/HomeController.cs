@@ -86,39 +86,29 @@ namespace NgTrade.Controllers
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult About()
         {
-            ViewBag.Message = "Your app description page.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Terms()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Privacy()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
