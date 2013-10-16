@@ -22,6 +22,7 @@ namespace NgTrade.Controllers
             _quoteRepository = quoteRepository;
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Index()
         {
             List<Quote> dayLosersList;
@@ -82,6 +83,7 @@ namespace NgTrade.Controllers
             return View(homeViewModel);
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult About()
         {
             ViewBag.Message = "Your app description page.";
@@ -96,6 +98,7 @@ namespace NgTrade.Controllers
             return View();
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()
         {
             ViewBag.Message = "Your contact page.";
@@ -103,6 +106,7 @@ namespace NgTrade.Controllers
             return View();
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Terms()
         {
             ViewBag.Message = "Your contact page.";
@@ -110,6 +114,7 @@ namespace NgTrade.Controllers
             return View();
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Privacy()
         {
             ViewBag.Message = "Your contact page.";
@@ -117,6 +122,7 @@ namespace NgTrade.Controllers
             return View();
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Research(string stockTicker)
         {
             if (!string.IsNullOrEmpty(stockTicker))
@@ -157,6 +163,7 @@ namespace NgTrade.Controllers
             }
             return View();
         }
+
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ReportResult DailyPriceList()
         {

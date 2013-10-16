@@ -420,6 +420,7 @@
     <Content Include="Views\Daily\Index.cshtml" />
     <Content Include="Views\Daily\Gainers.cshtml" />
     <Content Include="Views\Daily\Losers.cshtml" />
+    <Content Include="Views\Home\Research.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
