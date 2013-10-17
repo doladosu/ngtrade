@@ -71,7 +71,7 @@ namespace NgTrade.Controllers
         public ActionResult Gainers(int? page)
         {
             int pageNumber = (page ?? 1);
-            var dailyList = _quoteRepository.GetDayList().Where(q => q.Close >= q.Open).OrderByDescending(q => q.Change1).ToList();
+            var dailyList = _quoteRepository.GetDayList().Where(q => q.Close > q.Open).OrderByDescending(q => q.Change1).ToList();
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,

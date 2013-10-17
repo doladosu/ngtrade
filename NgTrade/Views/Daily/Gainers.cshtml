@@ -39,7 +39,7 @@
                 <td>@String.Format("{0:0.00}", data.Close)</td>
                 <td>@data.Volume</td>
                 <td>@String.Format("{0:0.00}", data.High)</td>
-                <td>@String.Format("{0:0.00}", data.Change1)</td>
+                <td style="color: green">@String.Format("{0:0.00}", data.Change1)</td>
               </tr>
             }
           </tbody>
@@ -47,7 +47,7 @@
       </div>
       <div class="pagination pagination-centered">
         <ul>
-          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Gainers", new { page = x }))
         </ul>
       </div>
     }
