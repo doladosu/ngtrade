@@ -15,8 +15,8 @@
 .navbar-inner, footer {
   border: none;
   padding: 15px 0;
-  background-image: linear-gradient(to bottom, #51843F, #51843F);
-  /*background: url('/images/header-footer.png');*/
+  /*background-image: linear-gradient(to bottom, #51843F, #51843F);*/
+  background: url("/images/header-footer.png");
 }
 .navbar .brand-bootbus {
 	font-size: 30px;

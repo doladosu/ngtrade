@@ -2804,7 +2804,7 @@ input[type="submit"].btn.btn-mini {
   *position: relative;
   *z-index: 2;
 }
-.navbar-inner {
+/*.navbar-inner {
   min-height: 40px;
   padding-left: 20px;
   padding-right: 20px;
@@ -2824,7 +2824,7 @@ input[type="submit"].btn.btn-mini {
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
   *zoom: 1;
-}
+}*/
 .navbar-inner:before,
 .navbar-inner:after {
   display: table;
