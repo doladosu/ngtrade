@@ -1,5 +1,987 @@
-﻿@{
-    ViewBag.Title = "Research";
+﻿@model NgTrade.Models.ViewModel.ResearchViewModel
+@{
+  ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List, Losers - NgTradeOnline research";
 }
 
-<h2>Research</h2>
+<div class="content">
+  <div class="container">
+      <div class="panel panel-default">
+        <table>
+          <tr>
+            <td width="740" valign="top">
+              <table width="740" cellspacing="0" cellpadding="0"   >
+                <tr>
+                  <td>
+                    <font size="2"><strong>@Model.CompanyProfile.SymbolName</strong></font>
+                  </td>
+                  <td>
+                    @Html.ActionLink("View Price History", "PriceHistory", "Home", new { @stockName = Model.StockQuote.Symbol }, null)
+                  </td>
+                </tr>
+              </table>
+              <div   id="CompanyProfile">
+                <div>
+                  <table width="740"   >
+                    <tr bgcolor="#9BF2BB">
+                      <td>
+                        <font size="2"><strong>@Model.CompanyProfile.SymbolName (Exchange: NSE Ticker: @Model.CompanyProfile.Symbol)</strong></font>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#e0e0e0">
+                      <td>
+                        <strong>
+                          <center>
+                            Company Chart</center>
+                        </strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <!-- amstock script-->
+                        <script type="text/javascript" src="../../Helpers/amstock/swfobject.js"></script>
+                        <div id="flashcontent">
+                          <strong>You need to upgrade your Flash Player</strong>
+                        </div>
+                        <script type="text/javascript">
+                                      // <![CDATA[
+                          var so = new SWFObject("../../Helpers/amstock/amstock.swf", "NgTradeOnline", "800", "500", "8", "#FFFFFF");
+                          so.addVariable("path", "../../Helpers/amstock/");
+                          var sf = "../../Helpers/amstock/amstock_settings_@(Model.StockQuote.Symbol).xml";
+                          so.addVariable("settings_file", encodeURIComponent(sf));
+                          so.addVariable("preloader_color", "#999999");
+                          //  so.addVariable("chart_settings", "");
+                          //  so.addVariable("additional_chart_settings", "");
+                          //  so.addVariable("loading_settings", "Loading settings");
+                          //  so.addVariable("error_loading_file", "ERROR LOADING FILE: ");
+
+                          so.write("flashcontent");
+                        // ]]>
+                                    </script>
+                        <!-- end of amstock script -->
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        &nbsp;
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740">
+                    <tr>
+                      <td colspan="4">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="4">
+                        <strong>
+                          <center>
+                            Company Quote (Closing Prices)</center>
+                        </strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#e0e0e0">
+                      <td width="145" align="left">
+                        <strong>Trade Date</strong>
+                      </td>
+                      <td width="145" align="right">
+                        @String.Format("{0:ddd, MMM d, yyyy}", Model.StockQuote.Date)
+                      </td>
+                      <td width="145" align="left">
+                        <strong>Currency</strong>
+                      </td>
+                      <td width="145" align="right">
+                        NGN (NIARA)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Last Trade
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:0.00}", Model.StockQuote.Close)
+                      </td>
+                      <td bgcolor="#DCF4EB">
+                        volume
+                      </td>
+                      <td align="right">
+                        @Model.StockQuote.Volume
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Net Change
+                      </td>
+                      <td align="right">
+                        <font>@String.Format("{0:0.00}", Model.StockQuote.Close - Model.StockQuote.Low)</font>
+                      </td>
+                      <td bgcolor="#DCF4EB">
+                        Value
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:0.00}", Model.StockQuote.Close * Model.StockQuote.Volume)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        % Change
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:0.00}", Model.StockQuote.Change1 / Model.StockQuote.Close)
+                      </td>
+                      <td bgcolor="#DCF4EB">
+                        Issued Shares
+                      </td>
+                      <td align="right">
+                        N/A
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Open
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:0.00}", Model.StockQuote.Close)
+                      </td>
+                      <td bgcolor="#DCF4EB">
+                        Market Cap.
+                      </td>
+                      <td align="right">
+                        N/A
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Today's High
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:0.00}", Model.StockQuote.High)
+                      </td>
+                      <td bgcolor="#DCF4EB">
+                        Bid
+                      </td>
+                      <td align="right">
+                        N/A
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Today's Low
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:0.00}", Model.StockQuote.Low)
+                      </td>
+                      <td bgcolor="#DCF4EB">
+                        Ask
+                      </td>
+                      <td align="right">
+                        N/A
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="2">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="2" align="left">
+                        <strong>Company Details</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="120" bgcolor="#DCF4EB">
+                        Name
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.SymbolName
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="120" bgcolor="#DCF4EB">
+                        Other Name(s)
+                      </td>
+                      <td>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="120" bgcolor="#DCF4EB">
+                        Previous Name(s)
+                      </td>
+                      <td>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Number of Employees
+                      </td>
+                      <td>
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Listing Date
+                      </td>
+                      <td>
+                        @String.Format("{0:ddd, MMM d, yyyy}", Model.CompanyProfile.ListingDate)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Address
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.Address1
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        City
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.City
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        State
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.State
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Company Secretary
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.Secretary
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB">
+                        Email
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.Email
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#DCF4EB" valign="top">
+                        Nature of Business
+                      </td>
+                      <td>
+                        @Model.CompanyProfile.CInfo
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="4">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="6" align="left">
+                        <strong>Other Equity Listing by Wema Bank plc</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#e0e0e0">
+                      <td>
+                        <strong>Name</strong>
+                      </td>
+                      <td>
+                        <strong>Ticker</strong>
+                      </td>
+                      <td>
+                        <strong>Exchange</strong>
+                      </td>
+                      <td>
+                        <strong>Country</strong>
+                      </td>
+                      <td>
+                        <strong>ISIN</strong>
+                      </td>
+                      <td>
+                        <strong>Type</strong>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="5">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="5" align="left">
+                        <strong>Major Shareholder (&gt; 5% Holdings)</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#e0e0e0">
+                      <td>
+                        <strong>Name</strong>
+                      </td>
+                      <td>
+                        <strong>Country</strong>
+                      </td>
+                      <td align="right">
+                        <strong>Shares</strong>
+                      </td>
+                      <td align="right">
+                        <strong>% Holding</strong>
+                      </td>
+                      <td align="right">
+                        <strong>Website</strong>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="4">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="4" align="left">
+                        <strong>Significant Subsidiaries and Associates</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#e0e0e0">
+                      <td>
+                        <strong>Name</strong>
+                      </td>
+                      <td>
+                        <strong>Country</strong>
+                      </td>
+                      <td align="right">
+                        <strong>% Holding</strong>
+                      </td>
+                      <td align="right">
+                        <strong>Website</strong>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div   id="CompanyFinancials">
+                <div>
+                  <table width="740"   >
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="3" align="left">
+                        <strong>Key Numbers</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        Fiscal Year End
+                      </td>
+                      <td align="right">
+                        @String.Format("{0:ddd, MMM d, yyyy}", Model.CompanyProfile.AccountYearEnd)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        @String.Format("{0: yyyy}", Model.CompanyProfile.AccountYearEnd)&nbsp;Sales in millions
+                        (1 Year Sales Growth)
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        <font color="#000000">(--)</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        @String.Format("{0: yyyy}", Model.CompanyProfile.AccountYearEnd)&nbsp;Net Income
+                        in millions (1 Year Net Income Growth)
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        <font color="#000000">(--)</font>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="5" align="left">
+                        <strong>Annual Income Summary (in millions except EPS and DPS data)</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%">
+                        &nbsp;
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Sales</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Gross Profit</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Pre-Tax Income</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Net Income</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Average Shares</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>EPS</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>DPS</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="5">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="5" align="left">
+                        <strong>Quarterly Income Summary (in millions except EPS and DPS data)</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%">
+                        &nbsp;
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Sales</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Gross Profit</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Pre-Tax Income</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Net Income</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Average Shares</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>EPS</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>DPS</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="5">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="5" align="left">
+                        <strong>Annual Balance Sheet Summary (in millions)</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%">
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Cash &amp; Equivalents</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total Current Assets</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Long Term Debt</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total Liabilities</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Share Holder Equity</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td colspan="5">
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td colspan="5" align="left">
+                        <strong>Annual Cash Flow Summary (in millions)</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%">
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                      <td width="20%" align="right">
+                        <strong>--</strong>
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Net Cash from Operations</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Net Cash from Investing</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr bgcolor="#DCF4EB">
+                      <td>
+                        <strong>Net Cash from Financing</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Net Increase/Decrease in Cash</strong>
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                      <td align="right">
+                        --
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div id="CompanyNews">
+                <div>
+                  <table width="740"   >
+                    <tr bgcolor="#9BF2BB">
+                      <td>
+                        <strong>
+                          <center>
+                            Latest Company News</center>
+                        </strong>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td>
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td>
+                        <strong>
+                          <center>
+                            Latest Company Press Releases</center>
+                        </strong>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td>
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td>
+                        <strong>
+                          <center>
+                            Company Market Announcements</center>
+                        </strong>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="740"   >
+                    <tr>
+                      <td>
+                        &nbsp;
+                      </td>
+                    </tr>
+                    <tr bgcolor="#9BF2BB">
+                      <td>
+                        <strong>
+                          <center>
+                            <a name="#Research">Company Research Reports</a></center>
+                        </strong>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+  </div>
+</div><!-- End: MAIN CONTENT -->

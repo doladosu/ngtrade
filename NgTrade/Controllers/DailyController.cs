@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Web.Caching;
 using System.Web.Mvc;
 using NgTrade.Helpers.Paging;
 using NgTrade.Models.Data;
@@ -20,6 +22,7 @@ namespace NgTrade.Controllers
             _quoteRepository = quoteRepository;
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Index(int? page, string dateFilter, string sector)
         {
             int pageNumber = (page ?? 1);
@@ -27,7 +30,19 @@ namespace NgTrade.Controllers
             var companiesSector = GetCompaniesSectors();
             if (string.IsNullOrWhiteSpace(dateFilter) && string.IsNullOrWhiteSpace(sector))
             {
-                dailyList = _quoteRepository.GetDayList().ToList();
+                var dailyListCacheModel = HttpContext.Cache.Get("dailyListIndexDCache") as IEnumerable<Quote>;
+                if (dailyListCacheModel != null)
+                {
+                    dailyList = dailyListCacheModel.ToList();
+                }
+                else
+                {
+                    dailyList = _quoteRepository.GetDayList().ToList();
+                    var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                    HttpContext.Cache.Add("dailyListIndexDCache", dailyList, null,
+                                          DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                          CacheItemPriority.Normal, null);
+                }
             }
             else 
             {
@@ -44,7 +59,19 @@ namespace NgTrade.Controllers
                 }
                 if (!string.IsNullOrWhiteSpace(dateFilter))
                 {
-                    dailyList = _quoteRepository.GetDayList().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
+                    var dailyListCacheModel = HttpContext.Cache.Get("dailyListIndexDDCache") as IEnumerable<Quote>;
+                    if (dailyListCacheModel != null)
+                    {
+                        dailyList = dailyListCacheModel.ToList();
+                    }
+                    else
+                    {
+                        dailyList = _quoteRepository.GetDayList().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
+                        var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                        HttpContext.Cache.Add("dailyListIndexDDCache", dailyList, null,
+                                              DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                              CacheItemPriority.Normal, null);
+                    }
                 }
             }
             var pagingInfo = new PagingInfo
@@ -58,44 +85,102 @@ namespace NgTrade.Controllers
             return View(dailyViewModel);
         }
 
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult Gainers(int? page)
+        {
+            int pageNumber = (page ?? 1);
+            List<Quote> dailyList;
+            var dailyListCacheModel = HttpContext.Cache.Get("dailyListGainersACache") as IEnumerable<Quote>;
+            if (dailyListCacheModel != null)
+            {
+                dailyList = dailyListCacheModel.ToList();
+            }
+            else
+            {
+                dailyList =  _quoteRepository.GetDayList().Where(q => q.Close > q.Open).OrderByDescending(q => q.Change1).ToList();
+                var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                HttpContext.Cache.Add("dailyListGainersACache", dailyList, null,
+                                      DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
+            var pagingInfo = new PagingInfo
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PAGE_SIZE,
+                TotalItems = dailyList.Count
+            };
+
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber - 1).Take(PAGE_SIZE).ToList() };
+            return View(dailyViewModel);
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult Losers(int? page)
+        {
+            int pageNumber = (page ?? 1);
+            List<Quote> dailyList;
+            var dailyListCacheModel = HttpContext.Cache.Get("dailyListDCache") as IEnumerable<Quote>;
+            if (dailyListCacheModel != null)
+            {
+                dailyList = dailyListCacheModel.ToList();
+            }
+            else
+            {
+                dailyList = _quoteRepository.GetDayList().Where(q => q.Close < q.Open).OrderBy(q => q.Change1).ToList();
+                var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                HttpContext.Cache.Add("dailyListDCache", dailyList, null,
+                                      DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
+            var pagingInfo = new PagingInfo
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PAGE_SIZE,
+                TotalItems = dailyList.Count
+            };
+
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber - 1).Take(PAGE_SIZE).ToList() };
+            return View(dailyViewModel);
+        }
+
         private List<string> GetCompaniesSectors()
         {
-            return _quoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct().ToList();
+            List<string> companySectors;
+            var companyprofilesCacheModel = HttpContext.Cache.Get("companyprofilesDCache") as IEnumerable<string>;
+            if (companyprofilesCacheModel != null)
+            {
+                companySectors = companyprofilesCacheModel.ToList();
+            }
+            else
+            {
+                companySectors = _quoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct().ToList();
+                var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                HttpContext.Cache.Add("companyprofilesDCache", companySectors, null,
+                                      DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
+
+            return companySectors;
         }
 
         private IEnumerable<QuoteSector> GetDaysListWithSector()
         {
-            return _quoteRepository.GetDaysListWithSector();
-        }
-
-        public ActionResult Gainers(int? page)
-        {
-            int pageNumber = (page ?? 1);
-            var dailyList = _quoteRepository.GetDayList().Where(q => q.Close > q.Open).OrderByDescending(q => q.Change1).ToList();
-            var pagingInfo = new PagingInfo
+            List<QuoteSector> daysListWithSector;
+            var daysListWithSectorCacheModel = HttpContext.Cache.Get("daysListWithSectorDCache") as IEnumerable<QuoteSector>;
+            if (daysListWithSectorCacheModel != null)
             {
-                CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
-                TotalItems = dailyList.Count
-            };
-
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber - 1).Take(PAGE_SIZE).ToList() };
-            return View(dailyViewModel);
-        }
-
-        public ActionResult Losers(int? page)
-        {
-            int pageNumber = (page ?? 1);
-            var dailyList = _quoteRepository.GetDayList().Where(q => q.Close < q.Open).OrderBy(q => q.Change1).ToList();
-            var pagingInfo = new PagingInfo
+                daysListWithSector = daysListWithSectorCacheModel.ToList();
+            }
+            else
             {
-                CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
-                TotalItems = dailyList.Count
-            };
+                daysListWithSector = _quoteRepository.GetDaysListWithSector();
+                var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                HttpContext.Cache.Add("daysListWithSectorDCache", daysListWithSector, null,
+                                      DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * pageNumber - 1).Take(PAGE_SIZE).ToList() };
-            return View(dailyViewModel);
+            return daysListWithSector;
         }
     }
 }

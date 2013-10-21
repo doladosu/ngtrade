@@ -7,6 +7,7 @@ using System.Web.Caching;
 using System.Web.Mvc;
 using DoddleReport;
 using DoddleReport.Web;
+using NgTrade.Helpers.Paging;
 using NgTrade.Models.Data;
 using NgTrade.Models.Repo.Interface;
 using NgTrade.Models.ViewModel;
@@ -16,6 +17,7 @@ namespace NgTrade.Controllers
     public class HomeController : Controller
     {
         private readonly IQuoteRepository _quoteRepository;
+        private const int PAGE_SIZE = 10;
 
         public HomeController(IQuoteRepository quoteRepository)
         {
@@ -219,6 +221,23 @@ namespace NgTrade.Controllers
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
             return new ReportResult(report);
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult PriceHistory(string stockName, int? page)
+        {
+            int pageNumber = (page ?? 1);
+            var query = _quoteRepository.GetQuoteList(stockName);
+          
+            var pagingInfo = new PagingInfo
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PAGE_SIZE,
+                TotalItems = query.Count
+            };
+
+            var priceHistoryViewModel = new PriceHistoryViewModel { PagingInfo = pagingInfo, Quotes = query.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList(), StockName = stockName};
+            return View(priceHistoryViewModel);
         }
 
         public static string ExportCsv<T>(List<T> list)
