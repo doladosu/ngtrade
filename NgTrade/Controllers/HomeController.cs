@@ -24,7 +24,7 @@ namespace NgTrade.Controllers
             _quoteRepository = quoteRepository;
         }
 
-        [OutputCache(CacheProfile = "StaticPageCache")]
+        //[OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Index()
         {
             List<Quote> dayLosersList;

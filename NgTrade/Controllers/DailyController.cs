@@ -90,7 +90,7 @@ namespace NgTrade.Controllers
         {
             int pageNumber = (page ?? 1);
             List<Quote> dailyList;
-            var dailyListCacheModel = HttpContext.Cache.Get("dailyListGainersACache") as IEnumerable<Quote>;
+            var dailyListCacheModel = HttpContext.Cache.Get("dailyListGainersDCache") as IEnumerable<Quote>;
             if (dailyListCacheModel != null)
             {
                 dailyList = dailyListCacheModel.ToList();
@@ -99,7 +99,7 @@ namespace NgTrade.Controllers
             {
                 dailyList =  _quoteRepository.GetDayList().Where(q => q.Close > q.Open).OrderByDescending(q => q.Change1).ToList();
                 var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
-                HttpContext.Cache.Add("dailyListGainersACache", dailyList, null,
+                HttpContext.Cache.Add("dailyListGainersDCache", dailyList, null,
                                       DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
                                       CacheItemPriority.Normal, null);
             }
@@ -119,7 +119,7 @@ namespace NgTrade.Controllers
         {
             int pageNumber = (page ?? 1);
             List<Quote> dailyList;
-            var dailyListCacheModel = HttpContext.Cache.Get("dailyListDCache") as IEnumerable<Quote>;
+            var dailyListCacheModel = HttpContext.Cache.Get("dailyListLosersDCache") as IEnumerable<Quote>;
             if (dailyListCacheModel != null)
             {
                 dailyList = dailyListCacheModel.ToList();
@@ -128,7 +128,7 @@ namespace NgTrade.Controllers
             {
                 dailyList = _quoteRepository.GetDayList().Where(q => q.Close < q.Open).OrderBy(q => q.Change1).ToList();
                 var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
-                HttpContext.Cache.Add("dailyListDCache", dailyList, null,
+                HttpContext.Cache.Add("dailyListLosersDCache", dailyList, null,
                                       DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
                                       CacheItemPriority.Normal, null);
             }
@@ -182,5 +182,18 @@ namespace NgTrade.Controllers
 
             return daysListWithSector;
         }
+
+        public ActionResult ClearCache()
+        {
+            Response.RemoveOutputCacheItem("/");
+
+            HttpContext.Cache.Remove("dailyListIndexDCache");
+            HttpContext.Cache.Remove("dailyListIndexDDCache");
+            HttpContext.Cache.Remove("dailyListGainersACache");
+            HttpContext.Cache.Remove("dailyListLosersDCache");
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

@@ -50,7 +50,7 @@ namespace NgTrade.Models.Repo.Impl
             {
                 using (var db = new UsersContext())
                 {
-                    var quotes = db.Quotes.Where(q => q.Symbol == symbol);
+                    var quotes = db.Quotes.Where(q => q.Symbol.ToLower().Trim() == symbol.ToLower().Trim());
                     var dateTime = (quotes.Select(q => q.Date)).Max();
                     return db.Quotes.FirstOrDefault(q => q.Symbol == symbol && q.Date == dateTime);
                 }
@@ -67,11 +67,12 @@ namespace NgTrade.Models.Repo.Impl
             {
                 using (var db = new UsersContext())
                 {
-                    var quotes = db.Quotes.Where(q => q.Symbol == symbol);
+                    var quotes = db.Quotes.ToList();
+                     var   qu = quotes.Where(q => q.Symbol.ToLower().Trim() == symbol.ToLower().Trim());
                     return quotes.ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 return null;
             }
@@ -117,7 +118,7 @@ namespace NgTrade.Models.Repo.Impl
             {
                 using (var db = new UsersContext())
                 {
-                    var quotes = db.Companyprofiles.Where(q => q.Symbol == symbol);
+                    var quotes = db.Companyprofiles.Where(q => q.Symbol.ToLower().Trim() == symbol.ToLower().Trim());
                     return quotes.FirstOrDefault();
                 }
             }

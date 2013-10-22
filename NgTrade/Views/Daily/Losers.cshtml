@@ -32,7 +32,7 @@
             @foreach (var data in Model.Quotes)
             {
               <tr>
-                <td>@data.Symbol</td>
+                <td>@Html.ActionLink(@data.Symbol,"Research", "Home", null,new {stockTicker = @data.Symbol})</td>
                 <td>@String.Format("{0:0.00}", data.Low)</td>
                 <td>@String.Format("{0:0.00}", data.Open)</td>
                 <td>@String.Format("{0:0.00}", data.Close)</td>
