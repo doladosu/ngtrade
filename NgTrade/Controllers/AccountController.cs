@@ -17,8 +17,10 @@ namespace NgTrade.Controllers
     //[InitializeSimpleMembership]
     public class AccountController : Controller
     {
-        //
-        // GET: /Account/Login
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)

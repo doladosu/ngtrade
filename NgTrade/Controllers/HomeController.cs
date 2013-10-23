@@ -227,7 +227,7 @@ namespace NgTrade.Controllers
         public ActionResult PriceHistory(string stockName, int? page)
         {
             int pageNumber = (page ?? 1);
-            var query = _quoteRepository.GetQuoteList(stockName);
+            var query = _quoteRepository.GetQuoteList(stockName).OrderByDescending(q => q.Date).ToList();
           
             var pagingInfo = new PagingInfo
             {
