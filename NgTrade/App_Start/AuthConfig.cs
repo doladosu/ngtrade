@@ -13,7 +13,7 @@ namespace NgTrade.App_Start
             //    clientId: "",
             //    clientSecret: "");
 
-            OAuthWebSecurity.RegisterTwitterClient(consumerKey: "ne8urbLHMtfQsUOgv9DTw", consumerSecret: "sRTxeNdIIdjYy5jYDlP89HEB65EEyCaFDK3Tuiz9e0");
+            OAuthWebSecurity.RegisterTwitterClient(consumerKey: "waLKThzsu8HxsPPnPTS2vQ", consumerSecret: "oc2C3p9dnBBSWjlo7MlLmBJGWMR1RJiXYGYFY7Rhos");
 
             OAuthWebSecurity.RegisterFacebookClient(appId: "185502631637619", appSecret: "abe912fa4061330ce88103bf9f8f9210");
 
