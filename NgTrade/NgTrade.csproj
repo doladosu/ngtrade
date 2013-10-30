@@ -225,6 +225,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\amstock\export.aspx.cs">
+      <DependentUpon>export.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Helpers\FileExtension.cs" />
     <Compile Include="Helpers\Paging\PagingHtmlBuilder.cs" />
     <Compile Include="Helpers\Paging\PagingInfo.cs" />
@@ -346,6 +350,76 @@
     <None Include="Properties\PublishProfiles\ngtrade - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <None Include="Scripts\jquery-2.0.3-vsdoc.js" />
+    <Content Include="Helpers\amcharts\amcharts.js" />
+    <Content Include="Helpers\amcharts\amstock.js" />
+    <Content Include="Helpers\amcharts\images\dragIcon.gif" />
+    <Content Include="Helpers\amcharts\images\dragIconH.gif" />
+    <Content Include="Helpers\amcharts\images\eraserIcon.gif" />
+    <Content Include="Helpers\amcharts\images\eraserIconH.gif" />
+    <Content Include="Helpers\amcharts\images\lens.png" />
+    <Content Include="Helpers\amcharts\images\pencilIcon.gif" />
+    <Content Include="Helpers\amcharts\images\pencilIconH.gif" />
+    <Content Include="Helpers\amcharts\images\xIcon.gif" />
+    <Content Include="Helpers\amcharts\images\xIconH.gif" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern1.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern10.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern11.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern12.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern13.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern14.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern15.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern16.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern17.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern18.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern19.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern2.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern20.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern21.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern3.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern4.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern5.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern6.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern7.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern8.png" />
+    <Content Include="Helpers\amcharts\patterns\black\pattern9.png" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern1.jpg" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern1r.jpg" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern2.jpg" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern3.jpg" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern4.jpg" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern5.jpg" />
+    <Content Include="Helpers\amcharts\patterns\chalk\pattern6.jpg" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern1.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern10.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern11.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern12.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern13.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern14.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern15.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern16.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern17.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern18.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern19.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern2.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern20.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern21.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern3.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern4.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern5.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern6.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern7.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern8.png" />
+    <Content Include="Helpers\amcharts\patterns\white\pattern9.png" />
+    <Content Include="Helpers\amcharts\serial.js" />
+    <Content Include="Helpers\amcharts\style.css" />
+    <Content Include="Helpers\amstock\amstock.swf" />
+    <Content Include="Helpers\amstock\amstock_settings.xml" />
+    <Content Include="Helpers\amstock\amstock_settings_7up.xml" />
+    <Content Include="Helpers\amstock\events.xml" />
+    <Content Include="Helpers\amstock\export.aspx" />
+    <Content Include="Helpers\amstock\export.php" />
+    <Content Include="Helpers\amstock\swfobject.js" />
+    <Content Include="Helpers\amstock\trend_lines.xml" />
     <Content Include="Images\Banner1.jpg" />
     <Content Include="Images\Banner2.jpg" />
     <Content Include="Images\content.png" />
@@ -375,6 +449,7 @@
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\less-1.4.1.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\research.js" />
     <Content Include="Unity.Mvc3.README.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -427,7 +502,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Helpers\amstock\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

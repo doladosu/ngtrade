@@ -2,6 +2,10 @@
 @{
   ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List, Losers - NgTradeOnline research";
 }
+<script src="~/Helpers/amcharts/amcharts.js"></script>
+<script src="~/Helpers/amcharts/amstock.js"></script>
+<script src="~/Helpers/amcharts/serial.js"></script>
+<script src="~/Scripts/research.js"></script>
 
 <div class="content">
   <div class="container">
@@ -37,7 +41,8 @@
                     </tr>
                     <tr>
                       <td>
-                        <!-- amstock script-->
+                        <div id="chartdiv" style="width:100%; height:300px;"></div>
+                        @*<!-- amstock script-->
                         <script type="text/javascript" src="../../Helpers/amstock/swfobject.js"></script>
                         <div id="flashcontent">
                           <strong>You need to upgrade your Flash Player</strong>
@@ -57,7 +62,7 @@
                           so.write("flashcontent");
                         // ]]>
                                     </script>
-                        <!-- end of amstock script -->
+                        <!-- end of amstock script -->*@
                       </td>
                     </tr>
                     <tr>
