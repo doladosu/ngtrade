@@ -234,11 +234,14 @@
     <Compile Include="Helpers\Paging\PagingInfo.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Data\NgTradeData.cs" />
+    <Compile Include="Models\Info\PortfolioModel.cs" />
     <Compile Include="Models\Info\QuoteSector.cs" />
     <Compile Include="Models\Repo\Interface\IQuoteRepository.cs" />
     <Compile Include="Models\Repo\Impl\QuoteRepository.cs" />
+    <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\DailyViewModel.cs" />
     <Compile Include="Models\ViewModel\HomeViewModel.cs" />
+    <Compile Include="Models\ViewModel\PortfolioViewModel.cs" />
     <Compile Include="Models\ViewModel\PriceHistoryViewModel.cs" />
     <Compile Include="Models\ViewModel\QuoteModel.cs" />
     <Compile Include="Models\ViewModel\ResearchViewModel.cs" />
@@ -499,6 +502,7 @@
     <Content Include="Views\Daily\Losers.cshtml" />
     <Content Include="Views\Home\Research.cshtml" />
     <Content Include="Views\Home\PriceHistory.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
