@@ -225,10 +225,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\amstock\export.aspx.cs">
-      <DependentUpon>export.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Helpers\FileExtension.cs" />
     <Compile Include="Helpers\Paging\PagingHtmlBuilder.cs" />
     <Compile Include="Helpers\Paging\PagingInfo.cs" />
@@ -239,6 +235,7 @@
     <Compile Include="Models\Repo\Interface\IQuoteRepository.cs" />
     <Compile Include="Models\Repo\Impl\QuoteRepository.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
+    <Compile Include="Models\ViewModel\CompanyViewModel.cs" />
     <Compile Include="Models\ViewModel\DailyViewModel.cs" />
     <Compile Include="Models\ViewModel\HomeViewModel.cs" />
     <Compile Include="Models\ViewModel\PortfolioViewModel.cs" />
@@ -415,16 +412,9 @@
     <Content Include="Helpers\amcharts\patterns\white\pattern9.png" />
     <Content Include="Helpers\amcharts\serial.js" />
     <Content Include="Helpers\amcharts\style.css" />
-    <Content Include="Helpers\amstock\amstock.swf" />
-    <Content Include="Helpers\amstock\amstock_settings.xml" />
-    <Content Include="Helpers\amstock\amstock_settings_7up.xml" />
-    <Content Include="Helpers\amstock\events.xml" />
-    <Content Include="Helpers\amstock\export.aspx" />
-    <Content Include="Helpers\amstock\export.php" />
-    <Content Include="Helpers\amstock\swfobject.js" />
-    <Content Include="Helpers\amstock\trend_lines.xml" />
     <Content Include="Images\Banner1.jpg" />
     <Content Include="Images\Banner2.jpg" />
+    <Content Include="Images\bluedefault.gif" />
     <Content Include="Images\content.png" />
     <Content Include="Images\glyphicons-halflings-white.png" />
     <Content Include="Images\glyphicons-halflings.png" />
@@ -433,6 +423,7 @@
     <Content Include="Images\placeholder-260x150.jpg" />
     <Content Include="Images\placeholder-360x200.jpg" />
     <Content Include="Images\placeholder.jpg" />
+    <Content Include="Scripts\jquery.csv-0.71.js" />
     <Content Include="Scripts\ngtrade.index.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -503,9 +494,15 @@
     <Content Include="Views\Home\Research.cshtml" />
     <Content Include="Views\Home\PriceHistory.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Home\Leadership.cshtml" />
+    <Content Include="Views\Home\News.cshtml" />
+    <Content Include="Views\Home\Events.cshtml" />
+    <Content Include="Views\Home\Blog.cshtml" />
+    <Content Include="Views\Home\Companies.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Helpers\amstock\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

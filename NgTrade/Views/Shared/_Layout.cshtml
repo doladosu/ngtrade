@@ -14,6 +14,10 @@
   <link href="/Content/themes/default/font-awesome.css" rel="stylesheet" />
   <link href="/Content/themes/default/font-awesome-ie7.css" rel="stylesheet" />
   <link href="/Content/themes/default/ngtrade.css" rel="stylesheet" />
+  <link href="/Content/themes/base/minified/jquery.ui.autocomplete.min.css" rel="stylesheet" />
+
+      @RenderSection("headscripts", required: false)
+
 </head>
 <body>
   <header>
@@ -31,26 +35,29 @@
           <!-- Start: Primary navigation -->
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
-              <li class="dropdown">
-                <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">NSE Daily price list<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li class="nav-header">Daily Price list</li>
-                  <li>@Html.ActionLink("Todays list", "Index", "Daily")</li>
-                  <li>@Html.ActionLink("Day Gainers", "Gainers", "Daily")</li>
-                  <li>@Html.ActionLink("Day Losers", "Losers", "Daily")</li>
-                </ul>
-              </li>
+                <li class="dropdown">
+                    <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">NSE Daily price list<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-header">Daily Price list</li>
+                        <li>@Html.ActionLink("Todays list", "Index", "Daily")</li>
+                        <li>@Html.ActionLink("Day Gainers", "Gainers", "Daily")</li>
+                        <li>@Html.ActionLink("Day Losers", "Losers", "Daily")</li>
+                    </ul>
+                </li>
+              <li>@Html.ActionLink("Companies", "Companies", "Home")</li>
               <li>@Html.ActionLink("FAQ", "Faq", "Home")</li>
               <li>@Html.ActionLink("Contact Us", "Contact", "Home")</li>
-              <li>@Html.ActionLink("Sign up", "Register", "Account")</li>
-              <li>@Html.ActionLink("Sign in", "Login", "Account")</li>
+@*              <li>@Html.ActionLink("Sign up", "Register", "Account")</li>
+              <li>@Html.ActionLink("Sign in", "Login", "Account")</li>*@
               <li>
                   @using (Html.BeginForm("Research", "Home", FormMethod.Post, new { @class = "form-search" }))
                   {
                       <div class="input-append">
-                        <input type="text" class="span2 search-query" name="search" placeholder="Enter stock name" />
-                        <button type="submit" class="btn"><i class="icon-search"></i>
-                        </button>
+                          <input type="text" id="stockticker" name="stockticker" class="span2 search-query" placeholder="Enter stock name" list=symbols />
+                          <button type="submit" class="btn"><i class="icon-search"></i>
+                          </button>
+                          <datalist id=symbols>
+                          </datalist>
                       </div>
                   }
               </li>
@@ -81,11 +88,10 @@
           <nav>
             <ul class="quick-links">
               <li>@Html.ActionLink("About Us", "About", "Home")</li>
-              <li><a href="patnerships.html">Patnerships</a></li>
-              <li><a href="leadership.html">Leadership</a></li>
-              <li><a href="news.html">News</a></li>
-              <li><a href="events.html">Events</a></li>
-              <li><a href="blog.html">Blog</a></li>
+              <li>@Html.ActionLink("Leadership", "Leadership", "Home")</li>
+              <li>@Html.ActionLink("News", "News", "Home")</li>
+              <li>@Html.ActionLink("Events", "Events", "Home")</li>
+              <li>@Html.ActionLink("Blog", "Blog", "Home")</li>
             </ul>
           </nav>
         </div>
@@ -108,19 +114,10 @@
         <div class="span3">
           <h4>Get in touch</h4>
           <div class="social-icons-row">
-            <a href="#"><i class="icon-twitter"></i></a>
-            <a href="#"><i class="icon-facebook"></i></a>
-            <a href="#"><i class="icon-linkedin"></i></a>
-          </div>
-          <div class="social-icons-row">
-            <a href="#"><i class="icon-google-plus"></i></a>
-            <a href="#"><i class="icon-github"></i></a>
-            <a href="mailto:soundar.rathinasamy@gmail.com"><i class="icon-envelope"></i></a>
-          </div>
-          <div class="social-icons-row">
-            <i class="icon-phone icon-large phone-number"></i> +919750227877
-           
-          </div>
+            <a href="https://twitter.com/NgTradeOnline" target="_blank"><i class="icon-twitter"></i></a>
+            <a href="https://www.facebook.com/NgTradeOnline" target="_blank"><i class="icon-facebook"></i></a>
+              <a href="mailto:support@ngtradeonline.com"><i class="icon-envelope"></i></a>
+              </div>
         </div>
         <div class="span3">
           <h4>Get updated by email</h4>

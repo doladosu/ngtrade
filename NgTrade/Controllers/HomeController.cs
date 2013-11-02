@@ -17,14 +17,14 @@ namespace NgTrade.Controllers
     public class HomeController : Controller
     {
         private readonly IQuoteRepository _quoteRepository;
-        private const int PAGE_SIZE = 10;
+        private const int PageSize = 10;
 
         public HomeController(IQuoteRepository quoteRepository)
         {
             _quoteRepository = quoteRepository;
         }
 
-        //[OutputCache(CacheProfile = "StaticPageCache")]
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Index()
         {
             List<Quote> dayLosersList;
@@ -124,9 +124,14 @@ namespace NgTrade.Controllers
                     var companyProfile = _quoteRepository.GetCompany(stockTicker);
                     var stockData = _quoteRepository.GetQuote(stockTicker);
                     var stockHist = _quoteRepository.GetQuoteList(stockTicker);
+
+                    if (companyProfile == null || stockData == null || stockHist == null)
+                    {
+                        return RedirectToAction("PriceHistory", new {stockName = stockTicker});
+                    }
                     var stockHistory = stockHist.Select(quote => new QuoteModel
                     {
-                        Date = quote.Date.ToString("MM-dd-yyyy"),
+                        Date = quote.Date.ToString("yyyy-MM-dd"),
                         Low = String.Format("{0:0.00}", quote.Low),
                         Open = String.Format("{0:0.00}", quote.Open),
                         Volume = quote.Volume,
@@ -134,7 +139,7 @@ namespace NgTrade.Controllers
                         High = String.Format("{0:0.00}", quote.High)
                     }).ToList();
                     var filename = stockData.Symbol.ToLower();
-                    var stockDataPath = Server.MapPath(string.Format("~/Helpers/amstock/data{0}.csv", filename));
+                    var stockDataPath = Server.MapPath(string.Format("~/data{0}.csv", filename));
                     var csv = ExportCsv(stockHistory);
                     var outputFile = new StreamWriter(stockDataPath);
                     outputFile.Write(csv);
@@ -150,10 +155,11 @@ namespace NgTrade.Controllers
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                     Console.Write(ex);
                 }
             }
-            return View();
+            return RedirectToAction("Index", "Daily");
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
@@ -232,11 +238,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
+                ItemsPerPage = PageSize,
                 TotalItems = query.Count
             };
 
-            var priceHistoryViewModel = new PriceHistoryViewModel { PagingInfo = pagingInfo, Quotes = query.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList(), StockName = stockName};
+            var priceHistoryViewModel = new PriceHistoryViewModel { PagingInfo = pagingInfo, Quotes = query.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList(), StockName = stockName};
             return View(priceHistoryViewModel);
         }
 
@@ -258,5 +264,66 @@ namespace NgTrade.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult Leadership()
+        {
+            return View();
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult News()
+        {
+            return View();
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult Events()
+        {
+            return View();
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult Blog()
+        {
+            return View();
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult GetSymbols(string term)
+        {
+            var symbols = _quoteRepository.GetSymbols(term);
+            return Json( symbols, JsonRequestBehavior.AllowGet);
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult Companies(int? page)
+        {
+            var pageNumber = (page ?? 1);
+            List<Companyprofile> companyprofiles;
+            var companyCacheModel = HttpContext.Cache.Get("companiesCache") as IEnumerable<Companyprofile>;
+            if (companyCacheModel != null)
+            {
+                companyprofiles = companyCacheModel.ToList();
+            }
+            else
+            {
+                companyprofiles = _quoteRepository.GetCompanies().ToList();
+                var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                HttpContext.Cache.Add("companiesCache", companyprofiles, null,
+                                      DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
+            var pagingInfo = new PagingInfo
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PageSize,
+                TotalItems = companyprofiles.Count
+            };
+
+            var companyViewModel = new CompanyViewModel { PagingInfo = pagingInfo, Companyprofiles = companyprofiles.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
+            return View(companyViewModel);
+        }
+
     }
 }

@@ -1,0 +1,53 @@
+﻿@using NgTrade.Helpers.Paging
+@model NgTrade.Models.ViewModel.CompanyViewModel
+@{
+    ViewBag.Title = "Nigerian Stock Exchange NSE Trading Online NSE Daily Price List, Companies - NgTradeOnline";
+}
+
+<div class="content">
+    <div class="container">
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Companies -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:970px;height:90px"
+     data-ad-client="ca-pub-5059153330695623"
+     data-ad-slot="8681815527"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        @if (!Model.Companyprofiles.Any())
+        {
+            <div>No data is available.</div>
+        }
+        else
+        {
+            <div class="page-header">
+                <h3>Companies listed on the Nigeria stock exchange.</h3>
+            </div>
+            <div class="panel panel-default">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Symbol</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var data in Model.Companyprofiles)
+                        {
+                            <tr>
+                                <td>@data.SymbolName</td>
+                                <td>@Html.ActionLink(@data.Symbol,"Research", "Home", new {stockTicker = @data.Symbol}, null)</td>
+                              </tr>
+                        }
+                    </tbody>
+                </table>   
+            </div>
+            <div class="pagination pagination-centered">
+                <ul>
+                    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Companies", new { page = x }))
+                </ul>
+            </div>
+        }
+    </div>
+</div><!-- End: MAIN CONTENT -->
