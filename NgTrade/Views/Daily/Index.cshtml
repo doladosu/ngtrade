@@ -6,7 +6,16 @@
 
 <div class="content">
   <div class="container">
-    @if (!Model.Quotes.Any())
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- DailyPricelist -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:970px;height:90px"
+     data-ad-client="ca-pub-5059153330695623"
+     data-ad-slot="7043631924"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+      @if (!Model.Quotes.Any())
     {
       <div>No data is available.</div>
     }
@@ -31,18 +40,18 @@
               <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu" role="menu">
-                @foreach (var sector in Model.Sectors)
-                {
-                  if (!string.IsNullOrWhiteSpace(sector))
-                  {
-                    <li><a href="/Daily/Index?sector=@sector">@sector</a></li>
-                  }
-                }
-              </ul>
-            </div>
+                <ul class="dropdown-menu" role="menu">
+                    @foreach (var sector in Model.Sectors)
+                    {
+                        if (!string.IsNullOrWhiteSpace(sector))
+                        {
+                            <li><a href="/Daily/Index?sector=@sector">@sector</a></li>
+                        }
+                    }
+                </ul>
+        </div>
           </li>
-          <li>
+         @* <li>
             @using (Html.BeginForm("Research", "Home", FormMethod.Post, new {@class = "form-search"}))
             {
               <div class="col-lg-6">
@@ -54,8 +63,17 @@
                 </div><!-- /input-group -->
               </div><!-- /.col-lg-6 -->
             }
-          </li>
+          </li>*@
         </ul>
+      <div class="fb-like" data-href="https://www.facebook.com/NgTradeOnline" data-colorscheme="light" data-layout="button" data-action="like" data-show-faces="true" data-send="true"></div>
+            
+            <a href="https://twitter.com/ngtradeonline" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @@ngtradeonline</a>
+            <script>
+                !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');
+            </script>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="ngtradeonline" data-size="large" data-related="ngtradeonline" data-hashtags="ngtradeonline">Tweet</a>
+<script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+
       </div>
       <div class="panel panel-default">
         <table class="table">

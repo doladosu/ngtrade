@@ -26,6 +26,12 @@ $("document").ready(function() {
 	$('.carousel').carousel({
       interval: 4000
    });
-	/*End: Automatically start the slider */
-
+    /*End: Automatically start the slider */
+    
+	$.getJSON('/Home/GetSymbols', function (data) {
+	    $.each(data, function (key, val) {
+	        $("#symbols").append('<option>' + val + '</option>');
+	    });
+	
+	});
 });

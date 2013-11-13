@@ -39,7 +39,7 @@ namespace NgTrade.App_Start
                         "~/Content/themes/default/font-awesome-ie7.css",
                         "~/Content/themes/default/ngtrade.css"));
 
-            //bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+            //bundles.Add(new StyleBundle("~/Content/themes/jquerybase/css").Include(
             //            "~/Content/themes/base/jquery.ui.core.css",
             //            "~/Content/themes/base/jquery.ui.resizable.css",
             //            "~/Content/themes/base/jquery.ui.selectable.css",
@@ -51,7 +51,8 @@ namespace NgTrade.App_Start
             //            "~/Content/themes/base/jquery.ui.tabs.css",
             //            "~/Content/themes/base/jquery.ui.datepicker.css",
             //            "~/Content/themes/base/jquery.ui.progressbar.css",
-            //            "~/Content/themes/base/jquery.ui.theme.css"));
+            //            "~/Content/themes/base/jquery.ui.theme.css"
+            //            ));
         }
     }
 }

@@ -34,8 +34,9 @@ namespace NgTrade.Models.Repo.Impl
         {
             var allQuotes = GetAllQuotes();
             var quotes = allQuotes.Where(q => q.Symbol.ToLower().Trim() == symbol.ToLower().Trim());
-            var dateTime = (quotes.Select(q => q.Date)).Max();
-            return allQuotes.FirstOrDefault(q => q.Symbol == symbol && q.Date == dateTime);
+            var enumerable = quotes as IList<Quote> ?? quotes.ToList();
+            var dateTime = (enumerable.Select(q => q.Date)).Max();
+            return enumerable.FirstOrDefault(q => q.Symbol.ToLower() == symbol.ToLower() && q.Date == dateTime);
         }
 
         public List<Quote> GetQuoteList(string symbol)
@@ -174,5 +175,20 @@ namespace NgTrade.Models.Repo.Impl
             }
         }
 
+        public List<string> GetSymbols(string symbol)
+        {
+            if (!string.IsNullOrWhiteSpace(symbol))
+            {
+                var allCompanies = GetAllCompanies();
+                var companies = allCompanies.Where(q => q.Symbol.ToLower().StartsWith(symbol)).Select(e => e.Symbol);
+                return companies.ToList();
+            }
+            else
+            {
+                var allCompanies = GetAllCompanies();
+                var companies = allCompanies.Select(e => e.Symbol);
+                return companies.ToList();
+            }
+        }
     }
 }

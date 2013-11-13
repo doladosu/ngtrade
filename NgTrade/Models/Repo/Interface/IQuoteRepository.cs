@@ -16,5 +16,6 @@ namespace NgTrade.Models.Repo.Interface
         Companyprofile GetCompany(string symbol);
         List<Companyprofile> GetCompanies();
         List<QuoteSector> GetDaysListWithSector();
+        List<string> GetSymbols(string symbol);
     }
 }

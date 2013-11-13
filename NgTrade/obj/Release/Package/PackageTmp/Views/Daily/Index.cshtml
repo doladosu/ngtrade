@@ -6,9 +6,18 @@
 
 <div class="content">
   <div class="container">
-    @if (!Model.Quotes.Any())
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- DailyPricelist -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:970px;height:90px"
+     data-ad-client="ca-pub-5059153330695623"
+     data-ad-slot="7043631924"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+      @if (!Model.Quotes.Any())
     {
-      <div>No users were found.</div>
+      <div>No data is available.</div>
     }
     else
     {
@@ -20,7 +29,14 @@
         <ul class="thumbnails">
           <li class="span4">
             <div class="btn-group">
-              <button type="button" class="btn btn-success">Filter by industry</button>
+              @if (!string.IsNullOrWhiteSpace(Model.SectorFilter))
+              {
+                <button type="button" id="btnClearFilter" class="btn btn-success">Clear filter</button>
+              }
+              else
+              {
+                <button type="button" class="btn btn-success">Filter by industry</button>
+              }
               <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
               </button>
@@ -29,13 +45,13 @@
                 {
                   if (!string.IsNullOrWhiteSpace(sector))
                   {
-                    <li><a href="#">@sector</a></li>
+                    <li><a href="/Daily/Index?sector=@sector">@sector</a></li>
                   }
                 }
               </ul>
             </div>
           </li>
-          <li>
+         @* <li>
             @using (Html.BeginForm("Research", "Home", FormMethod.Post, new {@class = "form-search"}))
             {
               <div class="col-lg-6">
@@ -47,7 +63,7 @@
                 </div><!-- /input-group -->
               </div><!-- /.col-lg-6 -->
             }
-          </li>
+          </li>*@
         </ul>
       </div>
       <div class="panel panel-default">
@@ -66,22 +82,49 @@
           <tbody>
             @foreach (var data in Model.Quotes)
             {
-              <tr>
-                <td>@data.Symbol</td>
+              if (data.Close > data.Open)
+              {
+                <tr>
+                <td>@Html.ActionLink(@data.Symbol,"Research", "Home", new {stockTicker = @data.Symbol}, null)</td>
+                <td>@String.Format("{0:0.00}", data.Low)</td>
+                <td>@String.Format("{0:0.00}", data.Open)</td>
+                <td>@String.Format("{0:0.00}", data.Close)</td>
+                <td>@data.Volume</td>
+                <td>@String.Format("{0:0.00}", data.High)</td>
+                <td style="color: green">@String.Format("{0:0.00}", data.Change1)</td>
+              </tr>
+              }
+              else if (data.Close < data.Open)
+              {
+                <tr>
+                <td>@Html.ActionLink(@data.Symbol,"Research", "Home", new {stockTicker = @data.Symbol}, null)</td>
+                <td>@String.Format("{0:0.00}", data.Low)</td>
+                <td>@String.Format("{0:0.00}", data.Open)</td>
+                <td>@String.Format("{0:0.00}", data.Close)</td>
+                <td>@data.Volume</td>
+                <td>@String.Format("{0:0.00}", data.High)</td>
+                <td style="color: red">@String.Format("{0:0.00}", data.Change1)</td>
+              </tr>
+              }
+              else
+              {
+               <tr>
+                <td>@Html.ActionLink(@data.Symbol,"Research", "Home", new {stockTicker = @data.Symbol}, null)</td>
                 <td>@String.Format("{0:0.00}", data.Low)</td>
                 <td>@String.Format("{0:0.00}", data.Open)</td>
                 <td>@String.Format("{0:0.00}", data.Close)</td>
                 <td>@data.Volume</td>
                 <td>@String.Format("{0:0.00}", data.High)</td>
                 <td>@String.Format("{0:0.00}", data.Change1)</td>
-              </tr>
+              </tr> 
+              }
             }
           </tbody>
         </table>   
       </div>
       <div class="pagination pagination-centered">
         <ul>
-          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, sector = Model.SectorFilter }))
         </ul>
       </div>
     }
