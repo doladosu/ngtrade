@@ -18,7 +18,7 @@ namespace NgTrade.Controllers
     {
         private const int PAGE_SIZE = 10;
 
-        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository)
+        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository) : base(accountRepository, quoteRepository, smtpRepository)
         {
         }
 
@@ -93,6 +93,27 @@ namespace NgTrade.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Contact(ContactViewModel contactVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(contactVm);
+            }
+
+            var contact = new ContactViewModel
+            {
+                Email = contactVm.Email,
+                Name = contactVm.Name,
+                Message = contactVm.Message
+            };
+
+            SmtpRepository.SendContactEmail(contact);
+
+            return RedirectToAction("Contact", new { message = "Your message is sent", messageClass = "success" });
+        }
+
 
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()

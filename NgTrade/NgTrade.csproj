@@ -236,13 +236,16 @@
     <Compile Include="Models\Repo\Impl\AccountRepository.cs" />
     <Compile Include="Models\Repo\Impl\HoldingRepository.cs" />
     <Compile Include="Models\Repo\Impl\OrderRepository.cs" />
+    <Compile Include="Models\Repo\Impl\SmtpRepository.cs" />
     <Compile Include="Models\Repo\Interface\IAccountRepository.cs" />
     <Compile Include="Models\Repo\Interface\IHoldingRepository.cs" />
     <Compile Include="Models\Repo\Interface\IOrderRepository.cs" />
     <Compile Include="Models\Repo\Interface\IQuoteRepository.cs" />
     <Compile Include="Models\Repo\Impl\QuoteRepository.cs" />
+    <Compile Include="Models\Repo\Interface\ISmtpRepository.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\CompanyViewModel.cs" />
+    <Compile Include="Models\ViewModel\ContactViewModel.cs" />
     <Compile Include="Models\ViewModel\DailyViewModel.cs" />
     <Compile Include="Models\ViewModel\HomeViewModel.cs" />
     <Compile Include="Models\ViewModel\PortfolioViewModel.cs" />

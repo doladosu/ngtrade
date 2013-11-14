@@ -19,7 +19,7 @@ namespace NgTrade.Controllers
     //[InitializeSimpleMembership]
     public class AccountController : BaseController
     {
-        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository)
+        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository, null)
         {
         }
 

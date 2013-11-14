@@ -1,4 +1,6 @@
-﻿@{
+﻿@model NgTrade.Models.ViewModel.ContactViewModel
+
+@{
   ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List - NgTradeOnline Contact Us";
 }
 
@@ -13,20 +15,24 @@
         <div class="page-header">
           <h3>Quick message</h3>
         </div>
-        <form class="form-contact-us">
+         @using (Html.BeginForm("Contact", "Home", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-contact-us" }))
+            {
           <div class="control-group">
             <div class="controls">
               <input type="text" id="inputName" placeholder="Name">
+              @Html.TextBoxFor(m=> m.Name, new {@placeholder="Name"})
             </div>
           </div>
           <div class="control-group">
             <div class="controls">
               <input type="text" id="inputEmail" placeholder="Email">
+              @Html.TextBoxFor(m=> m.Email, new {placeholder="Email"})
             </div>
           </div>
           <div class="control-group">
             <div class="controls">
               <textarea id="inputMessage" placeholder="Message"></textarea>
+              @Html.TextAreaFor(m=> m.Message, new {placeholder="Message"})
             </div>
           </div>
           <div class="control-group">
@@ -34,7 +40,7 @@
               <input type="submit" class="btn btn-success btn-large" value="Send">
             </div>
           </div>
-        </form>
+        }
       </div>
       <!-- End: CONTACT US FORM -->
       <!-- Start: OFFICES -->

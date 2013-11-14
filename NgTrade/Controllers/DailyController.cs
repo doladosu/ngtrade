@@ -16,7 +16,7 @@ namespace NgTrade.Controllers
     {
         private const int PAGE_SIZE = 10;
 
-        public DailyController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository)
+        public DailyController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository, null)
         {
         }
 

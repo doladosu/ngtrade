@@ -10,11 +10,13 @@ namespace NgTrade.Controllers
     {
         public readonly IAccountRepository AccountRepository;
         public readonly IQuoteRepository QuoteRepository;
+        public readonly ISmtpRepository SmtpRepository;
 
-        public BaseController(IAccountRepository accountRepository, IQuoteRepository quoteRepository)
+        public BaseController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository)
         {
             AccountRepository = accountRepository;
             QuoteRepository = quoteRepository;
+            SmtpRepository = smtpRepository;
         }
 
         private AccountProfile _loggedInSubscriber;
