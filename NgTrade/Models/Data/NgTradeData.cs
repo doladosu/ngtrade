@@ -17,6 +17,8 @@ namespace NgTrade.Models.Data
         public DbSet<Companyprofile> Companyprofiles { get; set; }
         public DbSet<News> NewsList { get; set; }
         public DbSet<Quote> Quotes { get; set; }
+        public DbSet<Holding> Holdings { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 
     [Table("UserProfile")]
@@ -109,10 +111,10 @@ namespace NgTrade.Models.Data
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PostID { get; set; }
+        public int PostId { get; set; }
 
-        public string PostSubject { get; set; }
-        public string PostText { get; set; }
+        public string Subject { get; set; }
+        public string Text { get; set; }
         public DateTime? PostDate { get; set; }
     }
 
@@ -132,5 +134,37 @@ namespace NgTrade.Models.Data
         public string Symbol { get; set; }
         public decimal Change1 { get; set; }
         public int Trades { get; set; }
+    }
+
+    [Table("Holding")]
+    public class Holding
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public DateTime? DatePurchased { get; set; }
+        public int AccountId { get; set; }
+        public string Symbol { get; set; }
+    }
+
+    [Table("Order")]
+    public class Order
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id  { get; set; }
+
+        public string Type { get; set; }
+        public string Status { get; set; }
+        public DateTime? CompletionDate { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public DateTime OpenDate { get; set; }
+        public int AccountId { get; set; }
+        public string Symbol { get; set; }
+        public int HoldingId { get; set; }
     }
 }

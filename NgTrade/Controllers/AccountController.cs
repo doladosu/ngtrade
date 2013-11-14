@@ -7,6 +7,8 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using NgTrade.Models.Data;
+using NgTrade.Models.Repo.Interface;
+using NgTrade.Models.ViewModel;
 using WebMatrix.WebData;
 using NgTrade.Filters;
 using NgTrade.Models;
@@ -15,11 +17,60 @@ namespace NgTrade.Controllers
 {
     [Authorize]
     //[InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
+        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository)
+        {
+        }
+
         public ActionResult Index()
         {
-            return View();
+            var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
+            var accountViewModel = new AccountViewModel
+            {
+                AccountNumber = Int32.Parse(LoggedInSubscriber.AccountNumber),
+                Address1 = accountProfile.Address1,
+                Address2 = accountProfile.Address2,
+                City = accountProfile.City,
+                State = accountProfile.State,
+                Country = accountProfile.Country,
+                FirstName = accountProfile.FirstName,
+                LastName = accountProfile.LastName,
+                Email = accountProfile.Email,
+                Status = accountProfile.Verified.GetValueOrDefault(),
+                Phone = accountProfile.Phone1,
+                NextOfKin = accountProfile.NextOfKin,
+                NAddress = accountProfile.NAddress1 + " " + accountProfile.NAddress2,
+                NCity = accountProfile.NCity,
+                NState = accountProfile.NState,
+                NCountry = accountProfile.NCountry
+            };
+            return View(accountViewModel);
+        }
+
+        public ActionResult Portfolio()
+        {
+            var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
+            var accountViewModel = new AccountViewModel
+            {
+                AccountNumber = Int32.Parse(LoggedInSubscriber.AccountNumber),
+                Address1 = accountProfile.Address1,
+                Address2 = accountProfile.Address2,
+                City = accountProfile.City,
+                State = accountProfile.State,
+                Country = accountProfile.Country,
+                FirstName = accountProfile.FirstName,
+                LastName = accountProfile.LastName,
+                Email = accountProfile.Email,
+                Status = accountProfile.Verified.GetValueOrDefault(),
+                Phone = accountProfile.Phone1,
+                NextOfKin = accountProfile.NextOfKin,
+                NAddress = accountProfile.NAddress1 + " " + accountProfile.NAddress2,
+                NCity = accountProfile.NCity,
+                NState = accountProfile.NState,
+                NCountry = accountProfile.NCountry
+            };
+            return View(accountViewModel);
         }
 
         [AllowAnonymous]

@@ -12,14 +12,12 @@ using NgTrade.Models.ViewModel;
 
 namespace NgTrade.Controllers
 {
-    public class DailyController : Controller
+    public class DailyController : BaseController
     {
-        private readonly IQuoteRepository _quoteRepository;
-        private const int PageSize = 10;
+        private const int PAGE_SIZE = 10;
 
-        public DailyController(IQuoteRepository quoteRepository)
+        public DailyController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository)
         {
-            _quoteRepository = quoteRepository;
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
@@ -37,7 +35,7 @@ namespace NgTrade.Controllers
                 }
                 else
                 {
-                    dailyList = _quoteRepository.GetDayList().ToList();
+                    dailyList = QuoteRepository.GetDayList().ToList();
                     var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
                     HttpContext.Cache.Add("dailyListIndexDCache", dailyList, null,
                                           DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
@@ -66,7 +64,7 @@ namespace NgTrade.Controllers
                     }
                     else
                     {
-                        dailyList = _quoteRepository.GetDayList().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
+                        dailyList = QuoteRepository.GetDayList().Where(q => q.Date == DateTime.Parse(dateFilter)).ToList();
                         var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
                         HttpContext.Cache.Add("dailyListIndexDDCache", dailyList, null,
                                               DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
@@ -77,11 +75,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
                                         {
                                             CurrentPage = pageNumber,
-                                            ItemsPerPage = PageSize,
+                                            ItemsPerPage = PAGE_SIZE,
                                             TotalItems = dailyList.Count
                                         };
 
-            var dailyViewModel = new DailyViewModel { SectorFilter = sector, PagingInfo = pagingInfo, Quotes = dailyList.Skip(PageSize * (pageNumber-1)).Take(PageSize).ToList(), Sectors = companiesSector};
+            var dailyViewModel = new DailyViewModel { SectorFilter = sector, PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * (pageNumber-1)).Take(PAGE_SIZE).ToList(), Sectors = companiesSector};
             return View(dailyViewModel);
         }
 
@@ -97,7 +95,7 @@ namespace NgTrade.Controllers
             }
             else
             {
-                dailyList =  _quoteRepository.GetDayList().Where(q => q.Close > q.Open).OrderByDescending(q => q.Change1).ToList();
+                dailyList =  QuoteRepository.GetDayList().Where(q => q.Close > q.Open).OrderByDescending(q => q.Change1).ToList();
                 var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
                 HttpContext.Cache.Add("dailyListGainersDCache", dailyList, null,
                                       DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
@@ -106,11 +104,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PageSize,
+                ItemsPerPage = PAGE_SIZE,
                 TotalItems = dailyList.Count
             };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList() };
             return View(dailyViewModel);
         }
 
@@ -126,7 +124,7 @@ namespace NgTrade.Controllers
             }
             else
             {
-                dailyList = _quoteRepository.GetDayList().Where(q => q.Close < q.Open).OrderBy(q => q.Change1).ToList();
+                dailyList = QuoteRepository.GetDayList().Where(q => q.Close < q.Open).OrderBy(q => q.Change1).ToList();
                 var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
                 HttpContext.Cache.Add("dailyListLosersDCache", dailyList, null,
                                       DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
@@ -135,11 +133,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PageSize,
+                ItemsPerPage = PAGE_SIZE,
                 TotalItems = dailyList.Count
             };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList() };
             return View(dailyViewModel);
         }
 
@@ -153,7 +151,7 @@ namespace NgTrade.Controllers
             }
             else
             {
-                companySectors = _quoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct().ToList();
+                companySectors = QuoteRepository.GetCompanies().OrderBy(q => q.Category).Select(q => q.Category).Distinct().ToList();
                 var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
                 HttpContext.Cache.Add("companyprofilesDCache", companySectors, null,
                                       DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
@@ -173,7 +171,7 @@ namespace NgTrade.Controllers
             }
             else
             {
-                daysListWithSector = _quoteRepository.GetDaysListWithSector();
+                daysListWithSector = QuoteRepository.GetDaysListWithSector();
                 var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
                 HttpContext.Cache.Add("daysListWithSectorDCache", daysListWithSector, null,
                                       DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,

@@ -219,6 +219,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DailyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -232,6 +233,12 @@
     <Compile Include="Models\Data\NgTradeData.cs" />
     <Compile Include="Models\Info\PortfolioModel.cs" />
     <Compile Include="Models\Info\QuoteSector.cs" />
+    <Compile Include="Models\Repo\Impl\AccountRepository.cs" />
+    <Compile Include="Models\Repo\Impl\HoldingRepository.cs" />
+    <Compile Include="Models\Repo\Impl\OrderRepository.cs" />
+    <Compile Include="Models\Repo\Interface\IAccountRepository.cs" />
+    <Compile Include="Models\Repo\Interface\IHoldingRepository.cs" />
+    <Compile Include="Models\Repo\Interface\IOrderRepository.cs" />
     <Compile Include="Models\Repo\Interface\IQuoteRepository.cs" />
     <Compile Include="Models\Repo\Impl\QuoteRepository.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
