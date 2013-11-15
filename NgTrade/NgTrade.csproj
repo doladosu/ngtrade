@@ -54,6 +54,9 @@
     <Reference Include="DoddleReport.Web">
       <HintPath>..\packages\DoddleReport.Web.1.4\lib\net40\DoddleReport.Web.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="itextsharp">
       <HintPath>..\packages\DoddleReport.iTextSharp.1.4\lib\net40\itextsharp.dll</HintPath>
     </Reference>
@@ -235,10 +238,12 @@
     <Compile Include="Models\Info\QuoteSector.cs" />
     <Compile Include="Models\Repo\Impl\AccountRepository.cs" />
     <Compile Include="Models\Repo\Impl\HoldingRepository.cs" />
+    <Compile Include="Models\Repo\Impl\NewsRepository.cs" />
     <Compile Include="Models\Repo\Impl\OrderRepository.cs" />
     <Compile Include="Models\Repo\Impl\SmtpRepository.cs" />
     <Compile Include="Models\Repo\Interface\IAccountRepository.cs" />
     <Compile Include="Models\Repo\Interface\IHoldingRepository.cs" />
+    <Compile Include="Models\Repo\Interface\INewsRepository.cs" />
     <Compile Include="Models\Repo\Interface\IOrderRepository.cs" />
     <Compile Include="Models\Repo\Interface\IQuoteRepository.cs" />
     <Compile Include="Models\Repo\Impl\QuoteRepository.cs" />

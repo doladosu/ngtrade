@@ -8,16 +8,15 @@
         <div class="page-header">
             <h1>NgTradeOnline<sup style="font-size: 15px;">SM</sup> News <small>Trade Nigerian stocks</small></h1>
         </div>
-       @* <div class="row bottom-space">            
-            <div class="span6">
-                <a href="#"><img src="http://placehold.it/200x100" class="thumbnail bottom-space-less"></a>
-                <p>
-                    Short famous news about you in industry.Short famous news about you in industry.
-                    Short famous news about you in industry.Short famous news about you in industry.
-                    Short famous news about you in industry.Short famous news about you in industry
-                </p>            
-            </div>
-            <div class="span6">
+        <div class="row bottom-space">            
+          @foreach (var news in Model)
+          {
+             <div class="span6">
+               @MvcHtmlString.Create(news)
+               </div>
+          }
+          </div>
+            @*<div class="span6">
                 <a href="#"><img src="http://placehold.it/200x100" class="thumbnail bottom-space-less"></a>
                 <p>
                     Short famous news about you in industry.Short famous news about you in industry.

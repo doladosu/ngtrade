@@ -19,7 +19,12 @@ namespace NgTrade
         {
             var container = new UnityContainer();
 
-            container.RegisterType<IQuoteRepository, QuoteRepository>();            
+            container.RegisterType<IQuoteRepository, QuoteRepository>();
+            container.RegisterType<IAccountRepository, AccountRepository>();
+            container.RegisterType<INewsRepository, NewsRepository>();
+            container.RegisterType<IHoldingRepository, HoldingRepository>();
+            container.RegisterType<IOrderRepository, OrderRepository>();
+            container.RegisterType<ISmtpRepository, SmtpRepository>();            
 
             return container;
         }

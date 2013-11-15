@@ -16,10 +16,9 @@ using NgTrade.Models;
 namespace NgTrade.Controllers
 {
     [Authorize]
-    //[InitializeSimpleMembership]
     public class AccountController : BaseController
     {
-        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository, null)
+        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository, null, null)
         {
         }
 

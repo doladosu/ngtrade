@@ -9,6 +9,7 @@ using DoddleReport;
 using DoddleReport.Web;
 using NgTrade.Helpers.Paging;
 using NgTrade.Models.Data;
+using NgTrade.Models.Repo.Impl;
 using NgTrade.Models.Repo.Interface;
 using NgTrade.Models.ViewModel;
 
@@ -18,7 +19,7 @@ namespace NgTrade.Controllers
     {
         private const int PAGE_SIZE = 10;
 
-        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository) : base(accountRepository, quoteRepository, smtpRepository)
+        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository, INewsRepository newsRepository) : base(accountRepository, quoteRepository, smtpRepository, newsRepository)
         {
         }
 
@@ -289,10 +290,10 @@ namespace NgTrade.Controllers
             return View();
         }
 
-        [OutputCache(CacheProfile = "StaticPageCache")]
+        //[OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult News()
         {
-            return View();
+            return View(NewsRepository.NewsList());
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
