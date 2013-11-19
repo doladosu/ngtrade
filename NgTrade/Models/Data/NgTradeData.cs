@@ -13,7 +13,6 @@ namespace NgTrade.Models.Data
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<AccountProfile> AccountProfiles { get; set; }
         public DbSet<Companyprofile> Companyprofiles { get; set; }
         public DbSet<News> NewsList { get; set; }
         public DbSet<Quote> Quotes { get; set; }
@@ -28,19 +27,11 @@ namespace NgTrade.Models.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
-    }
-
-    [Table("AccountProfile")]
-    public class AccountProfile
-    {
-        [Key]
-        public Guid UserId { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string BankName { get; set; }
-        public string AccountNumber { get; set; }
-        public string RoutingNumber { get; set; }
+        public int AccountNumber { get; set; }
+        public int RoutingNumber { get; set; }
         public string AccountType { get; set; }
         public bool? Verified { get; set; }
         public bool? BankVerified { get; set; }
@@ -53,19 +44,9 @@ namespace NgTrade.Models.Data
         public string State { get; set; }
         public string Country { get; set; }
         public string PostalCode { get; set; }
-        public string NAddress1 { get; set; }
-        public string NAddress2 { get; set; }
-        public string NCity { get; set; }
-        public string NState { get; set; }
-        public string NCountry { get; set; }
-        public string NPostalCode { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
-        public string Phone3 { get; set; }
-        public string Fax { get; set; }
-        public string Telex { get; set; }
         public string Email { get; set; }
-        public string NextOfKin { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
     }

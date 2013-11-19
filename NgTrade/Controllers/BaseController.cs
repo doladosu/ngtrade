@@ -23,9 +23,9 @@ namespace NgTrade.Controllers
             NewsRepository = newsRepository;
         }
 
-        private AccountProfile _loggedInSubscriber;
+        private UserProfile _loggedInSubscriber;
 
-        public AccountProfile LoggedInSubscriber
+        public UserProfile LoggedInSubscriber
         {
             get
             {
@@ -37,7 +37,7 @@ namespace NgTrade.Controllers
                         if (membershipUser.ProviderUserKey != null)
                         {
                             var subscriberId = membershipUser.ProviderUserKey.ToString();
-                            _loggedInSubscriber = AccountRepository.GetAccountProfile(new Guid(subscriberId));
+                            _loggedInSubscriber = AccountRepository.GetAccountProfile(Int32.Parse(subscriberId));
                         }
                     }
                 }

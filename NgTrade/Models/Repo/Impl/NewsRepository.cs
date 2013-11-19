@@ -12,10 +12,54 @@ namespace NgTrade.Models.Repo.Impl
     {
         private static readonly object CacheLockObjectCurrentSales = new object();
         private const string ALL_NEWS_CACHE_KEY = "AllNewsCache";
+        private const string NEWS_DETAILS_CACHE_KEY = "NewsDetailsCache";
 
         public List<string> NewsList()
         {
             return GetNewsFromBloonberg();
+        }
+
+        public string NewsDetail(string sUrl)
+        {
+            try
+            {
+                var cache = MemoryCache.Default;
+                var result = cache[NEWS_DETAILS_CACHE_KEY + sUrl] as string;
+
+                if (result == null)
+                {
+                    lock (CacheLockObjectCurrentSales)
+                    {
+                        result = cache[NEWS_DETAILS_CACHE_KEY + sUrl] as string;
+
+                        var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddHours(12) };
+
+                        using (var client = new WebClient())
+                        {
+                            // fetching HTML
+                            string pixarHtml = client.DownloadString(sUrl);
+
+                            var document = new HtmlDocument();
+                            document.LoadHtml(pixarHtml);
+
+                            var pixarTable = (from d in document.DocumentNode.Descendants()
+                                              where d.Name == "div" && d.Id == "story_display"
+                                              select d).First();
+
+                            //var pixarRows = from d in pixarTable.Descendants() where d.Name == "li" select d;
+                            result = pixarTable.InnerHtml.Replace("\n", "").Replace("href=", "target=\"_blank\" href=").Replace("h3", "h4").Replace("â€™", "'");
+                            cache.Add(NEWS_DETAILS_CACHE_KEY + sUrl, result, policy);
+
+                            return result;
+                        }
+                    }
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         private static List<string> GetNewsFromBloonberg()

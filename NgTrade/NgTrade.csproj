@@ -439,6 +439,7 @@
     <Content Include="Images\placeholder-360x200.jpg" />
     <Content Include="Images\placeholder.jpg" />
     <Content Include="Scripts\jquery.csv-0.71.js" />
+    <Content Include="Scripts\news.js" />
     <Content Include="Scripts\ngtrade.index.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -514,6 +515,7 @@
     <Content Include="Views\Home\Events.cshtml" />
     <Content Include="Views\Home\Blog.cshtml" />
     <Content Include="Views\Home\Companies.cshtml" />
+    <Content Include="Views\Home\NewsDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

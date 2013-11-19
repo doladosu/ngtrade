@@ -115,7 +115,6 @@ namespace NgTrade.Controllers
             return RedirectToAction("Contact", new { message = "Your message is sent", messageClass = "success" });
         }
 
-
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()
         {
@@ -290,7 +289,7 @@ namespace NgTrade.Controllers
             return View();
         }
 
-        //[OutputCache(CacheProfile = "StaticPageCache")]
+       // [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult News()
         {
             return View(NewsRepository.NewsList());
@@ -342,6 +341,13 @@ namespace NgTrade.Controllers
 
             var companyViewModel = new CompanyViewModel { PagingInfo = pagingInfo, Companyprofiles = companyprofiles.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList() };
             return View(companyViewModel);
+        }
+
+        //[OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult NewsDetail(string sUrl)
+        {
+            ViewBag.Content = NewsRepository.NewsDetail(sUrl);
+            return View();
         }
 
     }

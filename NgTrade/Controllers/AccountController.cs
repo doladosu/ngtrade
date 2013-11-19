@@ -27,7 +27,7 @@ namespace NgTrade.Controllers
             var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
             var accountViewModel = new AccountViewModel
             {
-                AccountNumber = Int32.Parse(LoggedInSubscriber.AccountNumber),
+                AccountNumber = LoggedInSubscriber.AccountNumber,
                 Address1 = accountProfile.Address1,
                 Address2 = accountProfile.Address2,
                 City = accountProfile.City,
@@ -38,11 +38,6 @@ namespace NgTrade.Controllers
                 Email = accountProfile.Email,
                 Status = accountProfile.Verified.GetValueOrDefault(),
                 Phone = accountProfile.Phone1,
-                NextOfKin = accountProfile.NextOfKin,
-                NAddress = accountProfile.NAddress1 + " " + accountProfile.NAddress2,
-                NCity = accountProfile.NCity,
-                NState = accountProfile.NState,
-                NCountry = accountProfile.NCountry
             };
             return View(accountViewModel);
         }
@@ -52,7 +47,7 @@ namespace NgTrade.Controllers
             var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
             var accountViewModel = new AccountViewModel
             {
-                AccountNumber = Int32.Parse(LoggedInSubscriber.AccountNumber),
+                AccountNumber = LoggedInSubscriber.AccountNumber,
                 Address1 = accountProfile.Address1,
                 Address2 = accountProfile.Address2,
                 City = accountProfile.City,
@@ -63,11 +58,6 @@ namespace NgTrade.Controllers
                 Email = accountProfile.Email,
                 Status = accountProfile.Verified.GetValueOrDefault(),
                 Phone = accountProfile.Phone1,
-                NextOfKin = accountProfile.NextOfKin,
-                NAddress = accountProfile.NAddress1 + " " + accountProfile.NAddress2,
-                NCity = accountProfile.NCity,
-                NState = accountProfile.NState,
-                NCountry = accountProfile.NCountry
             };
             return View(accountViewModel);
         }
@@ -131,7 +121,11 @@ namespace NgTrade.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    model.SignupDate = DateTime.Now;
+                    model.Verified = false;
+                    model.BankVerified = false;
+                    model.BirthDate = DateTime.Now;
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { model.FirstName, model.LastName, model.Email, model.Address1, model.Address2, model.City, model.State, model.Country, model.Phone1, model.BirthDate, model.Occupation, model.SignupDate, model.BankVerified, model.Verified  });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
