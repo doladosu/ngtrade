@@ -3,8 +3,8 @@
     var href = '/home/newsdetail?surl=' + $(this).attr('href');
     $(this).attr("href", href);
   });
-  var topic = getParameterByName('sUrl');
-  $('#topicTitle').append(topic);
+  //var topic = getParameterByName('surl');
+  //$('#topicTitle').append(topic);
 });
 
 function getParameterByName(name) {
