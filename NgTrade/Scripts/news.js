@@ -1,5 +1,5 @@
 ﻿$(function() {
-  $("a").each(function() {
+    $("a[class=redirectLink]").each(function () {
     var href = '/home/newsdetail?surl=' + $(this).attr('href');
     $(this).attr("href", href);
   });

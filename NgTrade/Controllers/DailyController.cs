@@ -14,7 +14,7 @@ namespace NgTrade.Controllers
 {
     public class DailyController : BaseController
     {
-        private const int PAGE_SIZE = 10;
+        private const int PageSize = 10;
 
         public DailyController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository, null, null)
         {
@@ -75,11 +75,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
                                         {
                                             CurrentPage = pageNumber,
-                                            ItemsPerPage = PAGE_SIZE,
+                                            ItemsPerPage = PageSize,
                                             TotalItems = dailyList.Count
                                         };
 
-            var dailyViewModel = new DailyViewModel { SectorFilter = sector, PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * (pageNumber-1)).Take(PAGE_SIZE).ToList(), Sectors = companiesSector};
+            var dailyViewModel = new DailyViewModel { SectorFilter = sector, PagingInfo = pagingInfo, Quotes = dailyList.Skip(PageSize * (pageNumber-1)).Take(PageSize).ToList(), Sectors = companiesSector};
             return View(dailyViewModel);
         }
 
@@ -104,11 +104,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
+                ItemsPerPage = PageSize,
                 TotalItems = dailyList.Count
             };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList() };
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
             return View(dailyViewModel);
         }
 
@@ -133,11 +133,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
+                ItemsPerPage = PageSize,
                 TotalItems = dailyList.Count
             };
 
-            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList() };
+            var dailyViewModel = new DailyViewModel { PagingInfo = pagingInfo, Quotes = dailyList.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
             return View(dailyViewModel);
         }
 

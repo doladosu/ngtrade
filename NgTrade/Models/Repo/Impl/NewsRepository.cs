@@ -46,8 +46,7 @@ namespace NgTrade.Models.Repo.Impl
                                               where d.Name == "div" && d.Id == "story_display"
                                               select d).First();
 
-                            //var pixarRows = from d in pixarTable.Descendants() where d.Name == "li" select d;
-                            result = pixarTable.InnerHtml.Replace("\n", "").Replace("href=", "target=\"_blank\" href=").Replace("h3", "h4").Replace("â€™", "'");
+                            result = pixarTable.InnerHtml.Replace("\n", "").Replace("href=", "class=\"redirectLink\" href=").Replace("h3", "h4").Replace("â€™", "'");
                             cache.Add(NEWS_DETAILS_CACHE_KEY + sUrl, result, policy);
 
                             return result;
@@ -90,7 +89,7 @@ namespace NgTrade.Models.Repo.Impl
                                                    select d).First();
 
                             var pixarRows = from d in pixarTable.Descendants() where d.Name == "li" select d;
-                            result = pixarRows.Select(pixarRow => pixarRow.InnerHtml.Replace("\n", "").Replace("href=", "target=\"_blank\" href=").Replace("h3", "h4").Replace("â€™", "'")).ToList();
+                            result = pixarRows.Select(pixarRow => pixarRow.InnerHtml.Replace("\n", "").Replace("href=", "class=\"redirectLink\" href=").Replace("h3", "h4").Replace("â€™", "'")).ToList();
                             cache.Add(ALL_NEWS_CACHE_KEY, result, policy);
 
                             return result;

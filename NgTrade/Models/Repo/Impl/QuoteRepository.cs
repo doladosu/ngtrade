@@ -11,14 +11,14 @@ namespace NgTrade.Models.Repo.Impl
     public class QuoteRepository : IQuoteRepository
     {
         private static readonly object CacheLockObjectCurrentSales = new object();
-        private const string ALL_QUOTES_CACHE_KEY = "AllQuotesCache";
-        private const string ALL_COMPANIES_CACHE_KEY = "AllCompaniesCache";
+        private const string AllQuotesCacheKey = "AllQuotesCache";
+        private const string AllCompaniesCacheKey = "AllCompaniesCache";
 
         public List<Quote> GetTopFiveMarketLosersToday()
         {
             var allQuotes = GetAllQuotes();
             var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
-            var quotes = allQuotes.Where(q => q.Close < q.Open && dateTimeQuote != null && q.Date == dateTimeQuote.Date).OrderBy(q => q.Change1);
+            var quotes = allQuotes.Where(q => q.Close < q.Open && dateTimeQuote != null && q.Date == dateTimeQuote.Date && !q.Symbol.ToUpper().StartsWith("NSE")).OrderBy(q => (q.Change1 * 100)/q.Open);
             return quotes.Take(5).ToList();
         }
 
@@ -26,7 +26,7 @@ namespace NgTrade.Models.Repo.Impl
         {
             var allQuotes = GetAllQuotes();
             var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
-            var quotes = allQuotes.Where(q => q.Close > q.Open && dateTimeQuote != null && q.Date == dateTimeQuote.Date).OrderByDescending(q => q.Change1);
+            var quotes = allQuotes.Where(q => q.Close > q.Open && dateTimeQuote != null && q.Date == dateTimeQuote.Date && !q.Symbol.ToUpper().StartsWith("NSE")).OrderByDescending(q => (q.Change1 * 100) / q.Open);
             return quotes.Take(5).ToList();
         }
 
@@ -61,7 +61,15 @@ namespace NgTrade.Models.Repo.Impl
         {
             var allQuotes = GetAllQuotes();
             var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
-            var quotes = allQuotes.Where(q => q.Date == dateTimeQuote.Date).OrderBy(q => q.Symbol);
+            var quotes = allQuotes.Where(q => q.Date == dateTimeQuote.Date && !q.Symbol.ToUpper().StartsWith("NSE")).OrderBy(q => q.Symbol);
+            return quotes.ToList();
+        }
+
+        public List<Quote> GetDayNseIndex()
+        {
+            var allQuotes = GetAllQuotes();
+            var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
+            var quotes = allQuotes.Where(q => q.Date == dateTimeQuote.Date && q.Symbol.ToUpper().StartsWith("NSE")).OrderBy(q => q.Symbol);
             return quotes.ToList();
         }
 
@@ -114,13 +122,13 @@ namespace NgTrade.Models.Repo.Impl
             try
             {
                 var cache = MemoryCache.Default;
-                var result = cache[ALL_QUOTES_CACHE_KEY] as List<Quote>;
+                var result = cache[AllQuotesCacheKey] as List<Quote>;
 
                 if (result == null)
                 {
                     lock (CacheLockObjectCurrentSales)
                     {
-                        result = cache[ALL_QUOTES_CACHE_KEY] as List<Quote>;
+                        result = cache[AllQuotesCacheKey] as List<Quote>;
 
                         var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) };
 
@@ -130,7 +138,7 @@ namespace NgTrade.Models.Repo.Impl
                             {
                                 result = db.Quotes.ToList();
                             }
-                            cache.Add(ALL_QUOTES_CACHE_KEY, result, policy);
+                            cache.Add(AllQuotesCacheKey, result, policy);
                         }
                     }
                 }
@@ -147,13 +155,13 @@ namespace NgTrade.Models.Repo.Impl
             try
             {
                 var cache = MemoryCache.Default;
-                var result = cache[ALL_COMPANIES_CACHE_KEY] as List<Companyprofile>;
+                var result = cache[AllCompaniesCacheKey] as List<Companyprofile>;
 
                 if (result == null)
                 {
                     lock (CacheLockObjectCurrentSales)
                     {
-                        result = cache[ALL_COMPANIES_CACHE_KEY] as List<Companyprofile>;
+                        result = cache[AllCompaniesCacheKey] as List<Companyprofile>;
 
                         var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) };
 
@@ -163,7 +171,7 @@ namespace NgTrade.Models.Repo.Impl
                             {
                                 result = db.Companyprofiles.ToList();
                             }
-                            cache.Add(ALL_QUOTES_CACHE_KEY, result, policy);
+                            cache.Add(AllQuotesCacheKey, result, policy);
                         }
                     }
                 }

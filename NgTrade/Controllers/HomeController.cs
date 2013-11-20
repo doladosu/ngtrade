@@ -17,7 +17,7 @@ namespace NgTrade.Controllers
 {
     public class HomeController : BaseController
     {
-        private const int PAGE_SIZE = 10;
+        private const int PageSize = 10;
 
         public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository, INewsRepository newsRepository) : base(accountRepository, quoteRepository, smtpRepository, newsRepository)
         {
@@ -56,6 +56,21 @@ namespace NgTrade.Controllers
                                       CacheItemPriority.Normal, null);
             }
 
+            List<Quote> nseIndexList;
+            var nseIndexListCacheModel = HttpContext.Cache.Get("nseIndexListCache") as IEnumerable<Quote>;
+            if (nseIndexListCacheModel != null)
+            {
+                nseIndexList = nseIndexListCacheModel.ToList();
+            }
+            else
+            {
+                nseIndexList = QuoteRepository.GetDayNseIndex();
+                var expireMins = Int32.Parse(ConfigurationManager.AppSettings["CacheExpireMins"]);
+                HttpContext.Cache.Add("nseIndexListCache", nseIndexList, null,
+                                      DateTime.Now.AddMinutes(expireMins), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
+
             DateTime stockDay;
             var stockDayCacheModel = HttpContext.Cache.Get("stockDayCache") as DateTime?;
             if (stockDayCacheModel != null)
@@ -75,11 +90,28 @@ namespace NgTrade.Controllers
             var dayGainers = dayGainersList;
             var quoteDay = stockDay;
             var sQuoteDay = String.Format("{0:ddd, MMM d, yyyy}", quoteDay);
+            var nseIndexListFirst = new List<Quote>();
+            var nseIndexListSecond = new List<Quote>();
+            var i = 0;
+            foreach (var quote in nseIndexList)
+            {
+                if (i < 5)
+                {
+                    nseIndexListFirst.Add(quote);
+                }
+                else
+                {
+                    nseIndexListSecond.Add(quote);
+                }
+                i++;
+            }
             var homeViewModel = new HomeViewModel
             {
                 DayGainers = dayGainers,
                 DayLosers = dayLosers,
-                SQuoteDay = sQuoteDay
+                SQuoteDay = sQuoteDay,
+                NseIndexFirst = nseIndexListFirst,
+                NseIndexSecond = nseIndexListSecond
             };
             return View(homeViewModel);
         }
@@ -144,9 +176,9 @@ namespace NgTrade.Controllers
                     var stockData = QuoteRepository.GetQuote(stockTicker);
                     var stockHist = QuoteRepository.GetQuoteList(stockTicker);
 
-                    if (companyProfile == null || stockData == null || stockHist == null)
+                    if (companyProfile == null)
                     {
-                        return RedirectToAction("PriceHistory", new {stockName = stockTicker});
+                        companyProfile = new Companyprofile {Symbol = stockTicker};
                     }
                     var stockHistory = stockHist.Select(quote => new QuoteModel
                     {
@@ -256,11 +288,11 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
+                ItemsPerPage = PageSize,
                 TotalItems = query.Count
             };
 
-            var priceHistoryViewModel = new PriceHistoryViewModel { PagingInfo = pagingInfo, Quotes = query.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList(), StockName = stockName};
+            var priceHistoryViewModel = new PriceHistoryViewModel { PagingInfo = pagingInfo, Quotes = query.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList(), StockName = stockName};
             return View(priceHistoryViewModel);
         }
 
@@ -289,7 +321,7 @@ namespace NgTrade.Controllers
             return View();
         }
 
-       // [OutputCache(CacheProfile = "StaticPageCache")]
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult News()
         {
             return View(NewsRepository.NewsList());
@@ -335,15 +367,15 @@ namespace NgTrade.Controllers
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
-                ItemsPerPage = PAGE_SIZE,
+                ItemsPerPage = PageSize,
                 TotalItems = companyprofiles.Count
             };
 
-            var companyViewModel = new CompanyViewModel { PagingInfo = pagingInfo, Companyprofiles = companyprofiles.Skip(PAGE_SIZE * (pageNumber - 1)).Take(PAGE_SIZE).ToList() };
+            var companyViewModel = new CompanyViewModel { PagingInfo = pagingInfo, Companyprofiles = companyprofiles.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
             return View(companyViewModel);
         }
 
-        //[OutputCache(CacheProfile = "StaticPageCache")]
+        [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult NewsDetail(string sUrl)
         {
             ViewBag.Content = NewsRepository.NewsDetail(sUrl);

@@ -45,7 +45,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
                 <li class="dropdown">
-                    <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">NSE Daily price list<b class="caret"></b></a>
+                    <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">Daily price list<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li class="nav-header">Daily Price list</li>
                         <li>@Html.ActionLink("Todays list", "Index", "Daily")</li>
@@ -54,8 +54,7 @@
                     </ul>
                 </li>
               <li>@Html.ActionLink("Companies", "Companies", "Home")</li>
-              <li>@Html.ActionLink("FAQ", "Faq", "Home")</li>
-              <li>@Html.ActionLink("Contact Us", "Contact", "Home")</li>
+              <li>@Html.ActionLink("News", "News", "Home")</li>
 @*              <li>@Html.ActionLink("Sign up", "Register", "Account")</li>
               <li>@Html.ActionLink("Sign in", "Login", "Account")</li>*@
               <li>
@@ -85,10 +84,12 @@
     <div class="container">
       <div class="row">
         <div class="span2">
-          <h4><i class="icon-star icon-white"></i> Exchanges</h4>
+          <h4><i class="icon-star icon-white"></i>NSE price list</h4>
           <nav>
             <ul class="quick-links">
-              <li>@Html.ActionLink("Nigeria stock exchange", "Index", "Home")</li>
+              <li>@Html.ActionLink("View Daily price list", "dailypricelist", "Home", new { extension = "html" }, new { target = "_blank" })</li>
+              <li>@Html.ActionLink("Excel download", "dailypricelist", "Home", new { extension = "xls" }, null)</li>
+              <li>@Html.ActionLink("CSV download", "dailypricelist", "Home", new { extension = "txt" }, new { target = "_blank" })</li>
             </ul>
           </nav>
         </div>
@@ -98,7 +99,6 @@
             <ul class="quick-links">
               <li>@Html.ActionLink("About Us", "About", "Home")</li>
               <li>@Html.ActionLink("Leadership", "Leadership", "Home")</li>
-              <li>@Html.ActionLink("News", "News", "Home")</li>
               <li>@Html.ActionLink("Events", "Events", "Home")</li>
               <li>@Html.ActionLink("Blog", "Blog", "Home")</li>
             </ul>
