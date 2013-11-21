@@ -13,10 +13,12 @@
           <div class="center-align">
             @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal form-signin-signup" }))
             {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
               @Html.LabelFor(m => m.UserName)
               @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User name", @required = "true" })
               @Html.LabelFor(m => m.Password)
-              @Html.TextBoxFor(m => m.Password, new { @class = "Password", @required = "true"})
+              @Html.PasswordFor(m => m.Password, new { @class = "Password", @required = "true"})
               <div class="remember-me">
                 <div class="pull-left">
                    <label class="checkbox" for="RememberMe">

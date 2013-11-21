@@ -43,33 +43,52 @@
           </button>
           <!-- Start: Primary navigation -->
           <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-                <li class="dropdown">
-                    <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">Daily price list<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li class="nav-header">Daily Price list</li>
-                        <li>@Html.ActionLink("Todays list", "Index", "Daily")</li>
-                        <li>@Html.ActionLink("Day Gainers", "Gainers", "Daily")</li>
-                        <li>@Html.ActionLink("Day Losers", "Losers", "Daily")</li>
-                    </ul>
-                </li>
-              <li>@Html.ActionLink("Companies", "Companies", "Home")</li>
-              <li>@Html.ActionLink("News", "News", "Home")</li>
-@*              <li>@Html.ActionLink("Sign up", "Register", "Account")</li>
-              <li>@Html.ActionLink("Sign in", "Login", "Account")</li>*@
-              <li>
-                  @using (Html.BeginForm("Research", "Home", FormMethod.Post, new { @class = "form-search" }))
+              <ul class="nav pull-right">
+                  @if (!Request.IsAuthenticated)
                   {
-                      <div class="input-append">
-                          <input type="text" id="stockticker" name="stockticker" class="span2 search-query" placeholder="Enter stock name" list=symbols />
-                          <button type="submit" class="btn"><i class="icon-search"></i>
-                          </button>
-                          <datalist id=symbols>
-                          </datalist>
-                      </div>
+                      <li class="dropdown">
+                          <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">Daily price list<b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                              <li class="nav-header">Daily Price list</li>
+                              <li>@Html.ActionLink("Todays list", "Index", "Daily")</li>
+                              <li>@Html.ActionLink("Day Gainers", "Gainers", "Daily")</li>
+                              <li>@Html.ActionLink("Day Losers", "Losers", "Daily")</li>
+                          </ul>
+                      </li>
+                      <li>@Html.ActionLink("Companies", "Companies", "Home")</li>
+                      <li>@Html.ActionLink("News", "News", "Home")</li>
+                      <li>@Html.ActionLink("Sign up", "Register", "Account")</li>
+                      <li>@Html.ActionLink("Sign in", "Login", "Account")</li>
                   }
-              </li>
-            </ul>
+                  else
+                  {
+                       <li class="dropdown">
+                          <a href="@Url.Action("Index", "Daily")" class="dropdown-toggle" data-toggle="dropdown">Daily price list<b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                              <li class="nav-header">Daily Price list</li>
+                              <li>@Html.ActionLink("Todays list", "Index", "Daily")</li>
+                              <li>@Html.ActionLink("Day Gainers", "Gainers", "Daily")</li>
+                              <li>@Html.ActionLink("Day Losers", "Losers", "Daily")</li>
+                          </ul>
+                      </li>
+                      <li>@Html.ActionLink("Companies", "Companies", "Home")</li>
+                      <li>@Html.ActionLink("News", "News", "Home")</li>
+                      <li>@Html.ActionLink("Profile", "Index", "Account")</li>
+                      <li>@Html.ActionLink("Sign off", "LogOff", "Account")</li>
+                  }
+                  <li>
+                      @using (Html.BeginForm("Research", "Home", FormMethod.Post, new { @class = "form-search" }))
+                      {
+                          <div class="input-append">
+                              <input type="text" id="stockticker" name="stockticker" class="span2 search-query" placeholder="Enter stock name" list=symbols />
+                              <button type="submit" class="btn"><i class="icon-search"></i>
+                              </button>
+                              <datalist id=symbols>
+                              </datalist>
+                          </div>
+                      }
+                  </li>
+              </ul>
           </div>
         </div>
       </div>

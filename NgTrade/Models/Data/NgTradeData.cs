@@ -30,8 +30,8 @@ namespace NgTrade.Models.Data
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string BankName { get; set; }
-        public int AccountNumber { get; set; }
-        public int RoutingNumber { get; set; }
+        public int? AccountNumber { get; set; }
+        public int? RoutingNumber { get; set; }
         public string AccountType { get; set; }
         public bool? Verified { get; set; }
         public bool? BankVerified { get; set; }

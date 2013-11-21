@@ -4,72 +4,50 @@
   ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List - NgTradeOnline Account Profile";
 }
 
-<div id="personalinfo">
-    <h1>
-        Personal information</h1>
-    <div class="headline">
-        <h2>
-            Account Status</h2>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="span6 offset3">
+                <h4 class="widget-header"><i class="icon-lock"></i>Personal information</h4>
+                <div class="widget-body">
+                    <div class="center-align">
+                        <table class="table">
+                            <tr>
+                                <td>Name:</td>
+                                <td>@Model.FirstName @Model.LastName</td>
+                            </tr>
+                            <tr>
+                                <td>Email address:</td>
+                                <td>@Model.Email</td>
+                            </tr>
+                            <tr>
+                                <td>Address:</td>
+                                <td>@Model.Address1 @Model.Address2</td>
+                            </tr>
+                            <tr>
+                                <td>City:</td>
+                                <td>@Model.City</td>
+                            </tr>
+                            <tr>
+                                <td>State:</td>
+                                <td>@Model.State</td>
+                            </tr>
+                            <tr>
+                                <td>Country
+                                <td>@Model.Country</td>
+                            </tr>
+                            <tr>
+                                <td>Phone:</td>
+                                <td>@Model.Phone</td>
+                            </tr>
+                        </table>   
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <ul>
-        @if (Model.Status)
-        {
-            <li>Active </li>
-        }
-        else
-        { 
-            <li>Pending </li>
-        }
-    </ul>
-    <div class="headline">
-        <h2>
-            Account Number</h2>
-    </div>
-     <ul>
-     <li>
-        @Model.AccountNumber</li>
-    </ul>
-    <div class="headline">
-        <h2>
-            Contact information</h2>
-        <a rel="#lbx0" class="editlink">(edit)</a>
-    </div>
-    <ul>
-        <li>@Model.FirstName @Model.LastName </li>
-        <li>@Model.Email</li>
-        <li>@Model.Address1 @Model.Address2</li>
-        <li>@Model.City @Model.State</li>
-        <li>@Model.Country</li>
-        <li>@Model.Phone</li>
-    </ul>
-    <div class="headline">
-        <h2>
-            Password</h2>
-        <a rel="#lbx1" class="editlink">(edit)</a>
-    </div>
-    <ul>
-        <li>******</li>
-    </ul>
-    <div class="headline">
-        <h2>
-            Security questions</h2>
-        <a rel="#lbx2" class="editlink">(edit)</a>
-    </div>
-    <ul>
-        <li>*******</li>
-    </ul>
-    <div class="headline">
-        <h2>
-            Next of Kin information</h2>
-        <a rel="#lbx3" class="editlink">(edit)</a>
-    </div>
-    <ul>
-        <li>@Model.NextOfKin </li>
-        <li>@Model.NAddress</li>
-        <li>@Model.NCity @Model.NState</li>
-        <li>@Model.NCountry</li>
-    </ul>
 </div>
+
 @*<div id="lbx0" class="overlay">
     <button class="closebtn" id="cbtnClose" name="button" type="button" onclick="document.location.href=$('#closeUrl').attr('href')">
         Close<strong>X</strong></button>

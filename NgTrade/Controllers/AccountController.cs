@@ -27,7 +27,7 @@ namespace NgTrade.Controllers
             var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
             var accountViewModel = new AccountViewModel
             {
-                AccountNumber = LoggedInSubscriber.AccountNumber,
+                AccountNumber = LoggedInSubscriber.AccountNumber.GetValueOrDefault(),
                 Address1 = accountProfile.Address1,
                 Address2 = accountProfile.Address2,
                 City = accountProfile.City,
@@ -47,7 +47,7 @@ namespace NgTrade.Controllers
             var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
             var accountViewModel = new AccountViewModel
             {
-                AccountNumber = LoggedInSubscriber.AccountNumber,
+                AccountNumber = LoggedInSubscriber.AccountNumber.GetValueOrDefault(),
                 Address1 = accountProfile.Address1,
                 Address2 = accountProfile.Address2,
                 City = accountProfile.City,
@@ -366,7 +366,7 @@ namespace NgTrade.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
 
         public enum ManageMessageId
