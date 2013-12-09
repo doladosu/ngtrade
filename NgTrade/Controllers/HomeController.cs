@@ -19,7 +19,7 @@ namespace NgTrade.Controllers
     {
         private const int PageSize = 10;
 
-        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository, INewsRepository newsRepository) : base(accountRepository, quoteRepository, smtpRepository, newsRepository)
+        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository, INewsRepository newsRepository) : base(accountRepository, quoteRepository, smtpRepository, newsRepository, null)
         {
         }
 
@@ -92,16 +92,22 @@ namespace NgTrade.Controllers
             var sQuoteDay = String.Format("{0:ddd, MMM d, yyyy}", quoteDay);
             var nseIndexListFirst = new List<Quote>();
             var nseIndexListSecond = new List<Quote>();
+            var nseIndexListThird = new List<Quote>();
+
             var i = 0;
             foreach (var quote in nseIndexList)
             {
-                if (i < 5)
+                if (i < 3)
                 {
                     nseIndexListFirst.Add(quote);
                 }
-                else
+                else if (i > 2 && i < 6)
                 {
                     nseIndexListSecond.Add(quote);
+                }
+                else
+                {
+                    nseIndexListThird.Add(quote);
                 }
                 i++;
             }
@@ -111,7 +117,8 @@ namespace NgTrade.Controllers
                 DayLosers = dayLosers,
                 SQuoteDay = sQuoteDay,
                 NseIndexFirst = nseIndexListFirst,
-                NseIndexSecond = nseIndexListSecond
+                NseIndexSecond = nseIndexListSecond,
+                NseIndexThird = nseIndexListThird
             };
             return View(homeViewModel);
         }

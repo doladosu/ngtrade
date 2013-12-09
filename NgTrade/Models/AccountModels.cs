@@ -85,6 +85,7 @@ namespace NgTrade.Models
         public string Email { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
+        public decimal Balance { get; set; }
     }
 
     public class ExternalLogin

@@ -55,15 +55,6 @@
     <!-- End: slider -->
     <!-- Start: PRODUCT LIST -->
     <div class="container">
-           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- NgTradeOnlineHomePage -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:970px;height:90px"
-     data-ad-client="ca-pub-5059153330695623"
-     data-ad-slot="4090165520"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
         <div class="page-header">
             <h3>Top stocks for: @Model.SQuoteDay</h3>
             <div class="fb-like" data-href="https://www.facebook.com/NgTradeOnlinense" data-colorscheme="light" data-layout="button" data-action="like" data-show-faces="true" data-send="true"></div>
@@ -138,15 +129,6 @@
                                 <li class="list-group-item">@Html.ActionLink("Excel download", "dailypricelist", new { extension = "xls" })</li>
                                 <li class="list-group-item">@Html.ActionLink("CSV download", "dailypricelist", new { extension = "txt" }, new { target = "_blank" })</li>
                             </ul>
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- HomePageSquare -->
-                            <ins class="adsbygoogle"
-                                 style="display:inline-block;width:200px;height:200px"
-                                 data-ad-client="ca-pub-5059153330695623"
-                                 data-ad-slot="9997098322"></ins>
-                            <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
                         </div>
                         @*            <div class="widget-footer">
               <p>
@@ -218,29 +200,30 @@
              <li class="span4">
                     <div class="thumbnail">
                         <div class="caption">
-                           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- HomePageRect -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:336px;height:280px"
-     data-ad-client="ca-pub-5059153330695623"
-     data-ad-slot="2718373528"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+                            <table class="table table-striped">  
+                                <thead>  
+                                    <tr>  
+                                        <th>Index</th>  
+                                        <th>Close</th>  
+                                        <th>Change</th>  
+                                    </tr>  
+                                </thead>  
+                                <tbody>
+                                    @foreach (var dayLoser in Model.NseIndexThird)
+                                    {
+                                        <tr>  
+                                            <td>@Html.ActionLink(@dayLoser.Symbol,"Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
+                                            <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
+                                            <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
+                                        </tr>
+                                    }
+                                </tbody>  
+                            </table>  
                         </div>
                     </div>
                 </li>
             </ul>
           </div>
-       <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- HomePageBottom -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:970px;height:90px"
-     data-ad-client="ca-pub-5059153330695623"
-     data-ad-slot="6904031127"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
         </div>
 
     <!-- End: PRODUCT LIST -->

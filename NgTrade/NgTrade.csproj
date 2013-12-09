@@ -313,6 +313,9 @@
     <Content Include="Content\themes\default\font-awesome-ie7.css" />
     <Content Include="Content\themes\default\font-awesome.css" />
     <Content Include="Content\themes\font\fontawesome-webfont.svg" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -361,10 +364,9 @@
     <Content Include="Content\themes\font\fontawesome-webfont.eot" />
     <Content Include="Content\themes\font\fontawesome-webfont.ttf" />
     <Content Include="Content\themes\font\fontawesome-webfont.woff" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Properties\PublishProfiles\ngtrade - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ngtrade - Web Deploy.pubxml" />
-    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
-    <None Include="Scripts\jquery-2.0.3-vsdoc.js" />
     <Content Include="Helpers\amcharts\amcharts.js" />
     <Content Include="Helpers\amcharts\amstock.js" />
     <Content Include="Helpers\amcharts\images\dragIcon.gif" />
@@ -443,9 +445,6 @@
     <Content Include="Scripts\ngtrade.index.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.0.3.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -516,6 +515,7 @@
     <Content Include="Views\Home\Blog.cshtml" />
     <Content Include="Views\Home\Companies.cshtml" />
     <Content Include="Views\Home\NewsDetail.cshtml" />
+    <Content Include="Views\Account\Portfolio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,6 +49,7 @@ namespace NgTrade.Models.Data
         public string Email { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
+        public decimal? Balance { get; set; }
     }
 
     [Table("Companyprofile")]

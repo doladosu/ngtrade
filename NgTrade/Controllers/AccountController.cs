@@ -6,11 +6,12 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
+using NgTrade.Helpers.Paging;
 using NgTrade.Models.Data;
+using NgTrade.Models.Info;
 using NgTrade.Models.Repo.Interface;
 using NgTrade.Models.ViewModel;
 using WebMatrix.WebData;
-using NgTrade.Filters;
 using NgTrade.Models;
 
 namespace NgTrade.Controllers
@@ -18,7 +19,9 @@ namespace NgTrade.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository) : base(accountRepository, quoteRepository, null, null)
+        private const int PageSize = 5;
+
+        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, IHoldingRepository holdingRepository) : base(accountRepository, quoteRepository, null, null, holdingRepository)
         {
         }
 
@@ -42,24 +45,25 @@ namespace NgTrade.Controllers
             return View(accountViewModel);
         }
 
-        public ActionResult Portfolio()
+        public ActionResult Portfolio(int? page)
         {
-            var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
-            var accountViewModel = new AccountViewModel
+            var pageNumber = (page ?? 1);
+            var holdings = HoldingRepository.GetHoldings(LoggedInSubscriber.UserId);
+            var portfolioModels = (from holding in holdings
+                                   let quoteInfo = QuoteRepository.GetQuote(holding.Symbol)
+                                   select new PortfolioModel
+                                       {
+                                           Purchaseprice = holding.Price, Purchasedate = holding.DatePurchased, Quantity = holding.Quantity, QuoteSymbol = holding.Symbol, CurrentPrice = quoteInfo.Close, GainLoss = holding.Quantity*(quoteInfo.Close - holding.Price), Holdingid = holding.Id, MarketValue = holding.Quantity*quoteInfo.Close
+                                       }).ToList();
+            var pagingInfo = new PagingInfo
             {
-                AccountNumber = LoggedInSubscriber.AccountNumber.GetValueOrDefault(),
-                Address1 = accountProfile.Address1,
-                Address2 = accountProfile.Address2,
-                City = accountProfile.City,
-                State = accountProfile.State,
-                Country = accountProfile.Country,
-                FirstName = accountProfile.FirstName,
-                LastName = accountProfile.LastName,
-                Email = accountProfile.Email,
-                Status = accountProfile.Verified.GetValueOrDefault(),
-                Phone = accountProfile.Phone1,
+                CurrentPage = pageNumber,
+                ItemsPerPage = PageSize,
+                TotalItems = holdings.Count
             };
-            return View(accountViewModel);
+
+            var portfolioViewModel = new PortfolioViewModel { PagingInfo = pagingInfo, PortfolioVm = portfolioModels.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
+            return View(portfolioViewModel);
         }
 
         [AllowAnonymous]
@@ -125,7 +129,8 @@ namespace NgTrade.Controllers
                     model.Verified = false;
                     model.BankVerified = false;
                     model.BirthDate = DateTime.Now;
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { model.FirstName, model.LastName, model.Email, model.Address1, model.Address2, model.City, model.State, model.Country, model.Phone1, model.BirthDate, model.Occupation, model.SignupDate, model.BankVerified, model.Verified  });
+                    model.Balance = 1000000;
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { model.FirstName, model.LastName, model.Email, model.Address1, model.Address2, model.City, model.State, model.Country, model.Phone1, model.BirthDate, model.Occupation, model.SignupDate, model.BankVerified, model.Verified, model.Balance  });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }

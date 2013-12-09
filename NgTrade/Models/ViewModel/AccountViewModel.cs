@@ -21,5 +21,6 @@
         public string NCountry { get; set; }
         public string NPhone { get; set; }
         public string SecurityQuestions { get; set; }
+        public decimal Balance { get; set; }
     }
 }
