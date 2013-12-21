@@ -19,7 +19,7 @@ namespace NgTrade.Controllers
     {
         private const int PageSize = 10;
 
-        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository, INewsRepository newsRepository) : base(accountRepository, quoteRepository, smtpRepository, newsRepository, null)
+        public HomeController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, ISmtpRepository smtpRepository, INewsRepository newsRepository) : base(accountRepository, quoteRepository, smtpRepository, newsRepository, null, null)
         {
         }
 

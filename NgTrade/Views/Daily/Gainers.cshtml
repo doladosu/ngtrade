@@ -6,15 +6,6 @@
 
 <div class="content">
     <div class="container">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- DayGainers -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:970px;height:90px"
-     data-ad-client="ca-pub-5059153330695623"
-     data-ad-slot="5566898729"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
         @if (!Model.Quotes.Any())
         {
             <div>No data is available.</div>
@@ -26,6 +17,15 @@
             </div>
       
             <div class="panel panel-default">
+                            <div class="fb-like" data-href="https://www.facebook.com/NgTradeOnlinense" data-colorscheme="light" data-layout="button" data-action="like" data-show-faces="true" data-send="true"></div>
+            
+            <a href="https://twitter.com/ngtradeonline" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @@ngtradeonline</a>
+            <script>
+                !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');
+            </script>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="ngtradeonline" data-size="large" data-related="ngtradeonline" data-hashtags="ngtradeonline">Tweet</a>
+            <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -36,6 +36,7 @@
                             <th>Volume</th>
                             <th>High</th>
                             <th>Change</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,9 @@
                                 <td>@data.Volume</td>
                                 <td>@String.Format("{0:0.00}", data.High)</td>
                                 <td style="color: green">@String.Format("{0:0.00}", data.Change1)</td>
+                                <td>
+                                     @Html.ActionLink("Buy/Sell", "Trade", "Account", new { symbol = data.Symbol }, new { @class="btn"})
+                                </td>
                             </tr>
                         }
                     </tbody>

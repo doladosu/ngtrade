@@ -21,13 +21,23 @@ namespace NgTrade.Controllers
     {
         private const int PageSize = 5;
 
-        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, IHoldingRepository holdingRepository) : base(accountRepository, quoteRepository, null, null, holdingRepository)
+        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, IHoldingRepository holdingRepository, IOrderRepository orderRepository) : base(accountRepository, quoteRepository, null, null, holdingRepository, orderRepository)
         {
         }
 
         public ActionResult Index()
         {
             var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
+            var holdings = HoldingRepository.GetHoldings(accountProfile.UserId);
+            var holdingSum = 0.00;
+            if (holdings.Any())
+            {
+                foreach (var holding in holdings)
+                {
+                    var quote = QuoteRepository.GetQuote(holding.Symbol);
+                    holdingSum = holdingSum + Convert.ToDouble(holding.Quantity*quote.Close);
+                }
+            }
             var accountViewModel = new AccountViewModel
             {
                 AccountNumber = LoggedInSubscriber.AccountNumber.GetValueOrDefault(),
@@ -41,6 +51,7 @@ namespace NgTrade.Controllers
                 Email = accountProfile.Email,
                 Status = accountProfile.Verified.GetValueOrDefault(),
                 Phone = accountProfile.Phone1,
+                Balance = accountProfile.Balance.GetValueOrDefault() + Convert.ToDecimal(holdingSum)
             };
             return View(accountViewModel);
         }
@@ -66,15 +77,95 @@ namespace NgTrade.Controllers
             return View(portfolioViewModel);
         }
 
+        public ActionResult Trade(string symbol)
+        {
+            var actions = new List<string> { "Buy", "Sell" };
+            var price = 0.00;
+            if (!string.IsNullOrWhiteSpace(symbol))
+            {
+                try
+                {
+                    Quote quote = QuoteRepository.GetQuote(symbol);
+                    if (quote != null)
+                    {
+                        price = Convert.ToDouble(quote.Close);
+                    }
+                }
+                catch (Exception)
+                {
+                    
+                }
+            }
+            var actionsList = actions.Select(x => new SelectListItem
+            {
+                Text = x,
+                Value = x
+            }).ToList();
+            var tradeViewModel = new TradeViewModel {ActionsList = actionsList, Price = price, Symbol = symbol };
+            return View(tradeViewModel);
+        }
+
+        public ActionResult Refer()
+        {
+            return RedirectToAction("Index");
+        }
+
+        [OutputCache(CacheProfile = "StaticPageCache")]
+        public ActionResult GetSymbolInfo(string symbol)
+        {
+            var stockData = QuoteRepository.GetQuote(symbol);
+            return Json(stockData, JsonRequestBehavior.AllowGet);
+        }
+
+        public RedirectToRouteResult CreateStockOrder(TradeViewModel tradeViewModel)
+        {
+            string alertMessage;
+            string messageClass;
+            var orderModel =new OrderModel
+                {
+                    Action = tradeViewModel.Action,
+                    Price = tradeViewModel.Price,
+                    Shares = tradeViewModel.Shares,
+                    Symbol = tradeViewModel.Symbol,
+                    UserProfile = LoggedInSubscriber
+                };
+            var order = new Order
+                {
+                    AccountId = LoggedInSubscriber.UserId,
+                    CompletionDate = DateTime.Now,
+                    OpenDate = DateTime.Now,
+                    Price = Convert.ToDecimal(tradeViewModel.Price),
+                    Quantity = tradeViewModel.Shares,
+                    Symbol = tradeViewModel.Symbol,
+                    Type = tradeViewModel.Action,
+                    Status = "Open"
+                };
+            var orderCreated = OrderRepository.CreateOrder(order);
+            Holding holding = null;
+            if (orderCreated != null)
+            {
+                holding = HoldingRepository.CreateHolding(orderModel);
+                orderCreated.HoldingId = holding.Id;
+                orderCreated.Status = "Complete";
+                OrderRepository.UpdateOrder(orderCreated);
+            }
+            if (holding != null)
+            {
+                alertMessage = "Your order has been successfully placed. Please check back in twenty-four hour to view completion";
+                messageClass = "success";
+                return RedirectToAction("Trade", new { alertMessage, messageClass });
+            }
+            alertMessage = "There was an error placing your order, please try again!";
+            messageClass = "severe";
+            return RedirectToAction("Trade", new { alertMessage, messageClass });
+        }
+
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
-        //
-        // POST: /Account/Login
 
         [HttpPost]
         [AllowAnonymous]
@@ -94,13 +185,11 @@ namespace NgTrade.Controllers
         //
         // POST: /Account/LogOff
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
 
         //

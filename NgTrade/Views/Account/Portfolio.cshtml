@@ -9,52 +9,57 @@
         <div class="page-header">
             <h4 class="widget-header"><i class="icon-lock"></i>Portfolio</h4>
         </div>
-              @if (Model.PortfolioVm.Any())
-              {
-                  <div>Your do not own any stock.</div>
-              }
-              else
-              {
-                  <ul class="nav nav-tabs">
-                      <li><a href="@Url.Action("Index", "Account")">Personal Info</a></li>
-                      <li><a href="@Url.Action("Refer", "Account")">Refer a friend</a></li>
-                      <li class="active"><a href="@Url.Action("Portfolio", "Account")">Portfolio</a></li>
-                      <li><a href="@Url.Action("Trade", "Account")">Trade</a></li>
-                  </ul>
-                  <div class="panel panel-default">
-                      <table class="table">
-                          <thead>
-                              <tr>
-                                  <th>Holding Id</th>
-                                  <th>Symbol</th>
-                                  <th>Quantity</th>
-                                  <th>Purchase Date</th>
-                                  <th>Purchase Price</th>
-                                  <th>Current Price</th>
-                                  <th>Change</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              @foreach (var data in Model.PortfolioVm)
-                              {
-                                  <tr>
-                                      <td>@data.Holdingid</td>
-                                      <td>@data.QuoteSymbol</td>
-                                      <td>@data.Quantity</td>
-                                      <td>@data.Purchasedate</td>
-                                      <td>@String.Format("{0:0.00}", data.Purchaseprice)</td>
-                                      <td>@String.Format("{0:0.00}", data.CurrentPrice)</td>
-                                      <td>@String.Format("{0:0.00}", data.GainLoss)</td>
-                                  </tr>
-                              }
-                          </tbody>
-                      </table>
-                  </div>
-                  <div class="pagination pagination-centered">
-                      <ul>
-                          @Html.PageLinks(Model.PagingInfo, x => Url.Action("Portfolio", new {page = x}))
-                      </ul>
-                  </div>
-              }
+        @if (!Model.PortfolioVm.Any())
+        {
+            <div>Your do not own any stock.</div>
+        }
+        else
+        {
+            <div class="panel panel-default">
+                <ul class="nav nav-tabs">
+                    <li><a href="@Url.Action("Index", "Account")">Personal Info</a></li>
+                    <li><a href="@Url.Action("Refer", "Account")">Refer a friend</a></li>
+                    <li class="active"><a href="@Url.Action("Portfolio", "Account")">Portfolio</a></li>
+                    <li><a href="@Url.Action("Trade", "Account")">Trade</a></li>
+                </ul>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Holding Id</th>
+                            <th>Symbol</th>
+                            <th>Quantity</th>
+                            <th>Purchase Price</th>
+                            <th>Current Price</th>
+                            <th>Change</th>
+                            <th>Purchase Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var data in Model.PortfolioVm)
+                        {
+                            <tr>
+                                <td>@data.Holdingid</td>
+                                <td>@data.QuoteSymbol</td>
+                                <td>@data.Quantity</td>
+                                <td>@String.Format("{0:0.00}", data.Purchaseprice)</td>
+                                <td>@String.Format("{0:0.00}", data.CurrentPrice)</td>
+                                <td>@String.Format("{0:0.00}", data.GainLoss)</td>
+                                <td>@data.Purchasedate</td>
+                                <td>
+                                     @Html.ActionLink("Buy/Sell", "Trade", "Account", new { symbol = data.QuoteSymbol }, new { @class="btn"})
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination pagination-centered">
+                <ul>
+                    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Portfolio", new { page = x }))
+                </ul>
+            </div>
+        }
     </div>
 </div>

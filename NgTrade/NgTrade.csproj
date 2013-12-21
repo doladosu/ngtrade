@@ -234,6 +234,7 @@
     <Compile Include="Helpers\Paging\PagingInfo.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Data\NgTradeData.cs" />
+    <Compile Include="Models\Info\OrderModel.cs" />
     <Compile Include="Models\Info\PortfolioModel.cs" />
     <Compile Include="Models\Info\QuoteSector.cs" />
     <Compile Include="Models\Repo\Impl\AccountRepository.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Models\ViewModel\PriceHistoryViewModel.cs" />
     <Compile Include="Models\ViewModel\QuoteModel.cs" />
     <Compile Include="Models\ViewModel\ResearchViewModel.cs" />
+    <Compile Include="Models\ViewModel\TradeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +461,7 @@
     <Content Include="Scripts\less-1.4.1.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\research.js" />
+    <Content Include="Scripts\trade.js" />
     <Content Include="Unity.Mvc3.README.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -516,6 +519,8 @@
     <Content Include="Views\Home\Companies.cshtml" />
     <Content Include="Views\Home\NewsDetail.cshtml" />
     <Content Include="Views\Account\Portfolio.cshtml" />
+    <Content Include="Views\Account\Trade.cshtml" />
+    <Content Include="Views\Account\Refer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
