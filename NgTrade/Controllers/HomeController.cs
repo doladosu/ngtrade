@@ -154,6 +154,18 @@ namespace NgTrade.Controllers
             return RedirectToAction("Contact", new { message = "Your message is sent", messageClass = "success" });
         }
 
+        [HttpPost]
+        public ActionResult AddEmailToNewsletter(string email)
+        {
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                SmtpRepository.AddEmailToNewsletter(email);
+                return RedirectToAction("Index");
+            }
+
+            return View("Index");
+        }
+
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()
         {

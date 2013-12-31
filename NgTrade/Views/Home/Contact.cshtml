@@ -12,26 +12,20 @@
     <div class="row-fluid">
       <!-- Start: CONTACT US FORM -->
       <div class="span4 offset1">
-        <div class="page-header">
-          <h3>Quick message</h3>
-        </div>
          @using (Html.BeginForm("Contact", "Home", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-contact-us" }))
             {
           <div class="control-group">
             <div class="controls">
-              <input type="text" id="inputName" placeholder="Name">
               @Html.TextBoxFor(m=> m.Name, new {@placeholder="Name"})
             </div>
           </div>
           <div class="control-group">
             <div class="controls">
-              <input type="text" id="inputEmail" placeholder="Email">
               @Html.TextBoxFor(m=> m.Email, new {placeholder="Email"})
             </div>
           </div>
           <div class="control-group">
             <div class="controls">
-              <textarea id="inputMessage" placeholder="Message"></textarea>
               @Html.TextAreaFor(m=> m.Message, new {placeholder="Message"})
             </div>
           </div>
@@ -42,65 +36,6 @@
           </div>
         }
       </div>
-      <!-- End: CONTACT US FORM -->
-      <!-- Start: OFFICES -->
-   @*   <div class="span5 offset1">
-        <div class="page-header">
-          <h3>Offices</h3>
-        </div>
-        <h4>North America</h4>
-        <div>
-          <address class="pull-left">
-            <strong>Bootbusiness, Inc.</strong><br>
-                                               123 Folsom Ave, Suite 600<br>
-                                                                        USA<br>
-          </address>
-          <div class="pull-right">
-            <div class="bottom-space">
-              <i class="icon-phone icon-large"></i> (123) 123-1234
-            </div>
-            <a href="mailto:contact@bootbusiness.com" class="contact-mail">
-              <i class="icon-envelope icon-large"></i>
-            </a> contact@bootbusiness.com
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <h4>Europe</h4>
-        <div>
-          <address class="pull-left">
-            <strong>Bootbusiness, Inc.</strong><br>
-                                               123 Folsom Ave, Suite 600<br>
-                                                                        UK<br>
-          </address>
-          <div class="pull-right">
-            <div class="bottom-space">
-              <i class="icon-phone icon-large"></i> (123) 123-1234
-            </div>
-            <a href="mailto:contact@bootbusiness.com" class="contact-mail">
-              <i class="icon-envelope icon-large"></i>
-            </a> contact@bootbusiness.com
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <h4>Nigeria</h4>
-        <div>
-          <address class="pull-left">
-            <strong>Bootbusiness, Inc.</strong><br>
-                                               123 Folsom Ave, Suite 600<br>
-                                                                        India<br>
-          </address>
-          <div class="pull-right">
-            <div class="bottom-space">
-              <i class="icon-phone icon-large"></i> (123) 123-1234
-            </div>
-            <a href="mailto:contact@bootbusiness.com" class="contact-mail">
-              <i class="icon-envelope icon-large"></i>
-            </a> contact@bootbusiness.com
-          </div>
-          <div class="clearfix"></div>
-        </div>
-      </div>*@
-      <!-- End: OFFICES -->
     </div>
   </div>
 </div>
