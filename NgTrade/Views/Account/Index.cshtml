@@ -19,7 +19,11 @@
                 <div class="widget-body">
                     <div class="center-align">
                         <table class="table">
-                             <tr>
+                            <tr>
+                                <td>User name:</td>
+                                <td>@Model.AccountName</td>
+                            </tr>
+                            <tr>
                                 <td>Account balance:</td>
                                 <td>@String.Format(CultureInfo.InvariantCulture, "{0,0}", Model.Balance) Naira</td>
                             </tr>

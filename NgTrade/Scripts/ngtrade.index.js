@@ -34,4 +34,16 @@ $("document").ready(function() {
 	    });
 	
 	});
+	$("#btnSubscribe").on("click", function () {
+	    var email = $("#subscribe").val();
+	    if (email != '') {
+	        $.getJSON('/Home/AddEmailToNewsletter?email=' + email, function (data) {
+	            if (data != null) {
+	                alert(data);
+	            } else {
+	                alert('Error occured, please try again');
+	            }
+	        });
+	    }
+	});
 });

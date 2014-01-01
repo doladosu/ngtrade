@@ -25,9 +25,9 @@
                         <input name="RememberMe" id="RememberMe" type="checkbox"> Remember me
                       </label>
                 </div>
-                <div class="pull-right">
-                  <a href="#">Forgot password?</a>
-                </div>
+                  <div class="pull-right">
+                      @Html.ActionLink("Forgot password?", "ForgotPassword", "Account")
+                  </div>
                 <div class="clearfix"></div>
               </div>
               <input type="submit" value="Sign in" class="btn btn-success btn-large">

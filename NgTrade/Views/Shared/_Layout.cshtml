@@ -149,11 +149,8 @@
         </div>
         <div class="span3">
           <h4>Get updated by email</h4>
-            @using (Html.BeginForm("AddEmailToNewsletter", "Home"))
-            {
-             <input type="text" placeholder="Email address" name="email" id="email">
-             <input type="submit" class="btn" value="Subscribe">
-            }
+             <input type="text" placeholder="Email address" name="subscribe" id="subscribe">
+             <input type="submit" class="btn" id="btnSubscribe" value="Subscribe">
         </div>
       </div>
     </div>

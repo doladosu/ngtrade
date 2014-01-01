@@ -18,6 +18,7 @@ namespace NgTrade.Models.Data
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Holding> Holdings { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<MailingList> MailingLists { get; set; }
     }
 
     [Table("UserProfile")]
@@ -148,5 +149,17 @@ namespace NgTrade.Models.Data
         public int AccountId { get; set; }
         public string Symbol { get; set; }
         public int HoldingId { get; set; }
+    }
+
+    [Table("MailingList")]
+    public class MailingList
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        public string Email { get; set; }
+        public DateTime DateAdded { get; set; }
+        public bool Subscribed { get; set; }
     }
 }

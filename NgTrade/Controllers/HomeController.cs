@@ -154,17 +154,17 @@ namespace NgTrade.Controllers
             return RedirectToAction("Contact", new { message = "Your message is sent", messageClass = "success" });
         }
 
-        [HttpPost]
         public ActionResult AddEmailToNewsletter(string email)
         {
             if (!string.IsNullOrWhiteSpace(email))
             {
-                SmtpRepository.AddEmailToNewsletter(email);
-                return RedirectToAction("Index");
+                var mailingList = new MailingList {DateAdded = DateTime.Now, Email = email, Subscribed = true };
+                AccountRepository.AddToMailingList(mailingList);
+                return Json("You have joined our mailing list", JsonRequestBehavior.AllowGet);
             }
-
-            return View("Index");
+            return Json("Error occured, please try again", JsonRequestBehavior.AllowGet);
         }
+
 
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()

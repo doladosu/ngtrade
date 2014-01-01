@@ -5,6 +5,7 @@ namespace NgTrade.Models.Repo.Interface
     public interface ISmtpRepository
     {
         void SendContactEmail(ContactViewModel contact);
-        void AddEmailToNewsletter(string email);
+        void SendReferralEmail(ReferViewModel referViewModel);
+        void SendForgotPasswordEmail(string email, string body);
     }
 }

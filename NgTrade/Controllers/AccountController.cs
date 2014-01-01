@@ -21,12 +21,28 @@ namespace NgTrade.Controllers
     {
         private const int PageSize = 5;
 
-        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, IHoldingRepository holdingRepository, IOrderRepository orderRepository) : base(accountRepository, quoteRepository, null, null, holdingRepository, orderRepository)
+        public AccountController(IAccountRepository accountRepository, IQuoteRepository quoteRepository, IHoldingRepository holdingRepository, IOrderRepository orderRepository, ISmtpRepository smtpRepository) : base(accountRepository, quoteRepository, smtpRepository, null, holdingRepository, orderRepository)
         {
         }
 
         public ActionResult Index()
         {
+            if (LoggedInSubscriber == null && User.Identity.IsAuthenticated)
+            {
+                var membershipUser = Membership.GetUser();
+                if (membershipUser != null)
+                {
+                    if (membershipUser.ProviderUserKey != null)
+                    {
+                        var subscriberId = membershipUser.ProviderUserKey.ToString();
+                        LoggedInSubscriber = AccountRepository.GetAccountProfile(Int32.Parse(subscriberId));
+                    }
+                }
+            }
+            if (LoggedInSubscriber == null)
+            {
+                return RedirectToAction("LogOff");
+            }
             var accountProfile = AccountRepository.GetAccountProfile(LoggedInSubscriber.UserId);
             var holdings = HoldingRepository.GetHoldings(accountProfile.UserId);
             var holdingSum = 0.00;
@@ -51,7 +67,8 @@ namespace NgTrade.Controllers
                 Email = accountProfile.Email,
                 Status = accountProfile.Verified.GetValueOrDefault(),
                 Phone = accountProfile.Phone1,
-                Balance = accountProfile.Balance.GetValueOrDefault() + Convert.ToDecimal(holdingSum)
+                Balance = accountProfile.Balance.GetValueOrDefault() + Convert.ToDecimal(holdingSum),
+                AccountName = accountProfile.UserName
             };
             return View(accountViewModel);
         }
@@ -107,7 +124,27 @@ namespace NgTrade.Controllers
 
         public ActionResult Refer()
         {
-            return RedirectToAction("Index");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Refer(ReferViewModel referViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(referViewModel);
+            }
+
+            var referral = new ReferViewModel
+            {
+                Email = referViewModel.Email,
+                Name = referViewModel.Name,
+                ReferralName = LoggedInSubscriber.FirstName
+            };
+
+            SmtpRepository.SendReferralEmail(referral);
+
+            return RedirectToAction("Refer", new { message = "Your message is sent", messageClass = "success" });
         }
 
         [OutputCache(CacheProfile = "StaticPageCache")]
@@ -221,7 +258,9 @@ namespace NgTrade.Controllers
                     model.Balance = 1000000;
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { model.FirstName, model.LastName, model.Email, model.Address1, model.Address2, model.City, model.State, model.Country, model.Phone1, model.BirthDate, model.Occupation, model.SignupDate, model.BankVerified, model.Verified, model.Balance  });
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    var mailingList = new MailingList { DateAdded = DateTime.Now, Email = model.Email, Subscribed = true };
+                    AccountRepository.AddToMailingList(mailingList);
+                    return RedirectToAction("Index", "Account");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -451,6 +490,84 @@ namespace NgTrade.Controllers
 
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string rt)
+        {
+            var resetPasswordViewModel = new ResetPasswordViewModel{Token = rt};
+            return View(resetPasswordViewModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                WebSecurity.ResetPassword(model.Token, model.Password);
+                return RedirectToAction("Login");
+            }
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
+        {
+            //check user existance
+            if (string.IsNullOrWhiteSpace(forgotPasswordViewModel.UserName))
+            {
+                TempData["Message"] = "Enter your user name";
+            }
+            else
+            {
+                var user = Membership.GetUser(forgotPasswordViewModel.UserName);
+                if (user == null)
+                {
+                    TempData["Message"] = "User does not exist.";
+                }
+                else
+                {
+                    //generate password token
+                    var token = WebSecurity.GeneratePasswordResetToken(forgotPasswordViewModel.UserName);
+                    //create url with above token
+                    var resetLink = "<a href='" +
+                                    Url.Action("ResetPassword", "Account", new {rt = token}, "http") +
+                                    "'>Reset Password</a>";
+                    //get user emailid
+                    var email = "";
+                    var users = AccountRepository.GetAllAccountProfiles();
+                    foreach (var userProfile in users)
+                    {
+                        if (userProfile.UserName.ToLower() == forgotPasswordViewModel.UserName.ToLower())
+                        {
+                            email = userProfile.Email;
+                            break;
+                        }
+                    }
+                    //send mail
+                    string body = "<b>Please click the link to reset your NgTradeOnline Password </b><br/>" + resetLink; //edit it
+                    try
+                    {
+                        SmtpRepository.SendForgotPasswordEmail(email, body);
+                        TempData["Message"] = "Check your email for your reset password link.";
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["Message"] = "Error occured while sending email." + ex.Message;
+                    }
+                }
+            }
+            return View();
         }
 
         #region Helpers

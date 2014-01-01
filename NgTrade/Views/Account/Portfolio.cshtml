@@ -8,7 +8,13 @@
     <div class="container">
         <div class="page-header">
             <h4 class="widget-header"><i class="icon-lock"></i>Portfolio</h4>
-        </div>
+            <ul class="nav nav-tabs">
+                    <li><a href="@Url.Action("Index", "Account")">Personal Info</a></li>
+                    <li><a href="@Url.Action("Refer", "Account")">Refer a friend</a></li>
+                    <li class="active"><a href="@Url.Action("Portfolio", "Account")">Portfolio</a></li>
+                    <li><a href="@Url.Action("Trade", "Account")">Trade</a></li>
+                </ul>
+
         @if (!Model.PortfolioVm.Any())
         {
             <div>Your do not own any stock.</div>
@@ -16,13 +22,7 @@
         else
         {
             <div class="panel panel-default">
-                <ul class="nav nav-tabs">
-                    <li><a href="@Url.Action("Index", "Account")">Personal Info</a></li>
-                    <li><a href="@Url.Action("Refer", "Account")">Refer a friend</a></li>
-                    <li class="active"><a href="@Url.Action("Portfolio", "Account")">Portfolio</a></li>
-                    <li><a href="@Url.Action("Trade", "Account")">Trade</a></li>
-                </ul>
-
+                
                 <table class="table">
                     <thead>
                         <tr>
@@ -61,5 +61,7 @@
                 </ul>
             </div>
         }
+        </div>
+
     </div>
 </div>

@@ -50,5 +50,36 @@ namespace NgTrade.Models.Repo.Impl
                 return null;
             }
         }
+
+        public void AddToMailingList(MailingList mailingList)
+        {
+            try
+            {
+                using (var db = new UsersContext())
+                {
+                    db.MailingLists.Add(mailingList);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public MailingList GetMailingList(string email)
+        {
+            try
+            {
+                using (var db = new UsersContext())
+                {
+                    var mailingList = db.MailingLists.FirstOrDefault(m => m.Email.ToLower() == email.ToLower());
+                    return mailingList;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
