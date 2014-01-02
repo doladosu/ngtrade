@@ -158,9 +158,13 @@ namespace NgTrade.Controllers
         {
             if (!string.IsNullOrWhiteSpace(email))
             {
-                var mailingList = new MailingList {DateAdded = DateTime.Now, Email = email, Subscribed = true };
-                AccountRepository.AddToMailingList(mailingList);
-                return Json("You have joined our mailing list", JsonRequestBehavior.AllowGet);
+                var exists = AccountRepository.GetMailingList(email);
+                if (exists == null)
+                {
+                    var mailingList = new MailingList {DateAdded = DateTime.Now, Email = email, Subscribed = true};
+                    AccountRepository.AddToMailingList(mailingList);
+                    return Json("You have joined our mailing list", JsonRequestBehavior.AllowGet);
+                }
             }
             return Json("Error occured, please try again", JsonRequestBehavior.AllowGet);
         }

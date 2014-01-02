@@ -141,7 +141,12 @@ namespace NgTrade.Controllers
                 Name = referViewModel.Name,
                 ReferralName = LoggedInSubscriber.FirstName
             };
-
+            var exists = AccountRepository.GetMailingList(referViewModel.Email);
+            if (exists == null)
+            {
+                var mailingList = new MailingList { DateAdded = DateTime.Now, Email = referViewModel.Email, Subscribed = true };
+                AccountRepository.AddToMailingList(mailingList);
+            }
             SmtpRepository.SendReferralEmail(referral);
 
             return RedirectToAction("Refer", new { message = "Your message is sent", messageClass = "success" });
@@ -258,8 +263,12 @@ namespace NgTrade.Controllers
                     model.Balance = 1000000;
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { model.FirstName, model.LastName, model.Email, model.Address1, model.Address2, model.City, model.State, model.Country, model.Phone1, model.BirthDate, model.Occupation, model.SignupDate, model.BankVerified, model.Verified, model.Balance  });
                     WebSecurity.Login(model.UserName, model.Password);
-                    var mailingList = new MailingList { DateAdded = DateTime.Now, Email = model.Email, Subscribed = true };
-                    AccountRepository.AddToMailingList(mailingList);
+                    var exists = AccountRepository.GetMailingList(model.Email);
+                    if (exists == null)
+                    {
+                        var mailingList = new MailingList { DateAdded = DateTime.Now, Email = model.Email, Subscribed = true };
+                        AccountRepository.AddToMailingList(mailingList);
+                    }
                     return RedirectToAction("Index", "Account");
                 }
                 catch (MembershipCreateUserException e)
