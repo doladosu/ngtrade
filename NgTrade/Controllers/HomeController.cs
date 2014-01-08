@@ -9,7 +9,6 @@ using DoddleReport;
 using DoddleReport.Web;
 using NgTrade.Helpers.Paging;
 using NgTrade.Models.Data;
-using NgTrade.Models.Repo.Impl;
 using NgTrade.Models.Repo.Interface;
 using NgTrade.Models.ViewModel;
 
@@ -169,7 +168,6 @@ namespace NgTrade.Controllers
             return Json("Error occured, please try again", JsonRequestBehavior.AllowGet);
         }
 
-
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult Faq()
         {
@@ -327,14 +325,17 @@ namespace NgTrade.Controllers
         public ActionResult ClearCache()
         {
             Response.RemoveOutputCacheItem("/");
+            Response.RemoveOutputCacheItem("/Home/PriceHistory");
+            Response.RemoveOutputCacheItem("/Home/DailyPriceList");
+            Response.RemoveOutputCacheItem("/Home/Research");
 
             HttpContext.Cache.Remove("dayListCache");
-            HttpContext.Cache.Remove("dayGainersCache");
-            HttpContext.Cache.Remove("dayLosersCache");
             HttpContext.Cache.Remove("dayLosersListCache");
             HttpContext.Cache.Remove("dayGainersListCache");
             HttpContext.Cache.Remove("stockDayCache");
+            HttpContext.Cache.Remove("nseIndexListCache");
 
+            QuoteRepository.UpdateCache();
             return RedirectToAction("Index", "Home");
         }
 

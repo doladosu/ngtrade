@@ -18,5 +18,6 @@ namespace NgTrade.Models.Repo.Interface
         List<QuoteSector> GetDaysListWithSector();
         List<string> GetSymbols(string symbol);
         List<Quote> GetDayNseIndex();
+        void UpdateCache();
     }
 }

@@ -61,7 +61,7 @@ namespace NgTrade.Models.Repo.Impl
         {
             var allQuotes = GetAllQuotes();
             var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
-            var quotes = allQuotes.Where(q => q.Date == dateTimeQuote.Date && !q.Symbol.ToUpper().StartsWith("NSE")).OrderBy(q => q.Symbol);
+            var quotes = allQuotes.Where(q => dateTimeQuote != null && (q.Date == dateTimeQuote.Date && !q.Symbol.ToUpper().StartsWith("NSE"))).OrderBy(q => q.Symbol);
             return quotes.ToList();
         }
 
@@ -69,8 +69,15 @@ namespace NgTrade.Models.Repo.Impl
         {
             var allQuotes = GetAllQuotes();
             var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
-            var quotes = allQuotes.Where(q => q.Date == dateTimeQuote.Date && q.Symbol.ToUpper().StartsWith("NSE")).OrderBy(q => q.Symbol);
+            var quotes = allQuotes.Where(q => dateTimeQuote != null && (q.Date == dateTimeQuote.Date && q.Symbol.ToUpper().StartsWith("NSE"))).OrderBy(q => q.Symbol);
             return quotes.ToList();
+        }
+
+        public void UpdateCache()
+        {
+#pragma warning disable 168
+            var result = GetAllQuotes(true);
+#pragma warning restore 168
         }
 
         public Companyprofile GetCompany(string symbol)
@@ -92,11 +99,11 @@ namespace NgTrade.Models.Repo.Impl
             var allCompanies = GetAllCompanies();
             var dateTimeQuote = allQuotes.OrderByDescending(q => q.Date).FirstOrDefault();
 
-            var items = (from e in allQuotes.Where(q => q.Date == dateTimeQuote.Date).ToList()
+            var items = (from e in allQuotes.Where(q => dateTimeQuote != null && q.Date == dateTimeQuote.Date).ToList()
                          join a in allCompanies
                              on e.Symbol equals a.Symbol into result
                          from a in result.DefaultIfEmpty()
-                         select new {e, a}).Select(quote => new QuoteSector()
+                         select new {e, a}).Select(quote => new QuoteSector
                                                                 {
                                                                     Category =
                                                                         (quote.a != null)
@@ -117,14 +124,14 @@ namespace NgTrade.Models.Repo.Impl
 
         }
 
-        public List<Quote> GetAllQuotes()
+        public List<Quote> GetAllQuotes(bool referesh = false)
         {
             try
             {
                 var cache = MemoryCache.Default;
                 var result = cache[AllQuotesCacheKey] as List<Quote>;
 
-                if (result == null)
+                if (result == null || referesh)
                 {
                     lock (CacheLockObjectCurrentSales)
                     {
@@ -132,7 +139,7 @@ namespace NgTrade.Models.Repo.Impl
 
                         var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) };
 
-                        if (result == null)
+                        if (result == null || referesh)
                         {
                             using (var db = new UsersContext())
                             {
@@ -144,7 +151,7 @@ namespace NgTrade.Models.Repo.Impl
                 }
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

@@ -183,12 +183,16 @@ namespace NgTrade.Controllers
 
         public ActionResult ClearCache()
         {
-            Response.RemoveOutputCacheItem("/");
+            Response.RemoveOutputCacheItem("/Daily/Index");
+            Response.RemoveOutputCacheItem("/Daily/Gainers");
+            Response.RemoveOutputCacheItem("/Daily/Losers");
 
             HttpContext.Cache.Remove("dailyListIndexDCache");
             HttpContext.Cache.Remove("dailyListIndexDDCache");
-            HttpContext.Cache.Remove("dailyListGainersACache");
+            HttpContext.Cache.Remove("dailyListGainersDCache");
             HttpContext.Cache.Remove("dailyListLosersDCache");
+            HttpContext.Cache.Remove("daysListWithSectorDCache");
+            QuoteRepository.UpdateCache();
 
             return RedirectToAction("Index", "Home");
         }
