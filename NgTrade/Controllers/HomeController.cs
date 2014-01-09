@@ -324,7 +324,7 @@ namespace NgTrade.Controllers
 
         public ActionResult ClearCache()
         {
-            Response.RemoveOutputCacheItem("/");
+            Response.RemoveOutputCacheItem("/Home/Index");
             Response.RemoveOutputCacheItem("/Home/PriceHistory");
             Response.RemoveOutputCacheItem("/Home/DailyPriceList");
             Response.RemoveOutputCacheItem("/Home/Research");
@@ -406,5 +406,12 @@ namespace NgTrade.Controllers
             return View();
         }
 
+        public ActionResult SendDailyEmail()
+        {
+            var mailingLists = AccountRepository.GetMailingLists();
+            var emailLists = (from mailingList in mailingLists where mailingList.Subscribed select mailingList.Email).ToList();
+            SmtpRepository.SendDailyEmail(emailLists);
+            return RedirectToAction("Index");
+        }
     }
 }

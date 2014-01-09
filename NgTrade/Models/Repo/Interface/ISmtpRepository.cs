@@ -1,4 +1,5 @@
-﻿using NgTrade.Models.ViewModel;
+﻿using System.Collections.Generic;
+using NgTrade.Models.ViewModel;
 
 namespace NgTrade.Models.Repo.Interface
 {
@@ -7,5 +8,6 @@ namespace NgTrade.Models.Repo.Interface
         void SendContactEmail(ContactViewModel contact);
         void SendReferralEmail(ReferViewModel referViewModel);
         void SendForgotPasswordEmail(string email, string body);
+        void SendDailyEmail(List<string> emails);
     }
 }

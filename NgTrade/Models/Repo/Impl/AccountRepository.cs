@@ -81,5 +81,21 @@ namespace NgTrade.Models.Repo.Impl
                 return null;
             }
         }
+
+        public List<MailingList> GetMailingLists()
+        {
+            try
+            {
+                using (var db = new UsersContext())
+                {
+                    var mailingList = db.MailingLists.ToList();
+                    return mailingList;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

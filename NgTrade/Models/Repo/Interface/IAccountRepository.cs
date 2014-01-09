@@ -9,5 +9,6 @@ namespace NgTrade.Models.Repo.Interface
         void AddToMailingList(MailingList mailingList);
         MailingList GetMailingList(string email);
         List<UserProfile> GetAllAccountProfiles();
+        List<MailingList> GetMailingLists();
     }
 }
