@@ -1,4 +1,5 @@
-﻿using NgTrade.Models.Data;
+﻿using System.Collections.Generic;
+using NgTrade.Models.Data;
 
 namespace NgTrade.Models.Repo.Interface
 {
@@ -6,5 +7,7 @@ namespace NgTrade.Models.Repo.Interface
     {
         Order CreateOrder(Order order);
         void UpdateOrder(Order order);
+        List<Order> GetOrders(int userId);
+
     }
 }

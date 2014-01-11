@@ -34,7 +34,7 @@ namespace NgTrade.Models.Repo.Impl
                     {
                         result = cache[AllHoldingsCacheKey] as List<Holding>;
 
-                        var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) };
+                        var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(5) };
 
                         if (result == null)
                         {

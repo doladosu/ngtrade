@@ -19,6 +19,8 @@
                     <div class="center-align">
                         @using (Html.BeginForm("CreateStockOrder", "Account", FormMethod.Post, new { @class = "form-horizontal form-signin-signup" }))
                         {
+                            <span style="color:red;">@TempData["ErrorMessage"]</span>
+                            <span style="color:green;">@TempData["SuccessMessage"]</span>
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true)
 
@@ -30,7 +32,7 @@
                             @Html.LabelFor(m => m.Action)
                             @Html.DropDownListFor(m => m.Action, Model.ActionsList)
                             @Html.LabelFor(m => m.Price)
-                            @Html.TextBoxFor(m => Model.Price)
+                            @Html.TextBoxFor(m => Model.Price, new {disabled="disabled"})
                             <div class="clearfix"></div>
                             <input type="submit" value="Submit Order" class="btn btn-success btn-large" />
                         }

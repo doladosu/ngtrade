@@ -73,16 +73,47 @@ namespace NgTrade.Controllers
             return View(accountViewModel);
         }
 
-        public ActionResult Portfolio(int? page)
-        {
+        public ActionResult Portfolio(int? page, int? ot)
+        {           
             var pageNumber = (page ?? 1);
             var holdings = HoldingRepository.GetHoldings(LoggedInSubscriber.UserId);
-            var portfolioModels = (from holding in holdings
+            var orders = OrderRepository.GetOrders(LoggedInSubscriber.UserId);
+
+            List<PortfolioModel> portfolioModels;
+            if (ot.GetValueOrDefault() == 1)
+            {
+                portfolioModels = (from order in orders
+                                   where order.Status.ToLower() == "complete" && order.Type.ToLower() == "sell"
+                                   let quoteInfo = QuoteRepository.GetQuote(order.Symbol)
+                                   select new PortfolioModel
+                                   {
+                                       Purchaseprice = order.Price,
+                                       Purchasedate = order.OpenDate,
+                                       Quantity = order.Quantity,
+                                       QuoteSymbol = order.Symbol,
+                                       CurrentPrice = order.Price,
+                                       GainLoss = 0,
+                                       Holdingid = order.HoldingId,
+                                       MarketValue = 0
+                                   }).ToList();
+            }
+            else
+            {
+                portfolioModels = (from holding in holdings
+                                   where holding.Quantity > 0
                                    let quoteInfo = QuoteRepository.GetQuote(holding.Symbol)
                                    select new PortfolioModel
                                        {
-                                           Purchaseprice = holding.Price, Purchasedate = holding.DatePurchased, Quantity = holding.Quantity, QuoteSymbol = holding.Symbol, CurrentPrice = quoteInfo.Close, GainLoss = holding.Quantity*(quoteInfo.Close - holding.Price), Holdingid = holding.Id, MarketValue = holding.Quantity*quoteInfo.Close
+                                           Purchaseprice = holding.Price,
+                                           Purchasedate = holding.DatePurchased,
+                                           Quantity = holding.Quantity,
+                                           QuoteSymbol = holding.Symbol,
+                                           CurrentPrice = quoteInfo.Close,
+                                           GainLoss = holding.Quantity*(quoteInfo.Close - holding.Price),
+                                           Holdingid = holding.Id,
+                                           MarketValue = holding.Quantity*quoteInfo.Close
                                        }).ToList();
+            }
             var pagingInfo = new PagingInfo
             {
                 CurrentPage = pageNumber,
@@ -90,7 +121,7 @@ namespace NgTrade.Controllers
                 TotalItems = holdings.Count
             };
 
-            var portfolioViewModel = new PortfolioViewModel { PagingInfo = pagingInfo, PortfolioVm = portfolioModels.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList() };
+            var portfolioViewModel = new PortfolioViewModel { PagingInfo = pagingInfo, PortfolioVm = portfolioModels.Skip(PageSize * (pageNumber - 1)).Take(PageSize).ToList(), Ot = ot.GetValueOrDefault()};
             return View(portfolioViewModel);
         }
 
@@ -161,12 +192,16 @@ namespace NgTrade.Controllers
 
         public RedirectToRouteResult CreateStockOrder(TradeViewModel tradeViewModel)
         {
-            string alertMessage;
-            string messageClass;
+            var stock = QuoteRepository.GetQuote(tradeViewModel.Symbol);
+            if (stock == null)
+            {
+                TempData["ErrorMessage"] = "There was an error placing your order, please try again!";
+                return RedirectToAction("Trade");
+            }
             var orderModel =new OrderModel
                 {
                     Action = tradeViewModel.Action,
-                    Price = tradeViewModel.Price,
+                    Price = Convert.ToDouble(stock.Close),
                     Shares = tradeViewModel.Shares,
                     Symbol = tradeViewModel.Symbol,
                     UserProfile = LoggedInSubscriber
@@ -187,19 +222,20 @@ namespace NgTrade.Controllers
             if (orderCreated != null)
             {
                 holding = HoldingRepository.CreateHolding(orderModel);
-                orderCreated.HoldingId = holding.Id;
-                orderCreated.Status = "Complete";
-                OrderRepository.UpdateOrder(orderCreated);
+                if (holding != null)
+                {
+                    orderCreated.HoldingId = holding.Id;
+                    orderCreated.Status = "Complete";
+                    OrderRepository.UpdateOrder(orderCreated);
+                }
             }
             if (holding != null)
             {
-                alertMessage = "Your order has been successfully placed. Please check back in twenty-four hour to view completion";
-                messageClass = "success";
-                return RedirectToAction("Trade", new { alertMessage, messageClass });
+                TempData["SuccessMessage"] = "Your order has been successfully placed. Please check back in twenty-four hour to view completion";
+                return RedirectToAction("Trade");
             }
-            alertMessage = "There was an error placing your order, please try again!";
-            messageClass = "severe";
-            return RedirectToAction("Trade", new { alertMessage, messageClass });
+            TempData["ErrorMessage"] = "There was an error placing your order, please try again!";
+            return RedirectToAction("Trade");
         }
 
         [AllowAnonymous]
@@ -535,14 +571,14 @@ namespace NgTrade.Controllers
             //check user existance
             if (string.IsNullOrWhiteSpace(forgotPasswordViewModel.UserName))
             {
-                TempData["Message"] = "Enter your user name";
+                TempData["ErrorMessage"] = "Enter your user name";
             }
             else
             {
                 var user = Membership.GetUser(forgotPasswordViewModel.UserName);
                 if (user == null)
                 {
-                    TempData["Message"] = "User does not exist.";
+                    TempData["ErrorMessage"] = "User does not exist.";
                 }
                 else
                 {
@@ -568,11 +604,11 @@ namespace NgTrade.Controllers
                     try
                     {
                         SmtpRepository.SendForgotPasswordEmail(email, body);
-                        TempData["Message"] = "Check your email for your reset password link.";
+                        TempData["SuccessMessage"] = "Check your email for your reset password link.";
                     }
                     catch (Exception ex)
                     {
-                        TempData["Message"] = "Error occured while sending email." + ex.Message;
+                        TempData["ErrorMessage"] = "Error occured while sending email." + ex.Message;
                     }
                 }
             }

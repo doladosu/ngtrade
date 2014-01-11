@@ -8,6 +8,6 @@ namespace NgTrade.Models.ViewModel
     {
         public List<PortfolioModel> PortfolioVm { get; set; }
         public PagingInfo PagingInfo { get; set; }
-
+        public int Ot { get; set; }
     }
 }
