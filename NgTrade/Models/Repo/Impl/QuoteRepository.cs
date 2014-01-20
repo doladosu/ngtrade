@@ -178,7 +178,7 @@ namespace NgTrade.Models.Repo.Impl
                             {
                                 result = db.Companyprofiles.ToList();
                             }
-                            cache.Add(AllQuotesCacheKey, result, policy);
+                            cache.Add(AllCompaniesCacheKey, result, policy);
                         }
                     }
                 }

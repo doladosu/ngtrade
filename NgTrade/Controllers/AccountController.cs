@@ -231,7 +231,7 @@ namespace NgTrade.Controllers
             }
             if (holding != null)
             {
-                TempData["SuccessMessage"] = "Your order has been successfully placed. Please check back in twenty-four hour to view completion";
+                TempData["SuccessMessage"] = "Your order has been successfully placed. Please check back in 24 hours to view completion";
                 return RedirectToAction("Trade");
             }
             TempData["ErrorMessage"] = "There was an error placing your order, please try again!";

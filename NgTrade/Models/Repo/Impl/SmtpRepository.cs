@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using NgTrade.Models.Repo.Interface;
 using NgTrade.Models.ViewModel;
 
@@ -57,7 +58,7 @@ Damilare Oladosu";
                     };
 
                 var plainView = AlternateView.CreateAlternateViewFromString
-                    (System.Text.RegularExpressions.Regex.Replace(messageHtml.Body, @"<(.|\n)*?>", string.Empty), null,
+                    (Regex.Replace(messageHtml.Body, @"<(.|\n)*?>", string.Empty), null,
                      "text/plain");
                 var htmlView = AlternateView.CreateAlternateViewFromString(messageHtml.Body, null, "text/html");
 
@@ -80,7 +81,7 @@ Damilare Oladosu";
                     };
 
                 var plainView = AlternateView.CreateAlternateViewFromString
-                    (System.Text.RegularExpressions.Regex.Replace(messageHtml.Body, @"<(.|\n)*?>", string.Empty), null,
+                    (Regex.Replace(messageHtml.Body, @"<(.|\n)*?>", string.Empty), null,
                      "text/plain");
                 var htmlView = AlternateView.CreateAlternateViewFromString(messageHtml.Body, null, "text/html");
 
@@ -92,13 +93,17 @@ Damilare Oladosu";
 
         public void SendDailyEmail(List<string> emails)
         {
-            foreach (var email in emails)
+            foreach (var emaill in emails)
             {
-                using (var client = new SmtpClient(_host, _port))
+                var email = emaill.Trim();
+                if (!ValidateEmail(email)) continue;
+                try
                 {
-                    client.Credentials = new System.Net.NetworkCredential(_userName, _password);
-                    client.EnableSsl = true;
-                    const string message = @"Hello<br /><br /> 
+                    using (var client = new SmtpClient(_host, _port))
+                    {
+                        client.Credentials = new System.Net.NetworkCredential(_userName, _password);
+                        client.EnableSsl = true;
+                        const string message = @"Hello<br /><br /> 
 The daily price list for today is out. Check it out at <a href='http://www.ngtradeonline.com/'>http://www.ngtradeonline.com/</a><br /><br />
 Remember to invite your friends to signup for a free account at NgTradeOnline. <br /><br />
 With a free account, you get a chance to trade with virtual currency and see how your portfolio performs before you invest your hard earned money in the real stock exchange market. Again it is free to signup.
@@ -115,22 +120,41 @@ CEO
 <br />
 Damilare Oladosu";
 
-                    var messageHtml = new MailMessage(_fromEmail, email, "NgTradeOnline - NSE daily price list",message)
-                        {
-                            IsBodyHtml = true,
-                            BodyEncoding = System.Text.Encoding.GetEncoding("utf-8")
-                        };
+                        var messageHtml = new MailMessage(_fromEmail, email, "NgTradeOnline - NSE daily price list",
+                                                          message)
+                            {
+                                IsBodyHtml = true,
+                                BodyEncoding = System.Text.Encoding.GetEncoding("utf-8")
+                            };
 
-                    var plainView = AlternateView.CreateAlternateViewFromString
-                        (System.Text.RegularExpressions.Regex.Replace(messageHtml.Body, @"<(.|\n)*?>", string.Empty),
-                         null, "text/plain");
-                    var htmlView = AlternateView.CreateAlternateViewFromString(messageHtml.Body, null, "text/html");
+                        var plainView = AlternateView.CreateAlternateViewFromString
+                            (Regex.Replace(messageHtml.Body, @"<(.|\n)*?>",
+                                                                          string.Empty),
+                             null, "text/plain");
+                        var htmlView = AlternateView.CreateAlternateViewFromString(messageHtml.Body, null,
+                                                                                   "text/html");
 
-                    messageHtml.AlternateViews.Add(plainView);
-                    messageHtml.AlternateViews.Add(htmlView);
-                    client.Send(messageHtml);
+                        messageHtml.AlternateViews.Add(plainView);
+                        messageHtml.AlternateViews.Add(htmlView);
+                        client.Send(messageHtml);
+                    }
+                }
+                catch (Exception)
+                {
+
                 }
             }
+        }
+
+        private static bool ValidateEmail(string email)
+        {
+            const string pattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
+                                   + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
+                                   + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+
+            var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            var isValid = !string.IsNullOrWhiteSpace(email) && regex.IsMatch(email);
+            return isValid;
         }
     }
 }
