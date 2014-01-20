@@ -6,5 +6,6 @@ namespace NgTrade.Models.Repo.Interface
     {
         List<string> NewsList();
         string NewsDetail(string sUrl);
+        string NewsDetailNse(string sUrl);
     }
 }

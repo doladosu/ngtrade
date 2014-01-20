@@ -1,7 +1,8 @@
 ﻿$(function() {
     $("a[class=redirectLink]").each(function () {
-    var href = '/home/newsdetail?surl=' + $(this).attr('href');
-    $(this).attr("href", href);
+        var encodedUrl = encodeURIComponent($(this).attr('href'));
+        var href = '/home/newsdetail?surl=' + encodedUrl;
+        $(this).attr("href", href);
   });
   //var topic = getParameterByName('surl');
   //$('#topicTitle').append(topic);

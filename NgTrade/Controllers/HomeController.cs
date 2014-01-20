@@ -402,7 +402,7 @@ namespace NgTrade.Controllers
         [OutputCache(CacheProfile = "StaticPageCache")]
         public ActionResult NewsDetail(string sUrl)
         {
-            ViewBag.Content = NewsRepository.NewsDetail(sUrl);
+            ViewBag.Content = NewsRepository.NewsDetailNse(sUrl);
             return View();
         }
 

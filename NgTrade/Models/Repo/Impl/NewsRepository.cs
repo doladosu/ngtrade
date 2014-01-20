@@ -16,7 +16,7 @@ namespace NgTrade.Models.Repo.Impl
 
         public List<string> NewsList()
         {
-            return GetNewsFromBloonberg();
+            return GetNewsFromNse();
         }
 
         public string NewsDetail(string sUrl)
@@ -55,7 +55,7 @@ namespace NgTrade.Models.Repo.Impl
                 }
                 return result;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 return null;
             }
@@ -103,5 +103,95 @@ namespace NgTrade.Models.Repo.Impl
                 return null;
             }
         }
+
+        public string NewsDetailNse(string sUrl)
+        {
+            try
+            {
+                sUrl = "http://www.nse.com.ng" + sUrl;
+                var cache = MemoryCache.Default;
+                var result = cache[NEWS_DETAILS_CACHE_KEY + sUrl] as string;
+
+                if (result == null)
+                {
+                    lock (CacheLockObjectCurrentSales)
+                    {
+                        result = cache[NEWS_DETAILS_CACHE_KEY + sUrl] as string;
+
+                        var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddHours(12) };
+
+                        using (var client = new WebClient())
+                        {
+                            // fetching HTML
+                            string pixarHtml = client.DownloadString(sUrl);
+
+                            var document = new HtmlDocument();
+                            document.LoadHtml(pixarHtml);
+
+                            var pixarTable = (from d in document.DocumentNode.Descendants()
+                                              where d.Name == "table" && d.Id == "Table_01"
+                                              select d).First();
+
+                            result = pixarTable.InnerHtml.Replace("src=\"/", "src=\"http://www.nse.com.ng/").Replace("href=", "class=\"redirectLink\" href=");
+                            cache.Add(NEWS_DETAILS_CACHE_KEY + sUrl, result, policy);
+
+                            return result;
+                        }
+                    }
+                }
+                return result;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+
+        private static List<string> GetNewsFromNse()
+        {
+            try
+            {
+                var cache = MemoryCache.Default;
+                var result = cache[ALL_NEWS_CACHE_KEY] as List<string>;
+
+                if (result == null)
+                {
+                    lock (CacheLockObjectCurrentSales)
+                    {
+                        result = cache[ALL_NEWS_CACHE_KEY] as List<string>;
+
+                        var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddHours(12) };
+
+                        using (var client = new WebClient())
+                        {
+                            // fetching HTML
+                            string pixarHtml = client.DownloadString("http://www.nse.com.ng/MarketNews/Pages/Recent-Happenings.aspx");
+
+                            var document = new HtmlDocument();
+                            document.LoadHtml(pixarHtml);
+
+                            var pixarTable = (from d in document.DocumentNode.Descendants()
+                                              where d.Name == "div" && d.Id == "WebPartWPQ4"
+                                              select d).First();
+
+                            if (result == null)
+                            {
+                                result = new List<string>();
+                            }
+                            result.Add(pixarTable.InnerHtml.Replace("href=", "class=\"redirectLink\" href=").Replace("â€œ", "\"").Replace("â€", "\"").Replace("â€‹", ""));
+                            cache.Add(ALL_NEWS_CACHE_KEY, result, policy);
+
+                            return result;
+                        }
+                    }
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
     }
 }
