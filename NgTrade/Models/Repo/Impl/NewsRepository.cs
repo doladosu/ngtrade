@@ -111,6 +111,7 @@ namespace NgTrade.Models.Repo.Impl
                 sUrl = "http://www.nse.com.ng" + sUrl;
                 var cache = MemoryCache.Default;
                 var result = cache[NEWS_DETAILS_CACHE_KEY + sUrl] as string;
+                var resultBackup = cache[NEWS_DETAILS_CACHE_KEY + sUrl + "backup"] as string;
 
                 if (result == null)
                 {
@@ -119,6 +120,7 @@ namespace NgTrade.Models.Repo.Impl
                         result = cache[NEWS_DETAILS_CACHE_KEY + sUrl] as string;
 
                         var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddHours(12) };
+                        var policyBackup = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddDays(12) };
 
                         using (var client = new WebClient())
                         {
@@ -134,7 +136,14 @@ namespace NgTrade.Models.Repo.Impl
 
                             result = pixarTable.InnerHtml.Replace("src=\"/", "src=\"http://www.nse.com.ng/").Replace("href=", "class=\"redirectLink\" href=");
                             cache.Add(NEWS_DETAILS_CACHE_KEY + sUrl, result, policy);
-
+                            if (!string.IsNullOrEmpty(result))
+                            {
+                                cache.Add(NEWS_DETAILS_CACHE_KEY + sUrl + "backup", result, policyBackup);
+                            }
+                            else if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(resultBackup))
+                            {
+                                result = resultBackup;
+                            }
                             return result;
                         }
                     }
@@ -143,7 +152,9 @@ namespace NgTrade.Models.Repo.Impl
             }
             catch (Exception exception)
             {
-                return null;
+                var cache = MemoryCache.Default;
+                var resultBackup = cache[NEWS_DETAILS_CACHE_KEY + sUrl + "backup"] as string;
+                return !string.IsNullOrEmpty(resultBackup) ? resultBackup : null;
             }
         }
 
@@ -153,6 +164,7 @@ namespace NgTrade.Models.Repo.Impl
             {
                 var cache = MemoryCache.Default;
                 var result = cache[ALL_NEWS_CACHE_KEY] as List<string>;
+                var resultBackup = cache[ALL_NEWS_CACHE_KEY + "backup"] as List<string>;
 
                 if (result == null)
                 {
@@ -161,6 +173,7 @@ namespace NgTrade.Models.Repo.Impl
                         result = cache[ALL_NEWS_CACHE_KEY] as List<string>;
 
                         var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddHours(12) };
+                        var policyBackup = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddDays(12) };
 
                         using (var client = new WebClient())
                         {
@@ -180,7 +193,14 @@ namespace NgTrade.Models.Repo.Impl
                             }
                             result.Add(pixarTable.InnerHtml.Replace("href=", "class=\"redirectLink\" href=").Replace("â€œ", "\"").Replace("â€", "\"").Replace("â€‹", ""));
                             cache.Add(ALL_NEWS_CACHE_KEY, result, policy);
-
+                            if (result.Count > 0)
+                            {
+                                cache.Add(ALL_NEWS_CACHE_KEY + "backup", result, policyBackup);
+                            }
+                            else if (result.Count == 0 && resultBackup != null && resultBackup.Count > 0)
+                            {
+                                result = resultBackup;
+                            }
                             return result;
                         }
                     }
@@ -189,7 +209,13 @@ namespace NgTrade.Models.Repo.Impl
             }
             catch (Exception)
             {
-                return null;
+                var cache = MemoryCache.Default;
+                var resultBackup = cache[ALL_NEWS_CACHE_KEY + "backup"] as List<string>;
+                if (resultBackup != null && resultBackup.Count > 0)
+                {
+                    return resultBackup;
+                }
+                return new List<string>();
             }
         }
 
