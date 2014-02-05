@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
@@ -252,6 +253,8 @@ namespace NgTrade.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, model.RememberMe))
             {
+                var loginCookie = new HttpCookie("lg", "1");
+                Response.SetCookie(loginCookie);
                 return RedirectToLocal(returnUrl);
             }
 
@@ -265,6 +268,11 @@ namespace NgTrade.Controllers
 
         public ActionResult LogOff()
         {
+            if (Request.Cookies["lg"] != null)
+            {
+                var loginCookie = new HttpCookie("lg") { Expires = DateTime.Now.AddDays(-1) };
+                Response.Cookies.Add(loginCookie);
+            }
             WebSecurity.Logout();
 
             return RedirectToAction("Index", "Account");
@@ -299,6 +307,8 @@ namespace NgTrade.Controllers
                     model.Balance = 1000000;
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { model.FirstName, model.LastName, model.Email, model.Address1, model.Address2, model.City, model.State, model.Country, model.Phone1, model.BirthDate, model.Occupation, model.SignupDate, model.BankVerified, model.Verified, model.Balance  });
                     WebSecurity.Login(model.UserName, model.Password);
+                    var loginCookie = new HttpCookie("lg", "1");
+                    Response.SetCookie(loginCookie);
                     var exists = AccountRepository.GetMailingList(model.Email);
                     if (exists == null)
                     {
@@ -446,6 +456,8 @@ namespace NgTrade.Controllers
 
             if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
             {
+                var loginCookie = new HttpCookie("lg", "1");
+                Response.SetCookie(loginCookie);
                 return RedirectToLocal(returnUrl);
             }
 
@@ -453,6 +465,8 @@ namespace NgTrade.Controllers
             {
                 // If the current user is logged in add the new account
                 OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
+                var loginCookie = new HttpCookie("lg", "1");
+                Response.SetCookie(loginCookie);
                 return RedirectToLocal(returnUrl);
             }
             // User is new, ask for their desired membership name
@@ -493,7 +507,8 @@ namespace NgTrade.Controllers
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
+                        var loginCookie = new HttpCookie("lg", "1");
+                        Response.SetCookie(loginCookie);
                         return RedirectToLocal(returnUrl);
                     }
                     ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");

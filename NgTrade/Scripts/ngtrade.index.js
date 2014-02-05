@@ -13,7 +13,13 @@
 
 $("document").ready(function() {
 
-	/*Start: Prevent the default white background on blur of top navigation */
+    var isLoggedIn = $.cookie("lg");
+    if (isLoggedIn != undefined && isLoggedIn == "1") {
+        $('[data-loggedin="true"]').show();
+    } else {
+        $('[data-loggedin="false"]').show();
+    }
+    /*Start: Prevent the default white background on blur of top navigation */
 	$(".dropdown-menu li a").mousedown(function() {
 		var dropdown = $(this).parents('.dropdown');
 		var link = dropdown.children(':first-child');
