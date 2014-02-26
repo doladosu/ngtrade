@@ -7,6 +7,9 @@ using System.Web.Caching;
 using System.Web.Mvc;
 using DoddleReport;
 using DoddleReport.Web;
+using MailChimp;
+using MailChimp.Helper;
+using MailChimp.Lists;
 using NgTrade.Helpers.Paging;
 using NgTrade.Models.Data;
 using NgTrade.Models.Repo.Interface;
@@ -160,6 +163,15 @@ namespace NgTrade.Controllers
                 var exists = AccountRepository.GetMailingList(email);
                 if (exists == null)
                 {
+                    var mc = new MailChimpManager("69556fcf7b3ca2121e35a90a22a52286-us3");
+                    //  Create the email parameter
+                    var emailpara = new EmailParameter
+                    {
+                        Email = email
+                    };
+
+                    var results = mc.Subscribe("4e449c713f", emailpara);
+
                     var mailingList = new MailingList {DateAdded = DateTime.Now, Email = email, Subscribed = true};
                     AccountRepository.AddToMailingList(mailingList);
                     return Json("You have joined our mailing list", JsonRequestBehavior.AllowGet);
