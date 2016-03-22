@@ -1,0 +1,96 @@
+﻿@using NgTrade.Helpers.Paging
+@model NgTrade.Models.ViewModel.PriceHistoryViewModel
+@{
+  ViewBag.Title = "Nigerian Stock Exchange Trading Online NSE Daily Price List, Losers - NgTradeOnline";
+}
+
+<div class="content">
+    <div class="container">
+        @if (!Model.Quotes.Any())
+    {
+      <div>No data is available.</div>
+    }
+    else
+    {
+      <div class="page-header">
+          <h3>Nigeria stock exchange price history for @Model.StockName</h3>
+          @Html.ActionLink("Buy/Sell", "Trade", "Account", new { symbol = Model.StockName }, new { @class="btn"})
+                                
+      </div>
+        <div class="panel panel-default">
+                        <div class="fb-like" data-href="https://www.facebook.com/NgTradeOnlinense" data-colorscheme="light" data-layout="button" data-action="like" data-show-faces="true" data-send="true"></div>
+            
+            <a href="https://twitter.com/ngtradeonline" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @@ngtradeonline</a>
+            <script>
+                !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');
+            </script>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="ngtradeonline" data-size="large" data-related="ngtradeonline" data-hashtags="ngtradeonline">Tweet</a>
+            <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Low</th>
+                        <th>Open</th>
+                        <th>Price</th>
+                        <th>Volume</th>
+                        <th>High</th>
+                        <th>Change</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var data in Model.Quotes)
+                    {
+                        if (data.Close > data.Open)
+                        {
+                            <tr>
+                                <td>@data.Symbol</td>
+                                <td>@String.Format("{0:0.00}", data.Low)</td>
+                                <td>@String.Format("{0:0.00}", data.Open)</td>
+                                <td>@String.Format("{0:0.00}", data.Close)</td>
+                                <td>@data.Volume</td>
+                                <td>@String.Format("{0:0.00}", data.High)</td>
+                                <td style="color: green">@String.Format("{0:0.00}", data.Change1)</td>
+                                <td>@data.Date.ToShortDateString()</td>
+                            </tr>
+                        }
+                        else if (data.Close < data.Open)
+                        {
+                            <tr>
+                                <td>@data.Symbol</td>
+                                <td>@String.Format("{0:0.00}", data.Low)</td>
+                                <td>@String.Format("{0:0.00}", data.Open)</td>
+                                <td>@String.Format("{0:0.00}", data.Close)</td>
+                                <td>@data.Volume</td>
+                                <td>@String.Format("{0:0.00}", data.High)</td>
+                                <td style="color: red">@String.Format("{0:0.00}", data.Change1)</td>
+                                <td>@data.Date.ToShortDateString()</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@data.Symbol</td>
+                                <td>@String.Format("{0:0.00}", data.Low)</td>
+                                <td>@String.Format("{0:0.00}", data.Open)</td>
+                                <td>@String.Format("{0:0.00}", data.Close)</td>
+                                <td>@data.Volume</td>
+                                <td>@String.Format("{0:0.00}", data.High)</td>
+                                <td>@String.Format("{0:0.00}", data.Change1)</td>
+                                <td>@data.Date.ToShortDateString()</td>
+                            </tr> 
+                        }
+                    }
+                </tbody>
+            </table>   
+        </div>
+      <div class="pagination pagination-centered">
+        <ul>
+          @Html.PageLinks(Model.PagingInfo, x => Url.Action("PriceHistory", new { page = x, stockName = @Model.StockName }))
+        </ul>
+      </div>
+    }
+  </div>
+</div><!-- End: MAIN CONTENT -->

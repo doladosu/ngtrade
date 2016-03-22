@@ -1,10 +1,14 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using NgTrade.Models.Info;
+using NgTrade.Models.Repo.Interface;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Caching;
-using HtmlAgilityPack;
-using NgTrade.Models.Repo.Interface;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace NgTrade.Models.Repo.Impl
 {
@@ -85,8 +89,8 @@ namespace NgTrade.Models.Repo.Impl
                             document.LoadHtml(pixarHtml);
 
                             var pixarTable = (from d in document.DocumentNode.Descendants()
-                                                   where d.Name == "div" && d.Id == "stories"
-                                                   select d).First();
+                                              where d.Name == "div" && d.Id == "stories"
+                                              select d).First();
 
                             var pixarRows = from d in pixarTable.Descendants() where d.Name == "li" select d;
                             result = pixarRows.Select(pixarRow => pixarRow.InnerHtml.Replace("\n", "").Replace("href=", "class=\"redirectLink\" href=").Replace("h3", "h4").Replace("â€™", "'")).ToList();
@@ -170,7 +174,7 @@ namespace NgTrade.Models.Repo.Impl
                 {
                     lock (CacheLockObjectCurrentSales)
                     {
-                        result = cache[ALL_NEWS_CACHE_KEY] as List<string>;
+                        result = cache[ALL_NEWS_CACHE_KEY] as List<string> ?? new List<string>();
 
                         var policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddHours(12) };
                         var policyBackup = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddDays(12) };
@@ -178,20 +182,13 @@ namespace NgTrade.Models.Repo.Impl
                         using (var client = new WebClient())
                         {
                             // fetching HTML
-                            string pixarHtml = client.DownloadString("http://www.nse.com.ng/MarketNews/Pages/Recent-Happenings.aspx");
+                            var pixarHtml = client.DownloadString(@"http://www.nse.com.ng/_api/Web/Lists/GetByTitle('News%20Story')/items?$orderby=ranking%20desc,Created%20desc&$top=1000");
 
-                            var document = new HtmlDocument();
-                            document.LoadHtml(pixarHtml);
+                            var serializer = new XmlSerializer(typeof(feed));
+                            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(pixarHtml));
+                            var resultingMessage = (feed)serializer.Deserialize(memStream);
+                            result.AddRange(resultingMessage.entry.Select(entry => string.Format("<a target='_blank' href='{0}'>{1}</a>", entry.content.properties.URL.Url, entry.content.properties.URL.Description.Value.Replace("â€‹", "").Replace("â€™", "'"))));
 
-                            var pixarTable = (from d in document.DocumentNode.Descendants()
-                                              where d.Name == "div" && d.Id == "WebPartWPQ4"
-                                              select d).First();
-
-                            if (result == null)
-                            {
-                                result = new List<string>();
-                            }
-                            result.Add(pixarTable.InnerHtml.Replace("href=", "class=\"redirectLink\" href=").Replace("â€œ", "\"").Replace("â€", "\"").Replace("â€‹", ""));
                             cache.Add(ALL_NEWS_CACHE_KEY, result, policy);
                             if (result.Count > 0)
                             {

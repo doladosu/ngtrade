@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -242,6 +243,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Data\NgTradeData.cs" />
     <Compile Include="Models\Info\ErrorModel.cs" />
+    <Compile Include="Models\Info\NseNews.cs" />
     <Compile Include="Models\Info\OrderModel.cs" />
     <Compile Include="Models\Info\PortfolioModel.cs" />
     <Compile Include="Models\Info\QuoteSector.cs" />

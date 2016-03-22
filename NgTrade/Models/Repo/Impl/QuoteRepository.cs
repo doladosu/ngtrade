@@ -151,7 +151,7 @@ namespace NgTrade.Models.Repo.Impl
                 }
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }
