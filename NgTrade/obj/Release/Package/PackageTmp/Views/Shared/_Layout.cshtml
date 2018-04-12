@@ -21,21 +21,22 @@
 </head>
 <body>
     <div id="fb-root"></div>
-    <script>(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=185502631637619";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-    </script>
+    <script>
+(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=185502631637619&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
     <header>
         <!-- Start: Navigation wrapper -->
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a href="@Url.Action("Index", "Home")" class="brand brand-bootbus">
-                        <img src="/images/logo.png" alt="NgTradeOnline" /></a>
+                        <img src="/images/logo.png" alt="NgTradeOnline" />
+                    </a>
                     <!-- Below button used for responsive navigation -->
                     <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                         <span class="icon-bar"></span>
@@ -68,7 +69,7 @@
                                 </ul>
                             </li>
                             <li data-loggedin="true" style="display: none">@Html.ActionLink("Companies", "Companies", "Home")</li>
-                            <li data-loggedin="true"  style="display: none">@Html.ActionLink("News", "News", "Home")</li>
+                            <li data-loggedin="true" style="display: none">@Html.ActionLink("News", "News", "Home")</li>
                             <li data-loggedin="true" style="display: none">@Html.ActionLink("Profile", "Index", "Account")</li>
                             <li data-loggedin="true" style="display: none">@Html.ActionLink("Sign off", "LogOff", "Account")</li>
                             <li>
@@ -79,8 +80,7 @@
                                         <button type="submit" class="btn">
                                             <i class="icon-search"></i>
                                         </button>
-                                        <datalist id="symbols">
-                                        </datalist>
+                                        <datalist id="symbols"></datalist>
                                     </div>
                                 }
                             </li>
@@ -154,7 +154,7 @@
         <div class="container">
             <p>
                 &copy; @DateTime.Now.Year NgTradeOnline, Inc. All Rights Reserved.
-       
+
             </p>
         </div>
     </footer>

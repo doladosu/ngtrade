@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ProjectView>ProjectFiles</ProjectView>
     <NameOfLastUsedPublishProfile>ngtrade - Web Deploy</NameOfLastUsedPublishProfile>
+    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
