@@ -22,7 +22,7 @@
 <body>
     <div id="fb-root"></div>
     <script>
-(function (d, s, id) {
+        (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s); js.id = id;
@@ -74,22 +74,45 @@
                             <li data-loggedin="true" style="display: none">@Html.ActionLink("Sign off", "LogOff", "Account")</li>
                             <li>
                                 @using (Html.BeginForm("Research", "Home", FormMethod.Post, new { @class = "form-search" }))
-                                {
-                                    <div class="input-append">
-                                        <input type="text" id="stockticker" name="stockticker" class="span2 search-query" placeholder="Enter stock name" list="symbols" />
-                                        <button type="submit" class="btn">
-                                            <i class="icon-search"></i>
-                                        </button>
-                                        <datalist id="symbols"></datalist>
-                                    </div>
-                                }
+                            {
+                                <div class="input-append">
+                                    <input type="text" id="stockticker" name="stockticker" class="span2 search-query" placeholder="Enter stock name" list="symbols" />
+                                    <button type="submit" class="btn">
+                                        <i class="icon-search"></i>
+                                    </button>
+                                    <datalist id="symbols"></datalist>
+                                </div>
+                        }
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <br>
+            <br>
         </div>
         <!-- End: Navigation wrapper -->
+        <br>
+        <br>
+        <div style="margin:auto;width:50%">
+            <div class="alignleft">
+                <script type="text/javascript">
+                    amzn_assoc_ad_type = "banner";
+                    amzn_assoc_marketplace = "amazon";
+                    amzn_assoc_region = "US";
+                    amzn_assoc_placement = "assoc_banner_placement_default";
+                    amzn_assoc_banner_type = "ez";
+                    amzn_assoc_p = "48";
+                    amzn_assoc_width = "728";
+                    amzn_assoc_height = "90";
+                    amzn_assoc_tracking_id = "ngtradeonline-20";
+                    amzn_assoc_linkid = "6ea374c63dbdbf37fdf13fdc69b8bfaa";
+                </script>
+                <script src="//z-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1"></script>
+            </div>
+        </div>
+        <br>
+        <br>
     </header>
 
     @RenderBody()

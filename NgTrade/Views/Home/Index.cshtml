@@ -55,10 +55,27 @@
     <!-- End: slider -->
     <!-- Start: PRODUCT LIST -->
     <div class="container">
+        <br><br>
+        <div class="alignleft">
+            <script type="text/javascript">
+                amzn_assoc_ad_type = "banner";
+                amzn_assoc_marketplace = "amazon";
+                amzn_assoc_region = "US";
+                amzn_assoc_placement = "assoc_banner_placement_default";
+                amzn_assoc_banner_type = "ez";
+                amzn_assoc_p = "13";
+                amzn_assoc_width = "468";
+                amzn_assoc_height = "60";
+                amzn_assoc_tracking_id = "ngtradeonline-20";
+                amzn_assoc_linkid = "a378f51854ce9034cc97f3b27dbf6051";
+            </script>
+            <script src="//z-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1"></script>
+        </div>
+        <br><br>
         <div class="page-header">
             <h3>Top stocks for: @Model.SQuoteDay</h3>
             <div class="fb-like" data-href="https://www.facebook.com/NgTradeOnlinense" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-            
+
             <a href="https://twitter.com/ngtradeonline" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @@ngtradeonline</a>
             <script>
                 !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');
@@ -72,25 +89,25 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <h4>Day gainers</h4>
-                            <table class="table table-striped">  
-                                <thead>  
-                                    <tr>  
-                                        <th>Stock</th>  
-                                        <th>Close</th>  
-                                        <th>Gain</th>  
-                                    </tr>  
-                                </thead>  
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <th>Close</th>
+                                        <th>Gain</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach (var dayGainer in Model.DayGainers)
-                                    {
-                                        <tr>  
-                                            <td>@Html.ActionLink(@dayGainer.Symbol,"Research", "Home", new {stockTicker = @dayGainer.Symbol}, null)</td>
-                                            <td>@String.Format("{0:0.00}", dayGainer.Close)</td>  
-                                            <td style="color: green">@String.Format("{0:0.00}", dayGainer.Change1)</td>  
-                                        </tr>
-                                    }
-                                </tbody>  
-                            </table>  
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@dayGainer.Symbol, "Research", "Home", new { stockTicker = @dayGainer.Symbol }, null)</td>
+                                        <td>@String.Format("{0:0.00}", dayGainer.Close)</td>
+                                        <td style="color: green">@String.Format("{0:0.00}", dayGainer.Change1)</td>
+                                    </tr>
+                            }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </li>
@@ -98,25 +115,25 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <h4>Day losers</h4>
-                            <table class="table table-striped">  
-                                <thead>  
-                                    <tr>  
-                                        <th>Stock</th>  
-                                        <th>Close</th>  
-                                        <th>Loss</th>  
-                                    </tr>  
-                                </thead>  
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <th>Close</th>
+                                        <th>Loss</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach (var dayLoser in Model.DayLosers)
-                                    {
-                                        <tr>  
-                                            <td>@Html.ActionLink(@dayLoser.Symbol,"Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                            <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                            <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                        </tr>
-                                    }
-                                </tbody>  
-                            </table>  
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                        <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                        <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                    </tr>
+                            }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </li>
@@ -129,171 +146,206 @@
                                 <li class="list-group-item">@Html.ActionLink("Excel download", "dailypricelist", new { extension = "xls" })</li>
                                 <li class="list-group-item">@Html.ActionLink("CSV download", "dailypricelist", new { extension = "txt" }, new { target = "_blank" })</li>
                                 @*<li><!-- Button trigger modal -->
-                                    <a href="#" data-toggle="modal" data-target="#myModal">
-                                        2014 Trading Holidays
-                                    </a>
+                                   <a href="#" data-toggle="modal" data-target="#myModal">
+                                       2014 Trading Holidays
+                                   </a>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="myModalLabel">Market Calendar – 2014 Trading Holidays</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <ul class="list-group">
-                                                        <li class="list-group-item">January 01 New Year's Day</li>
-                                                        <li class="list-group-item">January 14 Mouloud or Mawlid (Prophet Mohammed's Birthday)</li>
-                                                        <li class="list-group-item">April 18 Good Friday</li>
-                                                        <li class="list-group-item">April 21 Easter Monday</li>
-                                                        <li class="list-group-item">May 01 Worker's Day</li>
-                                                        <li class="list-group-item">May 29 Democracy Day</li>
-                                                        <li class="list-group-item">July 29 Eid al-Fitr (End of Ramadan)</li>
-                                                        <li class="list-group-item">October 01 Independence Day</li>
-                                                        <li class="list-group-item">October 05 Eid al-Kabir</li>
-                                                        <li class="list-group-item">December 25 Christmas Day</li>
-                                                        <li class="list-group-item">December 26 Boxing Day</li>
-                                                        <li class="list-group-item">*** All holidays are dependent on public announcement from the Federal Government of Nigeria; any changes will be immediately effected upon confirmation.</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
-                                 </li>*@
+                                   <!-- Modal -->
+                                   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                       <div class="modal-dialog">
+                                           <div class="modal-content">
+                                               <div class="modal-header">
+                                                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                   <h4 class="modal-title" id="myModalLabel">Market Calendar – 2014 Trading Holidays</h4>
+                                               </div>
+                                               <div class="modal-body">
+                                                   <ul class="list-group">
+                                                       <li class="list-group-item">January 01 New Year's Day</li>
+                                                       <li class="list-group-item">January 14 Mouloud or Mawlid (Prophet Mohammed's Birthday)</li>
+                                                       <li class="list-group-item">April 18 Good Friday</li>
+                                                       <li class="list-group-item">April 21 Easter Monday</li>
+                                                       <li class="list-group-item">May 01 Worker's Day</li>
+                                                       <li class="list-group-item">May 29 Democracy Day</li>
+                                                       <li class="list-group-item">July 29 Eid al-Fitr (End of Ramadan)</li>
+                                                       <li class="list-group-item">October 01 Independence Day</li>
+                                                       <li class="list-group-item">October 05 Eid al-Kabir</li>
+                                                       <li class="list-group-item">December 25 Christmas Day</li>
+                                                       <li class="list-group-item">December 26 Boxing Day</li>
+                                                       <li class="list-group-item">*** All holidays are dependent on public announcement from the Federal Government of Nigeria; any changes will be immediately effected upon confirmation.</li>
+                                                   </ul>
+                                               </div>
+                                               <div class="modal-footer">
+                                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                               </div>
+                                           </div><!-- /.modal-content -->
+                                       </div><!-- /.modal-dialog -->
+                                   </div><!-- /.modal -->
+                                </li>*@
                             </ul>
+                            <div class="alignleft">
+                                <script type="text/javascript">
+                                    amzn_assoc_ad_type = "banner";
+                                    amzn_assoc_marketplace = "amazon";
+                                    amzn_assoc_region = "US";
+                                    amzn_assoc_placement = "assoc_banner_placement_default";
+                                    amzn_assoc_banner_type = "ez";
+                                    amzn_assoc_p = "9";
+                                    amzn_assoc_width = "180";
+                                    amzn_assoc_height = "150";
+                                    amzn_assoc_tracking_id = "ngtradeonline-20";
+                                    amzn_assoc_linkid = "8214f0d5c7390e0a9ec1923ec20d69bf";
+                                </script>
+                                <script src="//z-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1"></script>
+                            </div>
                         </div>
                         @*            <div class="widget-footer">
-              <p>
-                <a href="#" class="btn btn-primary">Buy now</a>&nbsp;
-                     
-                <a href="product.html" class="btn">Read more</a>
-              </p>
-            </div>*@
+                          <p>
+                            <a href="#" class="btn btn-primary">Buy now</a>&nbsp;
+
+                            <a href="product.html" class="btn">Read more</a>
+                          </p>
+                        </div>*@
                     </div>
                 </li>
             </ul>
         </div>
 
-          <div class="page-header">
+        <div class="page-header">
             <h3>NSE Indices</h3>
-          </div>
-          <div class="row-fluid">
+        </div>
+        <div class="row-fluid">
             <ul class="thumbnails">
-              <li class="span4">
+                <li class="span4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <table class="table table-striped">  
-                                <thead>  
-                                    <tr>  
-                                        <th>Index</th>  
-                                        <th>Close</th>  
-                                        <th>Change</th>  
-                                    </tr>  
-                                </thead>  
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Close</th>
+                                        <th>Change</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach (var dayLoser in Model.NseIndexFirst)
+                                {
+                                    if (dayLoser.Close >= dayLoser.Open)
                                     {
-                                        if (dayLoser.Close >= dayLoser.Open)
-                                        {
-                                            <tr>  
-                                                <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                                <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                                <td style="color: green">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                            </tr>
-                                        }
-                                        else
-                                        {
-                                            <tr>  
-                                                <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                                <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                                <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>  
-                            </table>  
+                                        <tr>
+                                            <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                            <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                            <td style="color: green">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                        </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                        <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                        <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                    </tr>
+                            }
+                        }
+                                </tbody>
+                            </table>
                         </div>
+                        <div class="alignleft">
+                            <script type="text/javascript">
+                                amzn_assoc_ad_type = "banner";
+                                amzn_assoc_marketplace = "amazon";
+                                amzn_assoc_region = "US";
+                                amzn_assoc_placement = "assoc_banner_placement_default";
+                                amzn_assoc_campaigns = "gift_certificates";
+                                amzn_assoc_banner_type = "category";
+                                amzn_assoc_p = "20";
+                                amzn_assoc_isresponsive = "false";
+                                amzn_assoc_banner_id = "1ZSS6EXXVTG8BG4EMVG2";
+                                amzn_assoc_width = "120";
+                                amzn_assoc_height = "90";
+                                amzn_assoc_tracking_id = "ngtradeonline-20";
+                                amzn_assoc_linkid = "92b848723c403269a84ff89f26de00b1";
+                            </script>
+                            <script src="//z-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1"></script>
+                        </div>
+
                     </div>
                 </li>
-             <li class="span4">
+                <li class="span4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <table class="table table-striped">  
-                                <thead>  
-                                    <tr>  
-                                        <th>Index</th>  
-                                        <th>Close</th>  
-                                        <th>Change</th>  
-                                    </tr>  
-                                </thead>  
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Close</th>
+                                        <th>Change</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach (var dayLoser in Model.NseIndexSecond)
+                                {
+                                    if (dayLoser.Close >= dayLoser.Open)
                                     {
-                                        if (dayLoser.Close >= dayLoser.Open)
-                                        {
-                                            <tr>  
-                                                <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                                <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                                <td style="color: green">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                            </tr>
-                                        }
-                                        else
-                                        {
-                                             <tr>  
-                                                <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                                <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                                <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>  
-                            </table>  
+                                        <tr>
+                                            <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                            <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                            <td style="color: green">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                        </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                        <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                        <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                    </tr>
+                            }
+                        }
+                                </tbody>
+                            </table>
                         </div>
+                        <a target="_blank" href="https://www.amazon.com/gp/product/B004HHK8QI/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B004HHK8QI&linkCode=as2&tag=ngtradeonline-20&linkId=4ff8b25603a8edbc3fae8d63ccacc7f5"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=B004HHK8QI&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=ngtradeonline-20"></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=ngtradeonline-20&l=am2&o=1&a=B004HHK8QI" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
                     </div>
                 </li>
-             <li class="span4">
+                <li class="span4">
                     <div class="thumbnail">
                         <div class="caption">
-                            <table class="table table-striped">  
-                                <thead>  
-                                    <tr>  
-                                        <th>Index</th>  
-                                        <th>Close</th>  
-                                        <th>Change</th>  
-                                    </tr>  
-                                </thead>  
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Close</th>
+                                        <th>Change</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     @foreach (var dayLoser in Model.NseIndexThird)
+                                {
+                                    if (dayLoser.Close >= dayLoser.Open)
                                     {
-                                        if (dayLoser.Close >= dayLoser.Open)
-                                        {
-                                            <tr>  
-                                                <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                                <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                                <td style="color: green">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                            </tr>
-                                        }
-                                        else
-                                        {
-                                             <tr>  
-                                                <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new {stockTicker = @dayLoser.Symbol}, null)</td>
-                                                <td>@String.Format("{0:0.00}", dayLoser.Close)</td>  
-                                                <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>  
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>  
-                            </table>  
+                                        <tr>
+                                            <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                            <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                            <td style="color: green">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                        </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink(@dayLoser.Symbol, "Research", "Home", new { stockTicker = @dayLoser.Symbol }, null)</td>
+                                        <td>@String.Format("{0:0.00}", dayLoser.Close)</td>
+                                        <td style="color: red">@String.Format("{0:0.00}", dayLoser.Change1)</td>
+                                    </tr>
+                            }
+                        }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </li>
             </ul>
-          </div>
         </div>
+    </div>
 
     <!-- End: PRODUCT LIST -->
 </div>
