@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -327,6 +328,7 @@
     <Content Include="Content\themes\default\font-awesome-ie7.css" />
     <Content Include="Content\themes\default\font-awesome.css" />
     <Content Include="Content\themes\font\fontawesome-webfont.svg" />
+    <None Include="Properties\PublishProfiles\NgTradeasc - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
